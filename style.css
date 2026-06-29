@@ -1,0 +1,303 @@
+/* ==========================================
+   1. 全体の基本スタイル（8bitドット調レトロ）
+   ========================================== */
+body, html {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #fffde9; /* レトロクリーム */
+  font-family: "DotGothic16", -apple-system, sans-serif;
+  overflow-x: hidden;
+  color: #111111; 
+  cursor: none; /* キャラクターを引きずるためカーソルを消す */
+}
+
+/* ==========================================
+   2. オープニング動画エリアのスタイル
+   ========================================== */
+#video-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 9999;
+  background-color: #000000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: opacity 0.8s ease, visibility 0.8s ease;
+}
+
+#op-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; 
+}
+
+/* ==========================================
+   3. レイアウト設定
+   ========================================== */
+.page-container {
+  display: flex;
+  justify-content: center;
+  max-width: 1300px; 
+  margin: 0 auto;
+  padding: 0 20px;
+  box-sizing: border-box;
+}
+
+.sidebar-ad {
+  width: max-content; 
+  padding-top: 60px;
+  padding-right: 25px; 
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column; 
+  gap: 25px; 
+  align-items: center;
+}
+
+.sidebar-ad > div {
+  border: 4px solid #111111;
+  outline: 2px solid #ffffff;
+  outline-offset: -6px;
+  box-shadow: 6px 6px 0px #111111; 
+  background: #ffffff;
+  line-height: 0;
+  width: fit-content;
+}
+
+.sidebar-ad img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  image-rendering: pixelated;
+}
+
+#main-content {
+  opacity: 0;
+  transition: opacity 1s ease 0.4s; 
+  flex: 1;
+  max-width: 900px; 
+  padding: 60px 20px;
+  box-sizing: border-box;
+  position: relative;
+}
+
+/* キャラクターキャンバス */
+#charCanvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: 100;
+  image-rendering: pixelated;
+}
+
+section {
+  margin-bottom: 70px;
+  text-align: center;
+}
+
+h1 {
+  font-size: 3.4rem; 
+  color: #0033cc; 
+  letter-spacing: 2px;
+  margin-top: 0;
+  margin-bottom: 35px;
+  font-weight: 900; 
+  text-shadow: 2px 2px 0px #ffffff, 5px 5px 0px #111111;
+}
+
+h2 {
+  display: inline-block;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #ffffff;
+  background-color: #ff4a4a; 
+  border: 4px solid #111111;
+  outline: 2px solid #ffffff;
+  outline-offset: -6px;
+  padding: 10px 30px;
+  margin-bottom: 35px;
+  letter-spacing: 2px;
+  box-shadow: 5px 5px 0px #111111;
+}
+
+/* ==========================================
+   4. 紹介文カード
+   ========================================== */
+.brand-intro-card {
+  background-color: #ffffff; 
+  border: 4px solid #111111;
+  outline: 2px solid #ffffff;
+  outline-offset: -6px;
+  padding: 40px;
+  margin: 0 auto;
+  text-align: left;
+  box-shadow: 8px 8px 0px #111111;
+}
+
+.main-lead-badge {
+  display: inline-block;
+  background-color: #38b6ff; 
+  color: #ffffff;
+  border: 4px solid #111111;
+  outline: 2px solid #ffffff;
+  outline-offset: -6px;
+  padding: 12px 20px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  line-height: 1.5;
+  margin-bottom: 15px;
+  box-shadow: 4px 4px 0px #111111;
+}
+
+.sub-lead {
+  font-size: 1rem;
+  font-weight: bold;
+  color: #4a5568;
+  margin: 10px 0 25px 4px;
+}
+
+.intro-divider {
+  border: 0;
+  height: 4px;
+  background: #111111;
+  margin: 25px 0;
+}
+
+.about-text {
+  color: #111111;
+  font-size: 1rem;
+  line-height: 1.9;
+  margin: 0 0 15px 0;
+  text-align: justify; 
+}
+
+.about-text:last-child {
+  margin-bottom: 0;
+}
+
+.sns-button-container {
+  margin-top: 30px; 
+  display: flex; 
+  gap: 15px; 
+}
+
+.sns-btn {
+  display: inline-block;
+  padding: 12px 24px;
+  font-size: 0.95rem;
+  font-weight: bold;
+  text-decoration: none;
+  border: 4px solid #111111;
+  outline: 2px solid #ffffff;
+  outline-offset: -6px;
+  box-shadow: 4px 4px 0px #111111;
+  transition: transform 0.05s ease, box-shadow 0.05s ease;
+}
+
+.sns-btn:active {
+  transform: translate(4px, 4px);
+  box-shadow: 0px 0px 0px #111111;
+}
+
+.x-btn { background-color: #111111; color: #ffffff; }
+.note-btn { background-color: #00bb9c; color: #ffffff; }
+
+/* ==========================================
+   5. カテゴリーグリッド
+   ========================================== */
+.category-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 20px;
+  padding: 5px;
+}
+
+.category-card {
+  background: #ffffff;
+  border: 4px solid #111111; 
+  outline: 2px solid #ffffff;
+  outline-offset: -6px;
+  padding: 26px 15px;
+  text-align: center;
+  text-decoration: none;
+  color: #111111;
+  font-weight: bold;
+  box-sizing: border-box;
+  box-shadow: 5px 5px 0px #111111; 
+  transition: all 0.1s ease-in-out;
+}
+
+.category-card:hover {
+  background: #fffde9;
+  transform: translate(-2px, -2px);
+  box-shadow: 7px 7px 0px #111111;
+}
+
+.category-card:active {
+  transform: translate(5px, 5px);
+  box-shadow: 0px 0px 0px #111111;
+}
+
+.category-title {
+  font-size: 1.05rem;
+  letter-spacing: 0.5px;
+}
+
+.daily-box {
+  background: #ffffff;
+  border: 4px solid #111111;
+  outline: 2px solid #ffffff;
+  outline-offset: -6px;
+  padding: 35px;
+  max-width: 600px;
+  margin: 0 auto;
+  box-shadow: 6px 6px 0px #111111;
+}
+
+footer {
+  border-top: 4px solid #111111;
+  padding-top: 35px;
+  margin-top: 80px;
+  text-align: center;
+  font-size: 0.95rem;
+}
+
+.footer-links {
+  margin-bottom: 25px;
+}
+
+.footer-links a {
+  color: #111111;
+  text-decoration: none;
+  font-weight: bold;
+  margin: 0 15px;
+}
+
+.footer-links a:hover { text-decoration: underline; }
+.copyright { color: #718096; margin: 0; }
+
+/* 表示制御クラス */
+.no-video #video-overlay { display: none !important; }
+.no-video #main-content { opacity: 1 !important; transition: none !important; }
+.loaded #video-overlay { opacity: 0; visibility: hidden; }
+.loaded #main-content { opacity: 1; }
+
+/* スマホ対応 */
+@media (max-width: 1000px) {
+  .sidebar-ad { display: none; }
+  .page-container { display: block; }
+}
+
+@media (max-width: 600px) {
+  h1 { font-size: 2.2rem; }
+  .brand-intro-card { padding: 30px 20px; }
+  .main-lead-badge { font-size: 1rem; }
+  .category-grid { grid-template-columns: 1fr; }
+  body { cursor: auto; }
+}
