@@ -21,7 +21,8 @@
 <body>
 
   <script>
-    if (sessionStorage.getItem('visited')) {
+    // スマホサイズ（768px以下）または訪問済みの場合は動画を最初からカット
+    if (sessionStorage.getItem('visited') || window.innerWidth <= 768) {
       document.body.classList.add('no-video');
     }
   </script>
@@ -33,13 +34,6 @@
   <div class="page-container">
 
     <div class="sidebar-ad">
-      <div>
-        <a href="https://px.a8.net/svt/ejp?a8mat=4B66KF+419T5M+348+6CWQP" rel="nofollow">
-          <img border="0" width="250" height="250" alt="" src="https://www27.a8.net/svt/bgt?aid=260628927244&wid=002&eno=01&mid=s00000000404001068000&mc=1">
-        </a>
-        <img border="0" width="1" height="1" src="https://www19.a8.net/0.gif?a8mat=4B66KF+419T5M+348+6CWQP" alt="">
-      </div>
-
       <div>
         <a href="https://px.a8.net/svt/ejp?a8mat=4B66KF+5BPMCA+348+1C5BOX" rel="nofollow">
           <img border="0" width="160" height="600" alt="" src="https://www20.a8.net/svt/bgt?aid=260628927322&wid=002&eno=01&mid=s00000000404008087000&mc=1">
@@ -92,6 +86,15 @@
           <a href="11.html" class="category-card"><span class="category-title">WEB・その他</span></a>
         </div>
       </section>
+
+      <div class="inline-ad">
+        <div>
+          <a href="https://px.a8.net/svt/ejp?a8mat=4B66KF+419T5M+348+6CWQP" rel="nofollow">
+            <img border="0" width="250" height="250" alt="" src="https://www27.a8.net/svt/bgt?aid=260628927244&wid=002&eno=01&mid=s00000000404001068000&mc=1">
+          </a>
+          <img border="0" width="1" height="1" src="https://www19.a8.net/0.gif?a8mat=4B66KF+419T5M+348+6CWQP" alt="">
+        </div>
+      </div>
 
       <section id="daily">
         <h2>日替わり紹介</h2>
