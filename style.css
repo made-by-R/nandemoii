@@ -46,36 +46,90 @@ body, html {
   margin: 0 auto;
   padding: 0 20px;
   box-sizing: border-box;
+  width: 100%;
 }
 
+/* --- 左サイド広告エリア --- */
 .sidebar-ad {
-  width: max-content; 
+  width: auto;
+  max-width: 250px; 
   padding-top: 60px;
   padding-right: 25px; 
   box-sizing: border-box;
   display: flex;
   flex-direction: column; 
-  gap: 25px; 
   align-items: center;
+  flex-shrink: 0; 
 }
 
 .sidebar-ad > div {
+  display: block;
+  width: fit-content;
   border: 4px solid #111111;
   outline: 2px solid #ffffff;
   outline-offset: -6px;
   box-shadow: 6px 6px 0px #111111; 
   background: #ffffff;
   line-height: 0;
-  width: fit-content;
+  box-sizing: border-box;
+  position: relative; /* 解析用画像を飛ばす基準 */
 }
 
-.sidebar-ad img {
+.sidebar-ad a {
+  display: block;
+  line-height: 0;
+}
+
+/* 本物のバナー画像のみに適用 */
+.sidebar-ad img, .inline-ad img {
+  width: 100%;
   max-width: 100%;
   height: auto;
   display: block;
   image-rendering: pixelated;
 }
 
+/* 【最重要】アクセス解析用の1px透明画像を無効化して隙間を完全消滅させる */
+.sidebar-ad img[width="1"],
+.inline-ad img[width="1"] {
+  width: 1px !important;
+  height: 1px !important;
+  position: absolute !important;
+  bottom: 0;
+  right: 0;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+/* --- カテゴリーと日替わり紹介の間の広告エリア --- */
+.inline-ad {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+  margin-bottom: 60px;
+  width: 100%;
+}
+
+.inline-ad > div {
+  display: block;
+  width: fit-content;
+  border: 4px solid #111111;
+  outline: 2px solid #ffffff;
+  outline-offset: -6px;
+  box-shadow: 6px 6px 0px #111111; 
+  background: #ffffff;
+  line-height: 0;
+  box-sizing: border-box;
+  max-width: 100%; 
+  position: relative;
+}
+
+.inline-ad a {
+  display: block;
+  line-height: 0;
+}
+
+/* --- メインコンテンツ --- */
 #main-content {
   opacity: 0;
   transition: opacity 1s ease 0.4s; 
@@ -84,6 +138,7 @@ body, html {
   padding: 60px 20px;
   box-sizing: border-box;
   position: relative;
+  min-width: 0; 
 }
 
 /* キャラクターキャンバス */
@@ -288,16 +343,82 @@ footer {
 .loaded #video-overlay { opacity: 0; visibility: hidden; }
 .loaded #main-content { opacity: 1; }
 
-/* スマホ対応 */
-@media (max-width: 1000px) {
-  .sidebar-ad { display: none; }
-  .page-container { display: block; }
+
+/* ==========================================
+   6. 可変レスポンシブ・サイズ調整エリア
+   ========================================== */
+
+/* タブレット・小画面ブラウザ：サイド広告は左に固定のまま、画像を綺麗に縮小 */
+@media (max-width: 1200px) and (min-width: 769px) {
+  .page-container {
+    padding: 0 15px;
+    justify-content: flex-start;
+  }
+  .sidebar-ad {
+    padding-top: 40px;
+    padding-right: 15px;
+    width: 18%; 
+    min-width: 100px; 
+  }
+  #main-content {
+    padding: 40px 10px;
+  }
+  h1 {
+    font-size: 2.6rem;
+  }
 }
 
-@media (max-width: 600px) {
-  h1 { font-size: 2.2rem; }
-  .brand-intro-card { padding: 30px 20px; }
-  .main-lead-badge { font-size: 1rem; }
-  .category-grid { grid-template-columns: 1fr; }
-  body { cursor: auto; }
+/* スマートフォン（768px以下）：縦並びレイアウト。広告が上に逃げるのを防止 */
+@media (max-width: 768px) {
+  .page-container {
+    flex-direction: column; 
+    align-items: center;
+    padding: 0 10px;
+  }
+
+  /* サイドバー広告（スマホ時はメインの下部に回り込ませる） */
+  .sidebar-ad {
+    width: auto;
+    max-width: 100%;
+    padding-top: 40px;
+    padding-right: 0;
+    order: 2; /* メインコンテンツより後に配置 */
+  }
+
+  /* カテゴリーと紹介の間の広告 */
+  .inline-ad {
+    margin-top: 15px;
+    margin-bottom: 40px;
+  }
+  
+  .inline-ad > div {
+    max-width: 95%;
+  }
+
+  #main-content {
+    padding: 20px 0;
+    width: 100%;
+    order: 1; /* メインを上に表示 */
+  }
+
+  h1 { 
+    font-size: 1.8rem; 
+    text-shadow: 1px 1px 0px #ffffff, 3px 3px 0px #111111;
+  }
+  .brand-intro-card { 
+    padding: 25px 15px; 
+  }
+  .main-lead-badge { 
+    font-size: 0.9rem; 
+  }
+  .category-grid { 
+    grid-template-columns: 1fr; 
+  }
+  .sns-button-container {
+    flex-direction: column;
+    gap: 10px;
+  }
+  body { 
+    cursor: auto; 
+  }
 }
