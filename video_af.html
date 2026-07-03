@@ -138,26 +138,31 @@
       justify-content: center; 
       align-items: center;
       box-sizing: border-box;
-      /* ★重要：外側のボタンを消さないように、ここにあった overflow: hidden を削除しました★ */
     }
 
-    /* 【新設】広告タグ専用の内側ラッパー */
-    /* ボタンの邪魔をせず、広告単体のはみ出しや見切れだけをピンポイントで防ぎます */
-    .admax-wrapper-inner {
+    /* 【変更】Amazonアソシエイト用隔離インナーラッパー */
+    /* はみ出しを防ぎつつ、アソシエイトのiframeや画像を中央ジャストに固定します */
+    .amazon-wrapper-inner {
       width: 300px;
       height: 250px;
       overflow: hidden;
       display: flex;
       justify-content: center;
       align-items: center;
+      background-color: #ffffff;
     }
 
-    .admax-wrapper-inner iframe {
+    /* アソシエイトが生成するあらゆるタグ要素（iframe、a、img）を見切らせない設定 */
+    .amazon-wrapper-inner iframe,
+    .amazon-wrapper-inner a,
+    .amazon-wrapper-inner img {
       max-width: 100% !important;
       max-height: 100% !important;
+      border: none !important;
+      display: block;
     }
 
-    /* スケッチ右下：ボタン・タイマーエリア（これで外側にバッチリ現れます） */
+    /* スケッチ右下：ボタン・タイマーエリア */
     .ad-action-container {
       position: absolute;
       bottom: -55px; /* 白い枠の右下外側にぴったり配置 */
@@ -199,21 +204,17 @@
 <body>
 
   <div class="page-container">
-    
     <div class="header-intro">
       <a href="https://note.com/lively_yeti9225" target="_blank" rel="noopener noreferrer" class="note-link">note にもどる</a>
       <a href="https://11gor.com" class="brand-link-title">なんでもしょうかい屋へ</a>
       <a href="https://11gor.com" class="site-url-link">11gor.com</a>
     </div>
-
     <div style="flex-grow: 1;"></div>
-
     <div class="footer-links-box">
       <a href="../privacy.html">ポリシー</a>
       <span style="margin: 0 10px; color: #111;">,</span>
       <a href="../contact.html">contact</a>
     </div>
-
   </div>
 
   <canvas id="charCanvas"></canvas>
@@ -221,9 +222,16 @@
   <div id="ad-fullscreen-overlay">
     <div class="ad-layout-container">
       
-      <div class="admax-wrapper-inner">
-        <script src="https://adm.shinobi.jp/s/bc91238e538cfcac861985684400e6f9"></script>
-        </div>
+      <!-- ★改良：Amazonアソシエイト枠★ -->
+      <div class="amazon-wrapper-inner">
+        <!-- 
+          【使い方】
+          Amazonアソシエイト管理画面から取得した「テキストと画像」または「画像のみ」の
+          HTMLコード（<iframe>...</iframe>、もしくは <a><img /></a> 形式）を
+          以下にそのまま貼り付けてください。
+        -->
+        <iframe src="https://www.amazon.co.jp/%E3%82%AE%E3%83%95%E3%83%88%E3%80%91%E3%82%B5%E3%83%83%E3%83%9D%E3%83%AD-%E3%82%AF%E3%83%AA%E3%82%A8%E3%82%A4%E3%83%86%E3%82%A3%E3%83%96%E3%83%96%E3%83%AA%E3%83%A5%E3%83%BC-YDF3DEC-350ml%C3%9711%E6%9C%AC-%E3%82%AE%E3%83%95%E3%83%88Box%E5%85%A5%E3%82%8A/dp/B0GVYQJ64C?crid=28IK5TB8D262J&dib=eyJ2IjoiMSJ9.82XzHpbKnEESDUwB6trgHpEtLTFniDXlylkKu8Bd5IL_stLPWManmmoFlqQwoV3vOt3RAFQ1T2MEaWKYrMmb73-Gy_HG8jUvWbAlWriVp84biztYGSjBIV8lw7U9t-3O3UCrCDQGsRORG8ClkveE4rI4B03vNInabER4CpuLeKFedx1QaYmXU9agALSpeBpqY609XenD28XcEmg3Ssdv_5Ki0uGEl0QpmwD9KNNma-pgauBEzZXiGZudC5P2uM8rCSck0a-2c3KiXHfGih2aqjoOz_ZVKKUcyUtZiLgf1pc.PEFj-OKiGGjJqvnMPY2XngcdjTanGYVMAW3s859lL34&dib_tag=se&keywords=%E3%81%8A%E4%B8%AD%E5%85%83%2B%E3%82%AE%E3%83%95%E3%83%88%2B%E4%BA%BA%E6%B0%97&qid=1783064397&sprefix=otyuu%2Caps%2C214&sr=8-2&th=1&linkCode=ll2&tag=web1de10kaseg-22&linkId=d228b666350ca109f621aecf42be8848&ref_=as_li_ss_tl" width="300" height="250" scrolling="no" border="0" marginwidth="0" style="border:none;" frameborder="0"></iframe>
+      </div>
       
       <div class="ad-action-container">
         <span id="ad-timer-label">広告終了まであと <span id="countdown-num">5</span> 秒</span>
@@ -239,9 +247,7 @@
     const SKIP_AVAILABLE_SECONDS = 5;
 
     document.addEventListener('DOMContentLoaded', () => {
-      // --------------------------------------------------
       // 1. 広告カウントダウンとオーバーレイの制御
-      // --------------------------------------------------
       const adOverlay = document.getElementById('ad-fullscreen-overlay');
       const adCloseBtn = document.getElementById('ad-close-btn');
       const adTimerLabel = document.getElementById('ad-timer-label');
@@ -265,9 +271,7 @@
         adOverlay.style.display = 'none';
       });
 
-      // --------------------------------------------------
       // 2. 静止佇まい・お辞儀アニメーションシステム
-      // --------------------------------------------------
       const charCanvas = document.getElementById('charCanvas');
       const charCtx = charCanvas.getContext('2d');
 
