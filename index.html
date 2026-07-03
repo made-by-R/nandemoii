@@ -11,19 +11,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>総合案内所 - 11gor.com</title>
-  <!DOCTYPE html>
-<html lang="ja">
-<head>
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-8835RRD4G5"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-8835RRD4G5');
-  </script>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>総合案内所 - 11gor.com</title>
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -31,154 +18,39 @@
   
   <link rel="stylesheet" href="style.css">
 
-  <!-- 忍者AdMaxの可変サイズ追従用のスタイルをここに追加 -->
   <style>
-    /* 忍者AdMaxのコンテナがサイズ変化した際、外側のドット調デザイン枠が自動でピタッと追従する設定 */
-    .admax-responsive-container {
+    /* 広告が絶対に見切れないよう、300x250pxのサイズを厳密に固定制御します */
+    .admax-sidebar-fixed-box {
       display: block;
-      width: fit-content;
-      max-width: 100%;
-      height: auto;
+      width: 300px;  /* 広告の横幅に完全に固定 */
+      height: 250px; /* 広告の縦幅に完全に固定 */
+      margin-top: 20px;
+      position: relative;
+      
+      /* style.cssのレトロゲーム調デザインを完全に適用 */
       border: 4px solid #111111;
       outline: 2px solid #ffffff;
       outline-offset: -6px;
       box-shadow: 6px 6px 0px #111111; 
       background: #ffffff;
       line-height: 0;
-      box-sizing: border-box;
-      margin: 0 auto;
+      box-sizing: content-box; /* 枠線の太さが内側の300x250を圧迫しないように設定 */
+      overflow: hidden;        /* 万が一のはみ出しも強制ガード */
     }
 
-    /* 広告内のインサイド要素やiframeが枠線からはみ出さないようにガード */
-    .admax-responsive-container iframe,
-    .admax-responsive-container div {
-      max-width: 100% !important;
-      box-sizing: border-box;
+    /* 忍者AdMaxの生成する要素を300x250の中にジャストで収める */
+    .admax-sidebar-fixed-box .admax-ads {
+      width: 300px !important;
+      height: 250px !important;
+      display: block !important;
+      margin: 0 !important;
+      padding: 0 !important;
     }
   </style>
 </head>
 <body>
 
   <script>
-    if (sessionStorage.getItem('visited') || window.innerWidth <= 768) {
-      document.body.classList.add('no-video');
-    }
-  </script>
-
-  <div id="video-overlay">
-    <video id="op-video" src="https://res.cloudinary.com/dkztrydp4/video/upload/v1782753263/Video-1782753245442_p8hyxh.mp4" playsinline autoplay muted></video>
-  </div>
-
-  <div class="page-container">
-
-    <!-- 左側サイドバー広告エリア -->
-    <div class="sidebar-ad">
-      <!-- 既存のA8.netバナー（ここは固定） -->
-      <div style="margin-bottom: 20px;">
-        <a href="https://px.a8.net/svt/ejp?a8mat=4B66KF+5BPMCA+348+1C5BOX" rel="nofollow">
-          <img border="0" width="160" height="600" alt="" src="https://www20.a8.net/svt/bgt?aid=260628927322&wid=002&eno=01&mid=s00000000404008087000&mc=1">
-        </a>
-        <img border="0" width="1" height="1" src="https://www19.a8.net/0.gif?a8mat=4B66KF+5BPMCA+348+1C5BOX" alt="">
-      </div>
-
-      <!-- ★忍者AdMax：可変追従バナー★ -->
-      <!-- 外側の黒枠デザインを維持したまま、広告の縦横変化に自動でフィットさせます -->
-      <div class="admax-responsive-container">
-        <!-- admax -->
-        <div class="admax-ads" data-admax-id="ef2bccc289e36f3fbc69de396647fec8" style="display:inline-block;width:300px;height:250px;"></div>
-        <script type="text/javascript">(admaxads = window.admaxads || []).push({admax_id: "ef2bccc289e36f3fbc69de396647fec8",type: "banner"});</script>
-        <script type="text/javascript" charset="utf-8" src="https://adm.shinobi.jp/st/t.js" async></script>
-        <!-- admax -->
-      </div>
-    </div>
-
-    <canvas id="charCanvas"></canvas>
-
-    <main id="main-content">
-      
-      <section id="about">
-        <h1>なんでも紹介屋さん</h1>
-        
-        <div class="brand-intro-card">
-          <div class="main-lead-badge">「時間、空間、そしてライフスタイルを最適化する。」</div>
-          <p class="sub-lead">
-            ガジェット・WEB戦略から未来のテクノロジーまで、あなたの日常をアップデートする「知恵」の集積地。
-          </p>
-          
-          <hr class="intro-divider">
-
-          <p class="about-text"><strong>ようこそ、当サイトへ！ナビゲーターの「なんでも紹介屋さん」です。</strong></p>
-          <p class="about-text">
-            モノがあふれる現代、「本当に価値のある選択とは何か？」<br>
-            当サイトは「時間・空間・ライフスタイル」を最適化するための知恵や、未来を先取るテクノロジーの話題など、多岐にわたるジャンルの記事を精力的に発信しています。
-          </p>
-          <p class="about-text">
-            高度なWEB戦略から、クスッと笑える世界のニュース、AIを活用した創作小説まで、一度読み始めると止まらないコンテンツの数々をご紹介します。
-          </p>
-
-          <div class="sns-button-container">
-            <a href="https://x.com/@a_a_nba" target="_blank" rel="noopener noreferrer" class="sns-btn x-btn">X (Twitter)をフォロー</a>
-            <a href="https://note.com/lively_yeti9225" target="_blank" rel="noopener noreferrer" class="sns-btn note-btn">noteをよむ</a>
-          </div>
-        </div>
-      </section>
-
-      <section id="categories">
-        <h2>カテゴリー</h2>
-        <div class="category-grid">
-          <a href="1.html" class="category-card"><span class="category-title">本・メディア・エンターテインメント</span></a>
-          <a href="2.html" class="category-card"><span class="category-title">家電・カメラ・パソコン（ガジェット類）</span></a>
-          <a href="3.html" class="category-card"><span class="category-title">ファッション・日用品</span></a>
-          <a href="4.html" class="category-card"><span class="category-title">ホーム・キッチン・DIY</span></a>
-          <a href="5.html" class="category-card"><span class="category-title">食品・飲料・お酒</span></a>
-          <a href="6.html" class="category-card"><span class="category-title">おもちゃ・ホビー・スポーツ</span></a>
-          <a href="7.html" class="category-card"><span class="category-title">ベビー・キッズ・オフィス・その他</span></a>
-          <a href="11.html" class="category-card"><span class="category-title">WEB・その他</span></a>
-        </div>
-      </section>
-
-      <div class="inline-ad">
-        <div>
-          <a href="https://px.a8.net/svt/ejp?a8mat=4B66KF+419T5M+348+6CWQP" rel="nofollow">
-            <img border="0" width="250" height="250" alt="" src="https://www27.a8.net/svt/bgt?aid=260628927244&wid=002&eno=01&mid=s00000000404001068000&mc=1">
-          </a>
-          <img border="0" width="1" height="1" src="https://www19.a8.net/0.gif?a8mat=4B66KF+419T5M+348+6CWQP" alt="">
-        </div>
-      </div>
-
-      <section id="daily">
-        <h2>日替わり紹介</h2>
-        <div class="daily-box">
-          <p style="color: #4a5568; margin: 0; font-size: 0.95rem; font-weight: bold;">本日のおすすめコンテンツや更新情報をここに表示します。</p>
-        </div>
-      </section>
-
-      <footer>
-        <div class="footer-links">
-          <a href="privacy.html">プライバシーポリシー・免責事項</a>
-          <a href="contact.html">運営者情報・お問い合わせ</a>
-        </div>
-        <p class="copyright">&copy; 2026 11gor.com</p>
-      </footer>
-
-    </main>
-
-  </div>
-
-  <script src="sprite-data.js"></script>
-  <script src="character-engine.js"></script>
-</body>
-</html>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DotGothic16&display=swap" rel="stylesheet">
-  
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
-
-  <script>
-    // スマホサイズ（768px以下）または訪問済みの場合は動画を最初からカット
     if (sessionStorage.getItem('visited') || window.innerWidth <= 768) {
       document.body.classList.add('no-video');
     }
@@ -197,6 +69,12 @@
         </a>
         <img border="0" width="1" height="1" src="https://www19.a8.net/0.gif?a8mat=4B66KF+5BPMCA+348+1C5BOX" alt="">
       </div>
+
+      <div class="admax-sidebar-fixed-box">
+        <div class="admax-ads" data-admax-id="ef2bccc289e36f3fbc69de396647fec8" style="display:inline-block;width:300px;height:250px;"></div>
+        <script type="text/javascript">(admaxads = window.admaxads || []).push({admax_id: "ef2bccc289e36f3fbc69de396647fec8",type: "banner"});</script>
+        <script type="text/javascript" charset="utf-8" src="https://adm.shinobi.jp/st/t.js" async></script>
+        </div>
     </div>
 
     <canvas id="charCanvas"></canvas>
