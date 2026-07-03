@@ -1,14 +1,346 @@
-<div id="ad-fullscreen-overlay">
-  <div class="ad-video-wrapper" style="background: #fff; display: flex; justify-content: center; align-items: center;">
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>動画コンテンツ - 11gor.com</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DotGothic16&display=swap" rel="stylesheet">
+  
+  <style>
+    /* ==========================================
+       1. 全体の基本スタイル（レトロゲーム調）
+       ========================================== */
+    body, html {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      background-color: #fffde9; /* レトロクリーム */
+      font-family: "DotGothic16", sans-serif;
+      overflow: hidden;
+      color: #111111;
+    }
+
+    /* 手書き設計図（本文）の全体コンテナ */
+    .page-container {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      height: 100vh;
+      padding: 50px 20px;
+      box-sizing: border-box;
+      text-align: center;
+      position: relative;
+      z-index: 10;
+    }
+
+    /* --- スケッチ上部：テキストリンクエリア --- */
+    .header-intro {
+      margin-top: 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .note-link {
+      font-size: 1.4rem;
+      color: #00bb9c;
+      text-decoration: none;
+      font-weight: bold;
+      border-bottom: 3px dashed #00bb9c;
+      margin-bottom: 5px;
+    }
+
+    .brand-link-title {
+      font-size: 1.8rem;
+      color: #111111;
+      text-decoration: none;
+      font-weight: bold;
+      margin: 5px 0 0 0;
+    }
+    .brand-link-title:hover {
+      opacity: 0.7;
+    }
+
+    .site-url-link {
+      font-size: 1.1rem;
+      color: #718096;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    .site-url-link:hover {
+      text-decoration: underline;
+    }
+
+    /* --- スケッチ下部：ポリシー・contact接続枠 --- */
+    .footer-links-box {
+      background: #ffffff;
+      border: 4px solid #111111;
+      padding: 12px 25px;
+      box-shadow: 4px 4px 0px #111111;
+      margin-bottom: 20px;
+    }
+
+    .footer-links-box a {
+      color: #111111;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 1.1rem;
+    }
+
+    .footer-links-box a:hover {
+      text-decoration: underline;
+    }
+
+    /* --- スケッチ中央：キャラクター用キャンバス --- */
+    #charCanvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 5;
+      image-rendering: pixelated;
+    }
+
+    /* ==========================================
+       2. 全画面動画広告オーバーレイ（前画面を覆う）
+       ========================================== */
+    #ad-fullscreen-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.85);
+      z-index: 9999;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* スケッチ左側：広告を配置するコンテナ枠 */
+    .ad-layout-container {
+      position: relative;
+      width: 340px;
+      height: 290px;
+      background-color: #ffffff;
+      border: 4px solid #111111;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      display: flex;
+      justify-content: center; /* 新しい広告タグが中央に綺麗に収まるように配置 */
+      align-items: center;
+      box-sizing: border-box;
+      overflow: hidden;
+    }
+
+    /* 新しい広告タグが生成する要素を見切らせないためのガード */
+    .ad-layout-container iframe, 
+    .ad-layout-container script + * {
+      max-width: 100% !important;
+      max-height: 100% !important;
+    }
+
+    /* スケッチ右下：ボタン・タイマーエリア */
+    .ad-action-container {
+      position: absolute;
+      bottom: -55px;
+      right: 0;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    #ad-timer-label {
+      color: #ffffff;
+      font-size: 14px;
+      background-color: rgba(0, 0, 0, 0.6);
+      padding: 6px 12px;
+      border-radius: 4px;
+      white-space: nowrap;
+    }
+
+    #ad-close-btn {
+      width: 40px;
+      height: 40px;
+      background-color: #ffffff;
+      color: #000000;
+      border: 2px solid #000000;
+      font-size: 20px;
+      font-weight: bold;
+      cursor: pointer;
+      display: none;
+      justify-content: center;
+      align-items: center;
+      line-height: 1;
+    }
+
+    #ad-close-btn:hover {
+      background-color: #e0e0e0;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 本文（手書き設計図のレイアウト） -->
+  <div class="page-container">
     
-    <script src="https://adm.shinobi.jp/st/ch.js"></script>
-    <script type="text/javascript">
-      // ここにコピーした内容が入る
-    </script>
-    
-    <div class="ad-action-container">
-      <span id="ad-timer-label">広告終了まであと <span id="countdown-num">5</span> 秒</span>
-      <button id="ad-close-btn">X</button>
+    <!-- 上部：案内リンクエリア -->
+    <div class="header-intro">
+      <a href="https://note.com/lively_yeti9225" target="_blank" rel="noopener noreferrer" class="note-link">note にもどる</a>
+      <a href="https://11gor.com" class="brand-link-title">なんでもしょうかい屋へ</a>
+      <a href="https://11gor.com" class="site-url-link">11gor.com</a>
+    </div>
+
+    <!-- 中央：キャラクター用の余白空間 -->
+    <div style="flex-grow: 1;"></div>
+
+    <!-- 下部：ポリシー・contactへの正規接続 -->
+    <div class="footer-links-box">
+      <a href="../privacy.html">ポリシー</a>
+      <span style="margin: 0 10px; color: #111;">,</span>
+      <a href="../contact.html">contact</a>
+    </div>
+
+  </div>
+
+  <!-- キャラクター描画キャンバス -->
+  <canvas id="charCanvas"></canvas>
+
+  <!-- 全画面動画広告エリア -->
+  <div id="ad-fullscreen-overlay">
+    <div class="ad-layout-container">
+      
+      <!-- ★新しく提供された広告タグを適用しました★ -->
+      <!-- admax -->
+      <script src="https://adm.shinobi.jp/s/bc91238e538cfcac861985684400e6f9"></script>
+      <!-- admax -->
+      
+      <!-- 右下のボタン・タイマーエリア -->
+      <div class="ad-action-container">
+        <span id="ad-timer-label">広告終了まであと <span id="countdown-num">5</span> 秒</span>
+        <button id="ad-close-btn" title="閉じて本文に戻る">X</button>
+      </div>
+
     </div>
   </div>
-</div>
+
+  <!-- 外付けドット絵データの読み込み（ローカル環境のエラーを起こさないよう同じフォルダを参照） -->
+  <script src="sprite-data.js"></script>
+
+  <!-- カウントダウン制御 ＆ 定位置お辞儀アニメーションスクリプト -->
+  <script>
+    const SKIP_AVAILABLE_SECONDS = 5;
+
+    document.addEventListener('DOMContentLoaded', () => {
+      // --------------------------------------------------
+      // 1. 広告カウントダウンとオーバーレイの制御
+      // --------------------------------------------------
+      const adOverlay = document.getElementById('ad-fullscreen-overlay');
+      const adCloseBtn = document.getElementById('ad-close-btn');
+      const adTimerLabel = document.getElementById('ad-timer-label');
+      const countdownNum = document.getElementById('countdown-num');
+
+      let remainingTime = SKIP_AVAILABLE_SECONDS;
+      countdownNum.innerText = remainingTime;
+
+      const countdownInterval = setInterval(() => {
+        remainingTime--;
+        countdownNum.innerText = remainingTime;
+
+        if (remainingTime <= 0) {
+          clearInterval(countdownInterval);
+          adTimerLabel.style.display = 'none';
+          adCloseBtn.style.display = 'flex';
+        }
+      }, 1000);
+
+      adCloseBtn.addEventListener('click', () => {
+        adOverlay.style.display = 'none';
+      });
+
+      // --------------------------------------------------
+      // 2. 静止佇まい・お辞儀アニメーションシステム
+      // --------------------------------------------------
+      const charCanvas = document.getElementById('charCanvas');
+      const charCtx = charCanvas.getContext('2d');
+
+      function resizeCanvas() {
+        charCanvas.width = window.innerWidth;
+        charCanvas.height = window.innerHeight;
+      }
+      window.addEventListener('resize', resizeCanvas);
+      resizeCanvas();
+
+      const spriteScale = 3; 
+      let charAnimFrame = 0;
+      
+      setInterval(() => { 
+        charAnimFrame = (charAnimFrame + 1) % 4; 
+      }, 150);
+
+      function drawComp(comp, compCx, compCy, flip) {
+        if (typeof palette === 'undefined' || !comp) return; // データ未ロード時の安全策
+        let w = comp[0].length;
+        let h = comp.length;
+        let startX = compCx - (w * spriteScale) / 2;
+        let startY = compCy - (h * spriteScale);
+        for (let r = 0; r < h; r++) {
+          for (let c = 0; c < w; c++) {
+            let char = comp[r][flip ? w - 1 - c : c];
+            if (char !== '0') {
+              charCtx.fillStyle = palette[char];
+              charCtx.fillRect(startX + c * spriteScale, startY + r * spriteScale, spriteScale, spriteScale);
+            }
+          }
+        }
+      }
+
+      function assembleChar(cx, cy, frame) {
+        let hY = -6, bY = 4, laX = -11, raX = 11, laY = 6, raY = 6;
+        let llX = -6, rlX = 6, llY = 14, rlY = 14;
+        
+        let laType = cArmDown, raType = cArmDown, llType = cLegDown, rlType = cLegDown;
+
+        // お辞儀の上下動計算
+        let bowDepth = [0, 3, 6, 3][frame]; 
+        hY += bowDepth; 
+        bY += Math.floor(bowDepth / 2);  
+        laY += Math.floor(bowDepth / 2); 
+        raY += Math.floor(bowDepth / 2);
+
+        drawComp(llType, cx + llX * spriteScale, cy + llY * spriteScale, false);
+        drawComp(rlType, cx + rlX * spriteScale, cy + rlY * spriteScale, true);
+        drawComp(cBody, cx, cy + bY * spriteScale, false);
+        drawComp(laType, cx + laX * spriteScale, cy + laY * spriteScale, false);
+        drawComp(raType, cx + raX * spriteScale, cy + raY * spriteScale, true);
+        drawComp(cHead, cx, cy + hY * spriteScale, false);
+      }
+
+      function renderLoop() {
+        charCtx.clearRect(0, 0, charCanvas.width, charCanvas.height);
+
+        let fixedX = window.innerWidth / 2;
+        let fixedY = window.innerHeight / 2 + 80;
+
+        // パパーツデータが存在する場合のみ描画を実行しエラーを完全に防止
+        if (typeof cArmDown !== 'undefined') {
+          assembleChar(fixedX, fixedY, charAnimFrame);
+        }
+        
+        requestAnimationFrame(renderLoop);
+      }
+
+      renderLoop();
+    });
+  </script>
+
+</body>
+</html>
