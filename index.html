@@ -46,6 +46,37 @@
       margin: 0 !important;
       padding: 0 !important;
     }
+
+    /* 日替わり紹介の画像とテキストを横並びにするためのスタイル（スマホ時は縦並び） */
+    .daily-content {
+      display: flex;
+      gap: 15px;
+      align-items: flex-start;
+      margin-bottom: 15px;
+    }
+    .daily-image-box {
+      flex-shrink: 0;
+      width: 120px; /* 画像の表示サイズを固定 */
+    }
+    .daily-image-box img {
+      width: 100%;
+      height: auto;
+      display: block;
+      border: 2px solid #111111; /* サイトのデザインに合わせた細い黒枠 */
+    }
+    .daily-text-box {
+      flex-grow: 1;
+    }
+
+    @media (max-width: 600px) {
+      .daily-content {
+        flex-direction: column;
+        align-items: center;
+      }
+      .daily-image-box {
+        width: 150px; /* スマホのときは少し大きめにして中央配置 */
+      }
+    }
   </style>
 </head>
 <body>
@@ -108,6 +139,32 @@
         </div>
       </section>
 
+      <section id="daily">
+        <h2>日替わり紹介</h2>
+        <div class="daily-box">
+          <p style="color: #111111; margin: 0 0 12px 0; font-size: 1.05rem; font-weight: bold;">【本日のおすすめ】夏の睡眠を劇的に変える冷感敷きパッド</p>
+          
+          <div class="daily-content">
+            <div class="daily-image-box">
+              <img src="https://m.media-amazon.com/images/I/81sqAElbwHL._AC_SL1500_.jpg" alt="Matdeco 冷感 敷きパッド" referrerpolicy="no-referrer">
+            </div>
+            
+            <div class="daily-text-box">
+              <p style="color: #4a5568; margin: 0; font-size: 0.9rem; line-height: 1.6;">
+                熱帯夜でもひんやり快適！Q-MAX 0.42の強力な冷感持続力を誇る「Matdeco 冷感 敷きパッド（シングル）」をご紹介。
+                裏面は柔らかなワッフル生地のリバーシブル仕様で、オールシーズン活躍します。中綿には安心の防ダニ・抗菌防臭・吸湿速検性に優れた「TEIJIN マイティトップ」を使用しており、丸洗いも可能。通気性抜群のグレーカラーで、どんなお部屋にも馴染みます。
+              </p>
+            </div>
+          </div>
+
+          <p style="margin: 0; font-size: 0.95rem;">
+            <a href="https://amzn.to/3SHmNVt" target="_blank" rel="noopener noreferrer" style="color: #3182ce; font-weight: bold; text-decoration: underline;">
+              → Amazonで「Matdeco 冷感 敷きパッド」をチェックする
+            </a>
+          </p>
+        </div>
+      </section>
+
       <section id="categories">
         <h2>カテゴリー</h2>
         <div class="category-grid">
@@ -130,22 +187,6 @@
           <img border="0" width="1" height="1" src="https://www19.a8.net/0.gif?a8mat=4B66KF+419T5M+348+6CWQP" alt="">
         </div>
       </div>
-
-      <section id="daily">
-        <h2>日替わり紹介</h2>
-        <div class="daily-box">
-          <p style="color: #111111; margin: 0 0 10px 0; font-size: 1.05rem; font-weight: bold;">【本日のおすすめ】夏の睡眠を劇的に変える冷感敷きパッド</p>
-          <p style="color: #4a5568; margin: 0 0 15px 0; font-size: 0.9rem; line-height: 1.6;">
-            熱帯夜でもひんやり快適！Q-MAX 0.42の強力な冷感持続力を誇る「Matdeco 冷感 敷きパッド（シングル）」をご紹介。
-            裏面は柔らかなワッフル生地のリバーシブル仕様で、オールシーズン活躍します。中綿には安心の防ダニ・抗菌防臭・吸湿速乾性に優れた「TEIJIN マイティトップ」を使用しており、丸洗いも可能。通気性抜群のグレーカラーで、どんなお部屋にも馴染みます。
-          </p>
-          <p style="margin: 0; font-size: 0.95rem;">
-            <a href="https://amzn.to/3SHmNVt" target="_blank" rel="noopener noreferrer" style="color: #3182ce; font-weight: bold; text-decoration: underline;">
-              → Amazonで「Matdeco 冷感 敷きパッド」をチェックする
-            </a>
-          </p>
-        </div>
-      </section>
 
       <footer>
         <div class="footer-links">
