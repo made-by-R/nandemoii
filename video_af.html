@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>完全自動再生・全画面動画広告サンプル</title>
+  <style>
+    /* ==========================================
+       1. 本文（メイン画面）のスタイル
+       ========================================== */
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: sans-serif;
+      background-color: #f5f5f5;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    /* 設計図の下側にあった「本文」 */
+    .main-content-box {
+      width: 90%;
+      max-width: 500px;
+      height: 400px;
+      background: #ffffff;
+      border: 2px solid #333333;
+      box-shadow: 4px 4px 0px rgba(0,0,0,0.1);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      box-sizing: border-box;
+      text-align: center;
+    }
+
+    /* ==========================================
+       2. 動画広告オーバーレイ（設計図の上側）
+       ========================================== */
+    #ad-fullscreen-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.85);
+      z-index: 9999;
+      display: flex; /* 最初から表示状態にする */
+      justify-content: center;
+      align-items: center;
+    }
+
+    .ad-video-wrapper {
+      position: relative;
+      width: 90%;
+      max-width: 640px;
+      aspect-ratio: 16 / 9;
+      background-color: #000000;
+      border: 3px solid #ffffff; /* 二重枠線表現 */
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    }
+
+    #ad-video {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    /* 右下のボタン・タイマーエリア */
+    .ad-action-container {
+      position: absolute;
+      bottom: -60px;
+      right: 0;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    #ad-timer-label {
+      color: #ffffff;
+      font-size: 14px;
+      background-color: rgba(0, 0, 0, 0.6);
+      padding: 6px 12px;
+      border-radius: 4px;
+    }
+
+    #ad-close-btn {
+      width: 40px;
+      height: 40px;
+      background-color: #ffffff;
+      color: #000000;
+      border: 2px solid #000000;
+      font-size: 20px;
+      font-weight: bold;
+      cursor: pointer;
+      display: none; /* 最初は非表示、指定秒数後に表示 */
+      justify-content: center;
+      align-items: center;
+      line-height: 1;
+    }
+
+    #ad-close-btn:hover {
+      background-color: #e0e0e0;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="main-content-box">
+    <h2>ここはサイトの本文（メイン画面）です</h2>
+    <p>広告のバッテン（X）を押すと、この画面に切り替わります。</p>
+  </div>
+
+  <div id="ad-fullscreen-overlay">
+    <div class="ad-video-wrapper">
+      
+      <video id="ad-video" src="YOUR_AD_VIDEO_URL.mp4" playsinline autoplay loop muted></video>
+      
+      <div class="ad-action-container">
+        <span id="ad-timer-label">広告終了まであと <span id="countdown-num">5</span> 秒</span>
+        <button id="ad-close-btn" title="閉じて本文に戻る">X</button>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    // ×ボタンが出現するまでの秒数（ここを変更可能）
+    const SKIP_AVAILABLE_SECONDS = 5; 
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const adOverlay = document.getElementById('ad-fullscreen-overlay');
+      const adVideo = document.getElementById('ad-video');
+      const adCloseBtn = document.getElementById('ad-close-btn');
+      const adTimerLabel = document.getElementById('ad-timer-label');
+      const countdownNum = document.getElementById('countdown-num');
+
+      // ページが開かれた瞬間からカウントダウンを開始
+      let remainingTime = SKIP_AVAILABLE_SECONDS;
+      countdownNum.innerText = remainingTime;
+
+      const countdownInterval = setInterval(() => {
+        remainingTime--;
+        countdownNum.innerText = remainingTime;
+
+        if (remainingTime <= 0) {
+          clearInterval(countdownInterval);
+          adTimerLabel.style.display = 'none'; // タイマーを隠す
+          adCloseBtn.style.display = 'flex';   // 右下に「X」ボタンを表示
+        }
+      }, 1000);
+
+      // バッテン（X）ボタンが押されたら広告を閉じて【本文】を表示
+      adCloseBtn.addEventListener('click', () => {
+        adVideo.pause(); // 動画を止める
+        adOverlay.style.display = 'none'; // 広告枠を完全に消して、裏の本文を見せる
+      });
+    });
+  </script>
+
+</body>
+</html>
