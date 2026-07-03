@@ -140,8 +140,7 @@
       box-sizing: border-box;
     }
 
-    /* 【変更】Amazonアソシエイト用隔離インナーラッパー */
-    /* はみ出しを防ぎつつ、アソシエイトのiframeや画像を中央ジャストに固定します */
+    /* Amazonアソシエイト用隔離インナーラッパー */
     .amazon-wrapper-inner {
       width: 300px;
       height: 250px;
@@ -152,20 +151,19 @@
       background-color: #ffffff;
     }
 
-    /* アソシエイトが生成するあらゆるタグ要素（iframe、a、img）を見切らせない設定 */
-    .amazon-wrapper-inner iframe,
-    .amazon-wrapper-inner a,
-    .amazon-wrapper-inner img {
-      max-width: 100% !important;
-      max-height: 100% !important;
-      border: none !important;
+    .amazon-wrapper-inner a {
       display: block;
+      width: 100%;
+      height: 100%;
+      text-decoration: none;
+      box-sizing: border-box;
+      padding-top: 15px; /* 上部パディングを設けて位置を均等に */
     }
 
     /* スケッチ右下：ボタン・タイマーエリア */
     .ad-action-container {
       position: absolute;
-      bottom: -55px; /* 白い枠の右下外側にぴったり配置 */
+      bottom: -55px;
       right: 0;
       display: flex;
       align-items: center;
@@ -222,15 +220,19 @@
   <div id="ad-fullscreen-overlay">
     <div class="ad-layout-container">
       
-      <!-- ★改良：Amazonアソシエイト枠★ -->
       <div class="amazon-wrapper-inner">
-        <!-- 
-          【使い方】
-          Amazonアソシエイト管理画面から取得した「テキストと画像」または「画像のみ」の
-          HTMLコード（<iframe>...</iframe>、もしくは <a><img /></a> 形式）を
-          以下にそのまま貼り付けてください。
-        -->
-        <iframe src="https://www.amazon.co.jp/%E3%82%AE%E3%83%95%E3%83%88%E3%80%91%E3%82%B5%E3%83%83%E3%83%9D%E3%83%AD-%E3%82%AF%E3%83%AA%E3%82%A8%E3%82%A4%E3%83%86%E3%82%A3%E3%83%96%E3%83%96%E3%83%AA%E3%83%A5%E3%83%BC-YDF3DEC-350ml%C3%9711%E6%9C%AC-%E3%82%AE%E3%83%95%E3%83%88Box%E5%85%A5%E3%82%8A/dp/B0GVYQJ64C?crid=28IK5TB8D262J&dib=eyJ2IjoiMSJ9.82XzHpbKnEESDUwB6trgHpEtLTFniDXlylkKu8Bd5IL_stLPWManmmoFlqQwoV3vOt3RAFQ1T2MEaWKYrMmb73-Gy_HG8jUvWbAlWriVp84biztYGSjBIV8lw7U9t-3O3UCrCDQGsRORG8ClkveE4rI4B03vNInabER4CpuLeKFedx1QaYmXU9agALSpeBpqY609XenD28XcEmg3Ssdv_5Ki0uGEl0QpmwD9KNNma-pgauBEzZXiGZudC5P2uM8rCSck0a-2c3KiXHfGih2aqjoOz_ZVKKUcyUtZiLgf1pc.PEFj-OKiGGjJqvnMPY2XngcdjTanGYVMAW3s859lL34&dib_tag=se&keywords=%E3%81%8A%E4%B8%AD%E5%85%83%2B%E3%82%AE%E3%83%95%E3%83%88%2B%E4%BA%BA%E6%B0%97&qid=1783064397&sprefix=otyuu%2Caps%2C214&sr=8-2&th=1&linkCode=ll2&tag=web1de10kaseg-22&linkId=d228b666350ca109f621aecf42be8848&ref_=as_li_ss_tl" width="300" height="250" scrolling="no" border="0" marginwidth="0" style="border:none;" frameborder="0"></iframe>
+        <a href="https://www.amazon.co.jp/%E3%82%AE%E3%83%95%E3%83%88%E3%80%91%E3%82%B5%E3%83%83%E3%83%9D%E3%83%AD-%E3%82%AF%E3%83%AA%E3%82%A8%E3%82%A4%E3%83%86%E3%82%A3%E3%83%96%E3%83%96%E3%83%AA%E3%83%A5%E3%83%BC-YDF3DEC-350ml%C3%9711%E6%9C%AC-%E3%82%AE%E3%83%95%E3%83%88Box%E5%85%A5%E3%82%8A/dp/B0GVYQJ64C?crid=28IK5TB8D262J&dib=eyJ2IjoiMSJ9.82XzHpbKnEESDUwB6trgHpEtLTFniDXlylkKu8Bd5IL_stLPWManmmoFlqQwoV3vOt3RAFQ1T2MEaWKYrMmb73-Gy_HG8jUvWbAlWriVp84biztYGSjBIV8lw7U9t-3O3UCrCDQGsRORG8ClkveE4rI4B03vNInabER4CpuLeKFedx1QaYmXU9agALSpeBpqY609XenD28XcEmg3Ssdv_5Ki0uGEl0QpmwD9KNNma-pgauBEzZXiGZudC5P2uM8rCSck0a-2c3KiXHfGih2aqjoOz_ZVKKUcyUtZiLgf1pc.PEFj-OKiGGjJqvnMPY2XngcdjTanGYVMAW3s859lL34&dib_tag=se&keywords=%E3%81%8A%E4%B8%AD%E5%85%83%2B%E3%82%AE%E3%83%95%E3%83%88%2B%E4%BA%BA%E6%B0%97&qid=1783064397&sprefix=otyuu%2Caps%2C214&sr=8-2&th=1&linkCode=ll2&tag=web1de10kaseg-22&linkId=6c25716523f720982652cb5a32a2b8a4&ref_=as_li_ss_tl" target="_blank" rel="noopener noreferrer" style="display: block; text-align: center; text-decoration: none;">
+          
+          <img src="https://m.media-amazon.com/images/I/81aauka108L._SL1500_.jpg" alt="おすすめ商品" style="margin: 0 auto 8px auto; max-height: 140px; object-fit: contain;">
+          
+          <div style="font-size: 0.85rem; color: #111111; line-height: 1.3; padding: 0 12px; font-weight: bold;">
+            サッポロ クリエイティブブリュー ギフトセット (350ml×11本)
+          </div>
+          
+          <div style="font-size: 0.7rem; color: #ff4a4a; margin-top: 4px; font-weight: bold;">
+            ＼ お中元・ギフトに大人気！ ／
+          </div>
+        </a>
       </div>
       
       <div class="ad-action-container">
