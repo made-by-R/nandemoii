@@ -1,0 +1,1476 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-8835RRD4G5"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-8835RRD4G5');
+  </script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>作ったものリスト - 11gor.com</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;700;900&display=swap" rel="stylesheet">
+
+  <style>
+    /* --------------------------------------------------
+       90年代ノスタルジック水彩アニメ（エヴァ・夏の静寂）テーマ
+       -------------------------------------------------- */
+    :root {
+      /* 水彩パレット */
+      --sky-blue: #cddce5;       /* どこか寂しい夏の淡い青空 */
+      --twilight-purple: #cdc0d3; /* 夕暮れに染まりかける薄紫 */
+      --watercolor-white: #f5f6f8;/* 滲んだような水彩の白 */
+      --shadow-navy: #192231;     /* 電柱や電線のシルエット、濃い影（ほぼ黒） */
+      --text-main: #232a35;       /* 静かな濃いグレー */
+      --rust-orange: #ab6a55;     /* 錆びついたオレンジ（差し色） */
+      --soft-border: rgba(25, 34, 49, 0.15);
+    }
+
+    body, html {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      background-color: var(--watercolor-white);
+      /* しっぽり明朝による文学的で美しいタイポグラフィ */
+      font-family: "Shippori Mincho", serif;
+      overflow-x: hidden;
+      color: var(--text-main); 
+      cursor: none; /* キャラクター追従用 */
+    }
+
+    /* --- アナログの質感を再現する：ペーパーノイズ重ね合わせ --- */
+    body::before {
+      content: " ";
+      display: block;
+      position: fixed;
+      top: 0; left: 0; bottom: 0; right: 0;
+      /* SVGノイズフィルタを画面全体に乗せて、水彩紙のざらつきや古いセル画の質感を出す */
+      background: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.08'/%3E%3C/svg%3E");
+      z-index: 9999;
+      pointer-events: none;
+    }
+
+    /* インタラクティブホバー時の処理 */
+    .interactive-hovered {
+      cursor: auto !important;
+    }
+    .interactive-hovered .work-card,
+    .interactive-hovered .filter-btn,
+    .interactive-hovered a,
+    .interactive-hovered button,
+    .interactive-hovered .pixel-cell,
+    .interactive-hovered .palette-color,
+    .interactive-hovered .modal-close {
+      cursor: pointer !important;
+    }
+
+    /* レイアウトコンテナ：電柱イラストとのバランスを取るため、メインを左、広告を右へ */
+    .page-container {
+      display: flex;
+      flex-direction: row; /* デスクトップ：左コンテンツ、右広告 */
+      justify-content: center;
+      max-width: 1300px; 
+      margin: 0 auto;
+      padding: 0 24px;
+      box-sizing: border-box;
+      width: 100%;
+      position: relative;
+    }
+
+    /* --- STREAMING_CHUNK: Styling the billboard ads with vintage sign frames... --- */
+    /* 古い画廊や街角の看板をイメージした広告枠 */
+    .sidebar-ad {
+      width: auto;
+      max-width: 320px; 
+      padding-top: 100px;
+      padding-left: 35px; /* 右側に置くため、左側に余白を取る */
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column; 
+      align-items: center;
+      flex-shrink: 0; 
+      z-index: 10;
+    }
+
+    .ad-label {
+      font-size: 0.7rem;
+      color: var(--rust-orange);
+      letter-spacing: 3px;
+      margin-bottom: 8px;
+      align-self: flex-start;
+      padding-left: 4px;
+      opacity: 0.8;
+      font-weight: bold;
+    }
+
+    .sidebar-ad > div {
+      display: block;
+      width: fit-content;
+      border: 1px solid var(--soft-border);
+      outline: 1px dashed var(--soft-border);
+      outline-offset: -4px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.05); 
+      background: #ffffff;
+      line-height: 0;
+      box-sizing: border-box;
+      position: relative;
+      filter: url('#water-color-edge'); /* わずかに手書き風に歪ませる */
+      margin-bottom: 30px;
+      padding: 6px; /* 額縁のような余白 */
+    }
+
+    .sidebar-ad a {
+      display: block;
+      line-height: 0;
+    }
+
+    /* 広告用固定ボックス */
+    .admax-sidebar-fixed-box {
+      display: block;
+      width: 300px;
+      height: 250px;
+      position: relative;
+      border: 1px solid var(--soft-border);
+      outline: 1px dashed var(--soft-border);
+      outline-offset: -4px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.05); 
+      background: #ffffff;
+      line-height: 0;
+      box-sizing: content-box;
+      overflow: hidden;
+      filter: url('#water-color-edge');
+      padding: 6px;
+    }
+
+    .admax-sidebar-fixed-box .admax-ads {
+      width: 300px !important;
+      height: 250px !important;
+      display: block !important;
+      margin: 0 !important;
+      padding: 0 !important;
+    }
+
+    .sidebar-ad img, .inline-ad img {
+      width: 100%;
+      max-width: 100%;
+      height: auto;
+      display: block;
+      opacity: 0.9;
+    }
+
+    .sidebar-ad img[width="1"],
+    .inline-ad img[width="1"] {
+      width: 1px !important;
+      height: 1px !important;
+      position: absolute !important;
+      bottom: 0;
+      right: 0;
+      opacity: 0 !important;
+      pointer-events: none !important;
+    }
+
+    /* インライン広告（フロアの踊り場のような、すっきりした看板） */
+    .inline-ad {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin: 80px 0;
+      width: 100%;
+    }
+
+    .inline-ad > div {
+      display: block;
+      width: fit-content;
+      border: 1px solid var(--soft-border);
+      outline: 1px dashed var(--soft-border);
+      outline-offset: -4px;
+      box-shadow: 0 10px 25px rgba(25, 34, 49, 0.03); 
+      background: #ffffff;
+      line-height: 0;
+      box-sizing: border-box;
+      max-width: 100%; 
+      position: relative;
+      filter: url('#water-color-edge');
+      padding: 6px;
+    }
+
+    /* --- メインコンテンツ --- */
+    #main-content {
+      flex: 1;
+      max-width: 850px; 
+      padding: 80px 10px;
+      box-sizing: border-box;
+      position: relative;
+      min-width: 0; 
+      z-index: 5;
+    }
+
+    /* キャラクターキャンバス */
+    #charCanvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+      z-index: 100;
+      image-rendering: pixelated;
+    }
+
+    section {
+      margin-bottom: 100px;
+      text-align: left; /* エモーショナルな紙面構成のため左揃えへ */
+    }
+
+    /* --- STREAMING_CHUNK: Styling titles with a hand-drawn nostalgic feel... --- */
+    /* 90年代アニメのサブタイトル、もしくは本の表紙を想起させる端正な題字 */
+    h1 {
+      font-size: 2.8rem; 
+      color: var(--shadow-navy); 
+      font-weight: 900;
+      letter-spacing: 6px;
+      margin-top: 0;
+      margin-bottom: 10px;
+      position: relative;
+      line-height: 1.3;
+    }
+
+    .sub-brand-title {
+      font-size: 0.9rem;
+      color: var(--rust-orange);
+      letter-spacing: 8px;
+      text-transform: uppercase;
+      font-weight: bold;
+      margin-bottom: 50px;
+      display: block;
+    }
+
+    /* 静かな見出し（線の細い明朝と、かすかなにじみ境界） */
+    h2 {
+      display: block;
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--shadow-navy);
+      border-bottom: 1px solid var(--shadow-navy);
+      padding-bottom: 12px;
+      margin-bottom: 50px;
+      letter-spacing: 4px;
+      text-align: left;
+    }
+
+    /* --------------------------------------------------
+       水彩画のスケッチ帳のような案内プレート
+       -------------------------------------------------- */
+    .department-board {
+      background-color: #ffffff; 
+      border: 1px solid var(--soft-border);
+      padding: 50px 45px;
+      margin-bottom: 60px;
+      box-shadow: 0 15px 45px rgba(25, 34, 49, 0.04);
+      position: relative;
+      filter: url('#water-color-edge'); /* 輪郭をアナログ手書き調に */
+    }
+
+    .badge-vintage {
+      display: inline-block;
+      color: var(--rust-orange);
+      font-weight: bold;
+      font-size: 0.9rem;
+      margin-bottom: 24px;
+      letter-spacing: 4px;
+      border-bottom: 1px solid var(--rust-orange);
+      padding-bottom: 4px;
+    }
+
+    .board-desc {
+      font-size: 0.95rem;
+      line-height: 2.1;
+      color: var(--text-main);
+      margin: 0 0 35px 0;
+      text-align: justify;
+    }
+
+    /* --- STREAMING_CHUNK: Refining link buttons with elegant, minimal wireframe borders... --- */
+    /* 控えめでありながらスタイリッシュな細枠ボタン */
+    .sns-button-container {
+      display: flex; 
+      gap: 24px; 
+      justify-content: flex-start;
+      flex-wrap: wrap;
+    }
+
+    .sns-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      padding: 12px 28px;
+      font-size: 0.85rem;
+      font-weight: bold;
+      text-decoration: none;
+      border: 1px solid var(--shadow-navy);
+      background-color: transparent;
+      color: var(--shadow-navy);
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      letter-spacing: 2px;
+      position: relative;
+    }
+
+    .sns-btn::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      border: 1px solid var(--shadow-navy);
+      opacity: 0;
+      transform: scale(1.05);
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .sns-btn:hover {
+      background-color: var(--shadow-navy);
+      color: #ffffff;
+    }
+
+    .sns-btn:hover::after {
+      opacity: 0.3;
+      transform: scale(1.1);
+    }
+
+    /* --------------------------------------------------
+       電光掲示板や案内標識を模した静かなフィルター
+       -------------------------------------------------- */
+    .filter-container {
+      display: flex;
+      justify-content: flex-start;
+      gap: 15px;
+      margin-bottom: 45px;
+      flex-wrap: wrap;
+    }
+
+    .filter-btn {
+      background-color: transparent;
+      color: var(--text-main);
+      border: 1px solid var(--soft-border);
+      padding: 8px 20px;
+      font-size: 0.85rem;
+      cursor: pointer;
+      font-family: "Shippori Mincho", serif;
+      transition: all 0.3s ease;
+      letter-spacing: 1px;
+    }
+
+    .filter-btn:hover {
+      border-color: var(--shadow-navy);
+      color: var(--shadow-navy);
+    }
+
+    .filter-btn.active {
+      background-color: var(--shadow-navy);
+      color: #ffffff;
+      border-color: var(--shadow-navy);
+    }
+
+    /* --- STREAMING_CHUNK: Designing watercolor sketch cards with delicate silhouettes... --- */
+    /* 水彩イラスト調の作品カタロググリッド */
+    .works-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 30px;
+      padding: 5px;
+    }
+
+    .work-card {
+      background: #ffffff;
+      border: 1px solid var(--soft-border); 
+      box-sizing: border-box;
+      box-shadow: 0 10px 30px rgba(25, 34, 49, 0.03); 
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      display: flex;
+      flex-direction: column;
+      cursor: pointer;
+      overflow: hidden;
+      position: relative;
+      filter: url('#water-color-edge');
+    }
+
+    .work-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 40px rgba(25, 34, 49, 0.08);
+      border-color: var(--shadow-navy);
+    }
+
+    /* ショーウィンドウを思わせる、淡くにじみグラデーションのかかったサムネイル */
+    .work-thumb {
+      width: 100%;
+      height: 150px;
+      border-bottom: 1px solid var(--soft-border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.8rem;
+      position: relative;
+      /* ノスタルジックな夕暮れと雲を溶かしたようなグラデーション */
+      background: linear-gradient(135deg, var(--sky-blue) 0%, var(--twilight-purple) 100%);
+      opacity: 0.85;
+      transition: opacity 0.3s;
+    }
+
+    .work-card:hover .work-thumb {
+      opacity: 1.0;
+    }
+
+    .work-tag {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      background-color: rgba(25, 34, 49, 0.8);
+      color: #ffffff;
+      font-size: 0.7rem;
+      padding: 3px 10px;
+      letter-spacing: 2px;
+      font-weight: bold;
+    }
+
+    .work-info {
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+    }
+
+    .work-title {
+      font-size: 1.1rem;
+      font-weight: bold;
+      margin: 0 0 12px 0;
+      color: var(--shadow-navy);
+      letter-spacing: 1px;
+    }
+
+    .work-desc {
+      font-size: 0.8rem;
+      color: #5a6472;
+      line-height: 1.8;
+      margin: 0 0 20px 0;
+      flex-grow: 1;
+      text-align: justify;
+    }
+
+    .work-tech {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .tech-tag {
+      font-size: 0.65rem;
+      background-color: #f0f2f5;
+      color: #4a5568;
+      padding: 3px 8px;
+      border: 1px solid rgba(25, 34, 49, 0.08);
+    }
+
+    /* --------------------------------------------------
+       画帳のスケッチウィンドウ風モーダル（水彩にじみ）
+       -------------------------------------------------- */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(25, 34, 49, 0.45); /* 影絵のような深紺の半透明 */
+      backdrop-filter: blur(4px);
+      z-index: 10000;
+      display: none;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+
+    .modal-content {
+      background-color: #ffffff;
+      border: 1px solid var(--shadow-navy);
+      width: 100%;
+      max-width: 600px;
+      box-shadow: 0 30px 70px rgba(25, 34, 49, 0.15);
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      animation: modalPop 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      filter: url('#water-color-edge');
+    }
+
+    @keyframes modalPop {
+      from { transform: translateY(15px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    .modal-header {
+      background-color: #ffffff;
+      color: var(--shadow-navy);
+      padding: 20px 30px;
+      font-weight: bold;
+      border-bottom: 1px solid var(--soft-border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .modal-close {
+      background-color: transparent;
+      color: var(--shadow-navy);
+      border: 1px solid var(--soft-border);
+      padding: 4px 12px;
+      font-family: "Shippori Mincho", serif;
+      cursor: pointer;
+      font-size: 0.75rem;
+      transition: all 0.2s;
+    }
+
+    .modal-close:hover {
+      background-color: var(--shadow-navy);
+      color: #ffffff;
+    }
+
+    .modal-body {
+      padding: 35px;
+      max-height: 70vh;
+      overflow-y: auto;
+    }
+
+    .modal-work-icon {
+      font-size: 3rem;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .modal-work-title {
+      font-size: 1.3rem;
+      color: var(--shadow-navy);
+      margin: 0 0 24px 0;
+      text-align: center;
+      font-weight: bold;
+      letter-spacing: 2px;
+    }
+
+    .modal-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 30px;
+    }
+
+    .modal-table th, .modal-table td {
+      border: 1px solid var(--soft-border);
+      padding: 14px;
+      font-size: 0.85rem;
+    }
+
+    .modal-table th {
+      background-color: #f7f9fb;
+      width: 30%;
+      text-align: left;
+      color: var(--shadow-navy);
+      font-weight: bold;
+    }
+
+    .modal-table td {
+      color: var(--text-main);
+    }
+
+    .modal-detail-text {
+      font-size: 0.85rem;
+      line-height: 1.9;
+      color: var(--text-main);
+      margin-bottom: 30px;
+      white-space: pre-wrap;
+      text-align: justify;
+    }
+
+    .modal-link-btn {
+      display: block;
+      text-align: center;
+      background-color: var(--shadow-navy);
+      color: #ffffff;
+      text-decoration: none;
+      padding: 14px;
+      font-weight: bold;
+      font-size: 0.85rem;
+      border: 1px solid var(--shadow-navy);
+      letter-spacing: 2px;
+      transition: all 0.3s;
+    }
+
+    .modal-link-btn:hover {
+      background-color: transparent;
+      color: var(--shadow-navy);
+    }
+
+    /* --------------------------------------------------
+       別館：ドット絵キャンバス（静かな水彩スケッチ風）
+       -------------------------------------------------- */
+    .mini-game-container {
+      background-color: #ffffff;
+      border: 1px solid var(--soft-border);
+      padding: 45px;
+      max-width: 600px;
+      margin: 0 auto;
+      box-shadow: 0 15px 45px rgba(25, 34, 49, 0.03);
+      text-align: center;
+      filter: url('#water-color-edge');
+    }
+
+    .pixel-grid {
+      display: grid;
+      grid-template-columns: repeat(16, 1fr);
+      gap: 1px;
+      width: 100%;
+      max-width: 256px;
+      margin: 30px auto;
+      background-color: var(--soft-border);
+      border: 1px solid var(--soft-border);
+    }
+
+    .pixel-cell {
+      aspect-ratio: 1;
+      background-color: #ffffff;
+      cursor: crosshair;
+    }
+
+    .palette-container {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 30px;
+      flex-wrap: wrap;
+      max-width: 340px;
+      margin: 0 auto 30px auto;
+    }
+
+    .palette-color {
+      width: 26px;
+      height: 26px;
+      border: 1px solid var(--soft-border);
+      cursor: pointer;
+      box-sizing: border-box;
+      transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .palette-color.selected {
+      border: 1px solid var(--shadow-navy);
+      transform: scale(1.2);
+      box-shadow: 0 4px 10px rgba(25, 34, 49, 0.15);
+    }
+
+    /* フッター */
+    footer {
+      border-top: 1px solid var(--soft-border);
+      padding-top: 50px;
+      margin-top: 120px;
+      text-align: center;
+      font-size: 0.85rem;
+    }
+
+    .footer-links {
+      margin-bottom: 30px;
+    }
+
+    .footer-links a {
+      color: var(--shadow-navy);
+      text-decoration: none;
+      font-weight: bold;
+      margin: 0 15px;
+    }
+
+    .footer-links a:hover { text-decoration: underline; }
+    .copyright { color: #8a94a2; margin: 0; letter-spacing: 1px; }
+
+    /* --------------------------------------------------
+       エヴァ・90年代夏アニメ風 電柱と空のSVG背景ヘッダー
+       -------------------------------------------------- */
+    .header-illustration-box {
+      width: 100%;
+      height: 380px;
+      position: relative;
+      overflow: hidden;
+      /* にじみのある夏の終わりの空をシミュレートするグラデーション */
+      background: linear-gradient(180deg, var(--sky-blue) 0%, var(--twilight-purple) 60%, var(--watercolor-white) 100%);
+      border-bottom: 1px dashed var(--soft-border);
+    }
+
+    .sky-glow-overlay {
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: radial-gradient(circle at 75% 30%, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0) 60%);
+      pointer-events: none;
+    }
+
+    .pylon-svg {
+      position: absolute;
+      bottom: -10px;
+      left: 10%;
+      width: auto;
+      height: 105%;
+      fill: var(--shadow-navy);
+      opacity: 0.85;
+      filter: drop-shadow(-5px 5px 15px rgba(25, 34, 49, 0.1));
+    }
+
+    /* レスポンシブ対応 */
+    @media (max-width: 1200px) and (min-width: 769px) {
+      .page-container { padding: 0 24px; }
+      .sidebar-ad { width: 18%; min-width: 100px; padding-right: 20px; }
+      h1 { font-size: 2.3rem; }
+    }
+
+    @media (max-width: 768px) {
+      .page-container { flex-direction: column; align-items: center; padding: 0 16px; }
+      .sidebar-ad { width: auto; max-width: 100%; padding-top: 40px; padding-right: 0; order: 2; }
+      .inline-ad { margin-top: 20px; margin-bottom: 50px; }
+      #main-content { padding: 40px 0; width: 100%; order: 1; }
+      h1 { font-size: 1.9rem; }
+      .header-illustration-box { height: 260px; }
+      .pylon-svg { left: 5%; height: 110%; }
+      body { cursor: auto; }
+      .sns-button-container { flex-direction: column; gap: 14px; }
+      .sns-btn { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 手書き水彩画調の歪みを表現するSVGフィルター（インライン定義） -->
+  <svg style="position: absolute; width: 0; height: 0;" width="0" height="0">
+    <defs>
+      <!-- 境界線をわずかに歪ませるアナログセル画風フィルター -->
+      <filter id="water-color-edge">
+        <feTurbulence type="fractalNoise" baseFrequency="0.04" numOctaves="2" result="noise" />
+        <feDisplacementMap in="SourceGraphic" in2="noise" scale="3" xChannelSelector="R" yChannelSelector="G" />
+      </filter>
+    </defs>
+  </svg>
+
+  <!-- 90年代夏アニメを象徴する、そびえ立つ電柱・電線・空のメインイラスト -->
+  <div class="header-illustration-box">
+    <div class="sky-glow-overlay"></div>
+    
+    <!-- 細部まで詳細に描画されたSVG電柱アート -->
+    <svg class="pylon-svg" viewBox="0 0 400 600" preserveAspectRatio="xMidYMax meet">
+      <!-- メインの支柱 -->
+      <path d="M196 600 L196 50 L204 50 L204 600 Z" />
+      <!-- 水平アーム（横木）1（最上部） -->
+      <rect x="150" y="80" width="100" height="4" />
+      <path d="M150 84 L196 110 L204 110 L250 84 Z" />
+      <!-- がいし（絶縁体） -->
+      <rect x="148" y="72" width="4" height="8" />
+      <rect x="248" y="72" width="4" height="8" />
+      <circle cx="150" cy="70" r="4" />
+      <circle cx="250" cy="70" r="4" />
+
+      <!-- 水平アーム 2 -->
+      <rect x="130" y="160" width="140" height="6" />
+      <path d="M130 166 L196 200 L204 200 L270 166 Z" />
+      <!-- がいし群 -->
+      <rect x="140" y="150" width="4" height="10" />
+      <circle cx="142" cy="146" r="5" />
+      <rect x="256" y="150" width="4" height="10" />
+      <circle cx="258" cy="146" r="5" />
+
+      <!-- 変圧器（重厚なボックスシルエット） -->
+      <rect x="210" y="210" width="34" height="50" rx="2" />
+      <path d="M214 210 L214 200 L220 200" />
+      <path d="M240 210 L240 200 L234 200" />
+      <rect x="207" y="218" width="40" height="4" />
+
+      <!-- 水平アーム 3 -->
+      <rect x="100" y="290" width="200" height="8" />
+      <path d="M100 298 L196 340 L204 340 L300 298 Z" />
+      <!-- 細かながいしと電線の引き込みフック -->
+      <circle cx="115" cy="282" r="5" />
+      <circle cx="285" cy="282" r="5" />
+      <line x1="115" y1="287" x2="115" y2="290" stroke="var(--shadow-navy)" stroke-width="2" />
+      <line x1="285" y1="287" x2="285" y2="290" stroke="var(--shadow-navy)" stroke-width="2" />
+
+      <!-- 街灯のクラシックな笠 -->
+      <path d="M196 350 Q160 360 140 380 Q130 390 120 410" fill="none" stroke="var(--shadow-navy)" stroke-width="3" />
+      <path d="M110 410 L130 410 L120 422 Z" />
+      <!-- 街灯の光線（極小の隠しハイライト） -->
+      <circle cx="120" cy="415" r="2" fill="#ffffff" />
+
+      <!-- 複雑に入り乱れる電線 -->
+      <path d="M0 120 Q100 130 150 70" fill="none" stroke="var(--shadow-navy)" stroke-width="1.5" />
+      <path d="M250 70 Q300 110 400 100" fill="none" stroke="var(--shadow-navy)" stroke-width="1.5" />
+      <path d="M0 180 Q100 210 142 146" fill="none" stroke="var(--shadow-navy)" stroke-width="2" />
+      <path d="M258 146 Q320 210 400 170" fill="none" stroke="var(--shadow-navy)" stroke-width="2" />
+      <path d="M0 320 Q120 330 200 300" fill="none" stroke="var(--shadow-navy)" stroke-width="1" />
+      <path d="M200 300 Q310 320 400 290" fill="none" stroke="var(--shadow-navy)" stroke-width="1" />
+      
+      <!-- 斜めに横切る遠景の送電線 -->
+      <line x1="0" y1="50" x2="400" y2="250" stroke="var(--shadow-navy)" stroke-width="0.7" opacity="0.4" />
+      <line x1="0" y1="70" x2="400" y2="270" stroke="var(--shadow-navy)" stroke-width="0.7" opacity="0.4" />
+      <line x1="0" y1="220" x2="400" y2="450" stroke="var(--shadow-navy)" stroke-width="0.8" opacity="0.5" />
+    </svg>
+  </div>
+
+  <!-- キャラクター描画用キャンバス -->
+  <canvas id="charCanvas"></canvas>
+
+  <div class="page-container">
+
+    <!-- メインコンテンツ（左側へ配置） -->
+    <main id="main-content">
+      
+      <!-- タイトル & 案内セクション -->
+      <section id="portfolio-top">
+        <h1>作ったものリスト</h1>
+        <span class="sub-brand-title">11GOR DEPT. ARCHIVES & MEMORIES</span>
+        
+        <div class="department-board">
+          <div class="badge-vintage">ABOUT THIS PORTFOLIO</div>
+          <p class="board-desc">
+            どこか懐かしい夏の終わりの景色へ、ようこそ。<br>
+            これまでに設計・開発してきた数々のアートワークやWebシステムをここに集約しました。<br>
+            静かな時の流れるアーカイブスをめぐるように、各制作物の「パンフレット（詳細）」を広げてみてください。
+          </p>
+
+          <div class="sns-button-container">
+            <a href="https://x.com/@a_a_nba" target="_blank" rel="noopener noreferrer" class="sns-btn">X (Twitter) 接続</a>
+            <a href="https://note.com/lively_yeti9225" target="_blank" rel="noopener noreferrer" class="sns-btn">note アトリエ</a>
+          </div>
+        </div>
+      </section>
+
+      <!-- カテゴリフィルター -->
+      <section id="works-section">
+        <h2>建造成果物の一覧</h2>
+        
+        <div class="filter-container">
+          <button class="filter-btn active" data-filter="all">WEB</button>
+          
+        </div>
+
+        <!-- 実績グリッド -->
+        <div class="works-grid" id="worksGrid">
+          <!-- JSで動的に構築されます -->
+        </div>
+      </section>
+
+      <!-- 中間インライン広告（踊り場の案内板として機能） -->
+      <div class="inline-ad">
+        <span class="ad-label" style="align-self: center; margin-bottom: 12px;">街頭広告</span>
+        <div>
+          <a href="https://px.a8.net/svt/ejp?a8mat=4B66KF+419T5M+348+6CWQP" rel="nofollow">
+            <img border="0" width="250" height="250" alt="" src="https://www27.a8.net/svt/bgt?aid=260628927244&wid=002&eno=01&mid=s00000000404001068000&mc=1">
+          </a>
+          <img border="0" width="1" height="1" src="https://www19.a8.net/0.gif?a8mat=4B66KF+419T5M+348+6CWQP" alt="">
+        </div>
+      </div>
+
+      <!-- おまけコンテンツ：ミニドットエディター -->
+      <section id="pixel-creator">
+        <h2>別館：静かなドット絵スケッチ</h2>
+        <div class="mini-game-container">
+          <p style="color: var(--shadow-navy); margin: 0 0 12px 0; font-size: 1.05rem; font-weight: bold;">
+            16x16 スケッチキャンバス
+          </p>
+          <p style="color: #616b77; margin: 0; font-size: 0.85rem; line-height: 1.8;">
+            夏の想い出をパレットから切り取るように、お好きな色彩を。
+          </p>
+          
+          <div class="pixel-grid" id="pixelGrid"></div>
+
+          <div class="palette-container" id="paletteContainer"></div>
+
+          <button id="clearPixelBtn" class="filter-btn" style="border-color: var(--shadow-navy); font-weight: bold;">
+            キャンバスを真っ白にする
+          </button>
+        </div>
+      </section>
+
+      <!-- フッター -->
+      <footer>
+        <div class="footer-links">
+          <a href="privacy.html">プライバシーポリシー・免責事項</a>
+          <a href="contact.html">運営者情報・お問い合わせ</a>
+        </div>
+        <p class="copyright">&copy; 2026 11gor.com</p>
+      </footer>
+
+    </main>
+
+    <!-- 右サイドバー広告（クラシックフレーム・街角の看板風） -->
+    <div class="sidebar-ad">
+      <span class="ad-label">街頭広告 - A</span>
+      <div>
+        <a href="https://px.a8.net/svt/ejp?a8mat=4B66KF+5BPMCA+348+1C5BOX" rel="nofollow">
+          <img border="0" width="160" height="600" alt="" src="https://www20.a8.net/svt/bgt?aid=260628927322&wid=002&eno=01&mid=s00000000404008087000&mc=1">
+        </a>
+        <img border="0" width="1" height="1" src="https://www19.a8.net/0.gif?a8mat=4B66KF+5BPMCA+348+1C5BOX" alt="">
+      </div>
+
+      <span class="ad-label">街頭広告 - B</span>
+      <div class="admax-sidebar-fixed-box">
+        <div class="admax-ads" data-admax-id="ef2bccc289e36f3fbc69de396647fec8" style="display:inline-block;width:300px;height:250px;"></div>
+        <script type="text/javascript">(admaxads = window.admaxads || []).push({admax_id: "ef2bccc289e36f3fbc69de396647fec8",type: "banner"});</script>
+        <script type="text/javascript" charset="utf-8" src="https://adm.shinobi.jp/st/t.js" async></script>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- 詳細モーダルウィンドウ -->
+  <div class="modal-overlay" id="workModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <span id="modalHeaderTitle">詳細案内</span>
+        <button class="modal-close" id="modalCloseBtn">閉じる [X]</button>
+      </div>
+      <div class="modal-body">
+        <div class="modal-work-icon" id="modalWorkIcon">🎮</div>
+        <h3 class="modal-work-title" id="modalWorkTitle">作品名</h3>
+        
+        <table class="modal-table">
+          <tr>
+            <th>区分</th>
+            <td id="modalWorkCategory">ゲーム</td>
+          </tr>
+          <tr>
+            <th>建造期間</th>
+            <td id="modalWorkPeriod">1週間</td>
+          </tr>
+          <tr>
+            <th>使用部材</th>
+            <td id="modalWorkTech">HTML, CSS, JS</td>
+          </tr>
+        </table>
+
+        <div style="font-weight: bold; margin-bottom: 12px; border-left: 2px solid var(--rust-orange); padding-left: 10px; color: var(--shadow-navy);">
+          特長と開発メモ
+        </div>
+        <div class="modal-detail-text" id="modalWorkDetail">
+          詳細な説明がここに表示されます。
+        </div>
+
+        <a href="#" target="_blank" rel="noopener noreferrer" class="modal-link-btn" id="modalWorkLink">
+          実際に体験してみる →
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // --- 究極のピクセル設計図データ (sprite-data.jsの完全移植) ---
+    const palette = {
+        '0': 'transparent',
+        '1': '#151221', // アウトライン（濃紺）
+        '2': '#f1f3f8', // 服・靴のベース（青みがかった白）
+        '3': '#9ba4b5', // 服・靴の影
+        '4': '#322d40', // 顔の暗闇（深い紫グレー）
+        '5': '#fcf4d9', // 不気味な歯（黄色がかった白）
+        '6': '#b48472', // 歯茎
+        '7': '#2d3748', // ズボン
+        '8': '#ffffff', // スニーカーのハイライト
+        '9': '#e2e8f0'  // ソール
+    };
+
+    const cHead = [
+        "00000011111111000000",
+        "00001122222222110000",
+        "00012222222222221000",
+        "00122222222222222100",
+        "01222211111112222210",
+        "01222114444441122210",
+        "12221444444444412221",
+        "12221444444444412221",
+        "12221444444444412221",
+        "1222141111114412221",
+        "12221416666661412221",
+        "12221155155155112221",
+        "01222211111111222210",
+        "00122222223322222100",
+        "00011222222222211000",
+        "00000111111111100000"
+    ];
+
+    const cBody = [
+        "00001111111111110000",
+        "00012222222222221000",
+        "00122222222222222100",
+        "00122222222222222100",
+        "01222211111111222210",
+        "01222122222222122210",
+        "01222122222222122210",
+        "01111122222222111110",
+        "00000122222222100000",
+        "00000133333333100000",
+        "00000011111111000000"
+    ];
+
+    const cArmDown = [
+        "00111100", "01222210", "12222221", "12222221", "12222221",
+        "12222221", "12222221", "12222221", "01222210", "00111100"
+    ];
+
+    const cArmUp = [
+        "00111100", "01222210", "12222221", "12222221", "12222221",
+        "12222221", "12222221", "12222221", "12222221", "12222221",
+        "01222210", "00111100"
+    ];
+
+    const cLegDown = [
+        "0017777100", "0017777100", "0017777100", "0177777710",
+        "0177777710", "0188888810", "1888888881", "1888888881",
+        "1999999991", "0111111110"
+    ];
+
+    const cLegBent = [
+        "00001777710000", "00017777771000", "00177777777100", "00111117777710",
+        "18888881777710", "18888888177771", "18888888177771", "19999999111110",
+        "01111111100000"
+    ];
+
+    // 出展物データソース
+    const worksData = [
+      {
+        id: 1,
+        title: "総合案内所 (11gor.com)",
+        category: "web",
+        icon: "🏨",
+        desc: "不気味なピクセルキャラクターがマウスに追従する、当サイトの顔となる案内ポータルページ。",
+        period: "1ヶ月",
+        tech: ["HTML5", "CSS3", "JavaScript"],
+        detail: "デパートの空間に入り込んだかのようなレトロでノスタルジックな世界観を構築。最もこだわったのは、JavaScriptの2Dキャンバス物理演算による不気味な追従マスコット。PCでは滑らかに追従し、スマートフォンではスワイプの空気抵抗を受けながらふわふわと落下を楽しめる仕様です。",
+        link: "index.html"
+      },
+      {
+        id: 1,
+        title: "",
+        category: "web",
+        icon: "‼️",
+        desc: "よく出る、スキップ広告を実際に作ってみちゃいました。",
+        period: "2日",
+        tech: ["HTML5", "CSS3", "JavaScript"],
+        detail: "スキップ不可の全画面広告は、3枚の透明なレイヤーによる画面ロック、1秒毎のタイマーループによる閉じるボタンの制御、表示崩れを防ぐ二重の箱構造、サーバー通信のセキュリティ制限を考慮した仕組みで成り立っています。",
+        link: "https://11gor.com/video_af"
+      }
+      
+      
+    ];
+
+    // シンセサイザーによる8bit効果音エンジン
+    function playRetroSound(type) {
+      try {
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        
+        const now = audioCtx.currentTime;
+        
+        if (type === 'click') {
+          osc.type = 'triangle'; 
+          osc.frequency.setValueAtTime(600, now);
+          osc.frequency.exponentialRampToValueAtTime(1000, now + 0.1);
+          gain.gain.setValueAtTime(0.06, now);
+          gain.gain.exponentialRampToValueAtTime(0.01, now + 0.1);
+          osc.start(now);
+          osc.stop(now + 0.1);
+        } else if (type === 'open') {
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(350, now);
+          osc.frequency.setValueAtTime(450, now + 0.08);
+          osc.frequency.setValueAtTime(550, now + 0.16);
+          gain.gain.setValueAtTime(0.1, now);
+          gain.gain.exponentialRampToValueAtTime(0.01, now + 0.24);
+          osc.start(now);
+          osc.stop(now + 0.24);
+        } else if (type === 'close') {
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(300, now);
+          osc.frequency.exponentialRampToValueAtTime(100, now + 0.15);
+          gain.gain.setValueAtTime(0.08, now);
+          gain.gain.exponentialRampToValueAtTime(0.01, now + 0.15);
+          osc.start(now);
+          osc.stop(now + 0.15);
+        } else if (type === 'draw') {
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(800, now);
+          gain.gain.setValueAtTime(0.02, now);
+          gain.gain.exponentialRampToValueAtTime(0.01, now + 0.03);
+          osc.start(now);
+          osc.stop(now + 0.03);
+        }
+      } catch (e) {
+        console.log("Audio Context not supported or allowed yet.");
+      }
+    }
+
+    // --- STREAMING_CHUNK: Instantiating portfolio catalog list... ---
+    // カタログ一覧の動的描画
+    const worksGrid = document.getElementById('worksGrid');
+
+    function renderWorks(filter = 'all') {
+      worksGrid.innerHTML = '';
+      
+      const filtered = filter === 'all' 
+        ? worksData 
+        : worksData.filter(w => w.category === filter);
+
+      filtered.forEach(work => {
+        const card = document.createElement('div');
+        card.className = 'work-card';
+        card.setAttribute('data-id', work.id);
+        
+        // 90年代水彩アニメ風の淡いグラデーションをブレンド
+        let bgStyle = "background: linear-gradient(135deg, #cddce5, #b8cbd6);"; // デフォルト
+        if (work.category === 'game') bgStyle = "background: linear-gradient(135deg, #e4c5cf, #cdc0d3);";
+        if (work.category === 'tool') bgStyle = "background: linear-gradient(135deg, #c1cbd8, #a3b2c6);";
+        if (work.category === 'web') bgStyle = "background: linear-gradient(135deg, #d3c4db, #bfa3cc);";
+
+        card.innerHTML = `
+          <div class="work-thumb" style="${bgStyle}">
+            <span class="work-tag">${work.category.toUpperCase()}</span>
+            <span>${work.icon}</span>
+          </div>
+          <div class="work-info">
+            <h3 class="work-title">${work.title}</h3>
+            <p class="work-desc">${work.desc}</p>
+            <div class="work-tech">
+              ${work.tech.map(t => `<span class="tech-tag">${t}</span>`).join('')}
+            </div>
+          </div>
+        `;
+
+        card.addEventListener('click', () => {
+          openWorkModal(work);
+        });
+
+        worksGrid.appendChild(card);
+      });
+    }
+
+    // 階層フィルターボタンのアクション
+    const filterButtons = document.querySelectorAll('.filter-btn[data-filter]');
+    filterButtons.forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        filterButtons.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        
+        playRetroSound('click');
+        const filter = btn.getAttribute('data-filter');
+        renderWorks(filter);
+      });
+    });
+
+    // --- STREAMING_CHUNK: Launching modal controller logic... ---
+    // カウンター窓口（詳細モーダル）の機能
+    const modal = document.getElementById('workModal');
+    const modalHeaderTitle = document.getElementById('modalHeaderTitle');
+    const modalWorkIcon = document.getElementById('modalWorkIcon');
+    const modalWorkTitle = document.getElementById('modalWorkTitle');
+    const modalWorkCategory = document.getElementById('modalWorkCategory');
+    const modalWorkPeriod = document.getElementById('modalWorkPeriod');
+    const modalWorkTech = document.getElementById('modalWorkTech');
+    const modalWorkDetail = document.getElementById('modalWorkDetail');
+    const modalWorkLink = document.getElementById('modalWorkLink');
+    const modalCloseBtn = document.getElementById('modalCloseBtn');
+
+    function openWorkModal(work) {
+      playRetroSound('open');
+      
+      // モーダル表示時はナビゲーター（キャラ）をスッと非表示にし、手形カーソルを復活
+      targetAlpha = 0.0;
+      document.body.classList.add('interactive-hovered');
+      
+      modalWorkIcon.innerText = work.icon;
+      modalWorkTitle.innerText = work.title;
+      modalWorkCategory.innerText = work.category === 'game' ? '娯楽（1F）' : work.category === 'tool' ? '道具（2F）' : '広場（3F）';
+      modalWorkPeriod.innerText = work.period;
+      modalWorkTech.innerText = work.tech.join(', ');
+      modalWorkDetail.innerText = work.detail;
+      
+      if (work.link === '#' || !work.link) {
+        modalWorkLink.style.display = 'none';
+      } else {
+        modalWorkLink.style.display = 'block';
+        modalWorkLink.setAttribute('href', work.link);
+      }
+
+      modal.style.display = 'flex';
+    }
+
+    function closeModal() {
+      playRetroSound('close');
+      modal.style.display = 'none';
+      
+      // 案内が閉じたらナビゲーターを緩やかに再登場させる
+      targetAlpha = 1.0;
+      document.body.classList.remove('interactive-hovered');
+    }
+
+    modalCloseBtn.addEventListener('click', closeModal);
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) closeModal();
+    });
+
+    // --- STREAMING_CHUNK: Instantiating 16x16 sketchbook editor with watercolor palettes... ---
+    // アトリエ（ドット絵エディター）
+    const pixelGrid = document.getElementById('pixelGrid');
+    const paletteContainer = document.getElementById('paletteContainer');
+    const clearPixelBtn = document.getElementById('clearPixelBtn');
+
+    // 90年代アニメ・セル画タッチに適した、彩度を少し抑えた情感豊かな10色パレット
+    const editorColors = [
+      '#ffffff', '#192231', '#7c8b9e', '#ab6a55', '#cdc0d3', 
+      '#cddce5', '#98b2c1', '#cfbfa8', '#7fa095', '#605466'
+    ];
+    let selectedColor = '#ab6a55';
+
+    // パレットボタン構築
+    editorColors.forEach((color) => {
+      const colBtn = document.createElement('div');
+      colBtn.className = 'palette-color';
+      colBtn.style.backgroundColor = color;
+      if (color === selectedColor) colBtn.classList.add('selected');
+
+      colBtn.addEventListener('click', () => {
+        playRetroSound('click');
+        document.querySelectorAll('.palette-color').forEach(b => b.classList.remove('selected'));
+        colBtn.classList.add('selected');
+        selectedColor = color;
+      });
+
+      paletteContainer.appendChild(colBtn);
+    });
+
+    // 16x16 お絵描きマス目の構築
+    let isDrawing = false;
+    document.addEventListener('mousedown', () => { isDrawing = true; });
+    document.addEventListener('mouseup', () => { isDrawing = false; });
+    document.addEventListener('touchstart', () => { isDrawing = true; });
+    document.addEventListener('touchend', () => { isDrawing = false; });
+
+    for (let i = 0; i < 256; i++) {
+      const cell = document.createElement('div');
+      cell.className = 'pixel-cell';
+      
+      const drawAction = (e) => {
+        e.preventDefault();
+        cell.style.backgroundColor = selectedColor;
+        playRetroSound('draw');
+      };
+
+      cell.addEventListener('mousedown', drawAction);
+      cell.addEventListener('mouseenter', (e) => {
+        if (isDrawing) drawAction(e);
+      });
+      cell.addEventListener('touchmove', (e) => {
+        if (isDrawing) {
+          const touch = e.touches[0];
+          const target = document.elementFromPoint(touch.clientX, touch.clientY);
+          if (target && target.classList.contains('pixel-cell')) {
+            target.style.backgroundColor = selectedColor;
+          }
+        }
+      });
+      cell.addEventListener('touchstart', drawAction);
+
+      pixelGrid.appendChild(cell);
+    }
+
+    clearPixelBtn.addEventListener('click', () => {
+      playRetroSound('close');
+      document.querySelectorAll('.pixel-cell').forEach(c => {
+        c.style.backgroundColor = '#ffffff';
+      });
+    });
+
+    // --- STREAMING_CHUNK: Orchestrating the floating avatar physics engine... ---
+    // キャラクター物理エンジンコアの統合
+    document.addEventListener('DOMContentLoaded', () => {
+      renderWorks('all');
+
+      const charCanvas = document.getElementById('charCanvas');
+      const charCtx = charCanvas.getContext('2d');
+
+      function resizeCanvas() {
+        charCanvas.width = window.innerWidth;
+        charCanvas.height = window.innerHeight;
+      }
+      window.addEventListener('resize', resizeCanvas);
+      resizeCanvas();
+
+      // スケール
+      const spriteScale = 2; 
+      let charAnimFrame = 0;
+      setInterval(() => { charAnimFrame = (charAnimFrame + 1) % 4; }, 150);
+
+      // 物理・移動
+      let charMouseX = window.innerWidth / 2;
+      let charMouseY = window.innerHeight / 2;
+      let charX = charMouseX;
+      let charY = charMouseY;
+      let charState = "standing"; 
+      let lastMoveTime = Date.now();
+      let isMouseMoving = false;
+      let fallVelocity = 0;
+      const gravityForce = 0.6;
+
+      // フェード用の不透明度パラメーター
+      window.charAlpha = 1.0;
+      window.targetAlpha = 1.0;
+
+      window.addEventListener('mousemove', (e) => {
+        charMouseX = e.clientX;
+        charMouseY = e.clientY;
+        lastMoveTime = Date.now();
+        isMouseMoving = true;
+      });
+
+      window.addEventListener('touchmove', (e) => {
+        if (e.touches.length > 0) {
+          charMouseX = e.touches[0].clientX;
+          charMouseY = e.touches[0].clientY;
+          lastMoveTime = Date.now();
+          isMouseMoving = true;
+        }
+      }, { passive: true });
+
+      function drawComp(comp, compCx, compCy, flip) {
+        let w = comp[0].length;
+        let h = comp.length;
+        let startX = compCx - (w * spriteScale) / 2;
+        let startY = compCy - (h * spriteScale);
+        for (let r = 0; r < h; r++) {
+          for (let c = 0; c < w; c++) {
+            let char = comp[r][flip ? w - 1 - c : c];
+            if (char !== '0') {
+              charCtx.fillStyle = palette[char];
+              charCtx.fillRect(startX + c * spriteScale, startY + r * spriteScale, spriteScale, spriteScale);
+            }
+          }
+        }
+      }
+
+      function assembleChar(cx, cy, currentState, frame) {
+        let hY = -6, bY = 4, laX = -11, raX = 11, laY = 6, raY = 6;
+        let llX = -6, rlX = 6, llY = 14, rlY = 14;
+        let laType = cArmDown, raType = cArmDown, llType = cLegDown, rlType = cLegDown;
+
+        if (currentState === 'standing') {
+          if (frame === 1 || frame === 3) { hY += 1; bY += 1; laY += 1; raY += 1; }
+        } else if (currentState === 'lifted') {
+          hY -= 2; bY -= 1; laType = cArmUp; raType = cArmUp; laY -= 8; raY -= 8; laX = -13; raX = 13;
+          if (frame === 1 || frame === 3) { llY -= 1; rlY -= 1; }
+        } else if (currentState === 'swinging') {
+          hY -= 2; bY -= 1; laType = cArmUp; raType = cArmUp; laY -= 8; raY -= 8; laX = -13; raX = 13;
+          let tilt = [-2, 0, 2, 0][frame];
+          let bob = [0, -1, 0, -1][frame];
+          hY += bob; bY += bob; laY += bob; raY += bob; llX += tilt; rlX += tilt; llY += bob; rlY += bob;
+        } else if (currentState === 'falling') {
+          laType = cArmUp; raType = cArmUp; laX = -14; raX = 14; laY -= 10; raY -= 10;
+          let drop = [-1, 0, -1, -2][frame];
+          hY += drop; bY += drop; laY += drop; raY += drop; llY += drop; rlY += drop; llX = -9; rlX = 9;
+        } else if (currentState === 'landing') {
+          bY += 6; laY += 6; raY += 6; hY += 8;
+          llType = cLegBent; rlType = cLegBent; llX = -11; rlX = 11; llY = 12; rlY = 12;
+        }
+
+        drawComp(llType, cx + llX * spriteScale, cy + llY * spriteScale, false);
+        drawComp(rlType, cx + rlX * spriteScale, cy + rlY * spriteScale, true);
+        if (laType === cArmUp) {
+          drawComp(laType, cx + laX * spriteScale, cy + laY * spriteScale, false);
+          drawComp(raType, cx + raX * spriteScale, cy + raY * spriteScale, true);
+        }
+        drawComp(cBody, cx, cy + bY * spriteScale, false);
+        if (laType === cArmDown) {
+          drawComp(laType, cx + laX * spriteScale, cy + laY * spriteScale, false);
+          drawComp(raType, cx + raX * spriteScale, cy + raY * spriteScale, true);
+        }
+        drawComp(cHead, cx, cy + hY * spriteScale, false);
+      }
+
+      function physicsUpdate() {
+        charCtx.clearRect(0, 0, charCanvas.width, charCanvas.height);
+
+        // ナビゲーター表示フェード効果のなめらか補間
+        charAlpha += (targetAlpha - charAlpha) * 0.15;
+        charCtx.globalAlpha = charAlpha;
+
+        const currentTime = Date.now();
+        if (currentTime - lastMoveTime > 100) isMouseMoving = false;
+
+        // 完全に隠れているときは演算のみを維持して瞬間移動を防止
+        if (charAlpha < 0.01) {
+          charCtx.globalAlpha = 0;
+          if (isMouseMoving) {
+            charX += (charMouseX - charX) * 0.2;
+            charY += ((charMouseY + 30) - charY) * 0.2;
+          }
+          requestAnimationFrame(physicsUpdate);
+          return;
+        }
+
+        if (isMouseMoving) {
+          let targetX = charMouseX;
+          let targetY = charMouseY + 30;
+          let dx = targetX - charX;
+          let dy = targetY - charY;
+          charX += dx * 0.2; 
+          charY += dy * 0.2;
+          charState = Math.abs(dx) > 2 ? "swinging" : "lifted"; 
+          fallVelocity = 0;
+        } else {
+          if (charY < charMouseY + 30) {
+            charState = "falling";
+            fallVelocity += gravityForce;
+            charY += fallVelocity;
+            if (charY >= charMouseY + 30) {
+              charY = charMouseY + 30;
+              charState = "landing";
+              fallVelocity = 0;
+              setTimeout(() => {
+                if (!isMouseMoving && charState === "landing") charState = "standing";
+              }, 250);
+            }
+          }
+        }
+
+        assembleChar(charX, charY, charState, charAnimFrame);
+        requestAnimationFrame(physicsUpdate);
+      }
+
+      // リンク、ボタン、カードなどの上にマウスが乗った際の自動フェードアウト検知
+      document.addEventListener('mouseover', (e) => {
+        const target = e.target.closest('.work-card, .filter-btn, a, button, .pixel-cell, .palette-color, .modal-content, #clearPixelBtn');
+        if (target) {
+          targetAlpha = 0.0;
+          document.body.classList.add('interactive-hovered');
+        }
+      });
+
+      document.addEventListener('mouseout', (e) => {
+        const target = e.target.closest('.work-card, .filter-btn, a, button, .pixel-cell, .palette-color, .modal-content, #clearPixelBtn');
+        if (target) {
+          const relatedTarget = e.relatedTarget;
+          if (!relatedTarget || !target.contains(relatedTarget)) {
+            const modalElement = document.getElementById('workModal');
+            if (!modalElement || modalElement.style.display !== 'flex') {
+              targetAlpha = 1.0;
+              document.body.classList.remove('interactive-hovered');
+            }
+          }
+        }
+      });
+
+      requestAnimationFrame(physicsUpdate);
+    });
+  </script>
+</body>
+</html>
