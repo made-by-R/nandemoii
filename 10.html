@@ -539,8 +539,18 @@
 
     .modal-body {
       padding: 35px;
-      max-height: 70vh;
-      overflow-y: auto;
+      padding-bottom: 100px; /* 下部余白を追加し、ボタンを上にスクロールして逃がせるようにする[span_0](start_span)[span_0](end_span) */
+      max-height: 70vh; /*[span_1](start_span)[span_1](end_span) */
+      overflow-y: auto; /*[span_2](start_span)[span_2](end_span) */
+    }
+
+    /* 以下は既存のスマホ向けメディアクエリ（@media (max-width: 768px) {...}）の中に追記してください */
+    @media (max-width: 768px) {
+      /* ...既存の記述... */
+      .modal-body {
+        padding: 24px;
+        padding-bottom: 120px; /* スマホ画面では固定広告の占有率が高いため、さらに深くスクロールできるようにする */
+      }
     }
 
     .modal-work-icon {
