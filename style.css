@@ -422,3 +422,8 @@ footer {
     cursor: auto; 
   }
 }
+/* 一時的な広告非表示設定 */
+.sidebar-ad,
+.inline-ad {
+  display: none !important;
+}
