@@ -1,16 +1,16 @@
 /* ==========================================
-   1. 全体の基本スタイル（ラグジュアリー・シック）
+   1. 全体の基本スタイル（ミニマル・コンクリート＆ホワイト）
    ========================================== */
 body, html {
   margin: 0;
   padding: 0;
   width: 100%;
   height: 100%;
-  background-color: #0e0f12; /* 深みのあるダークボルドーチャコール */
-  font-family: "Cinzel", "Shippori Mincho", "YuMincho", "Hiragino Mincho ProN", serif;
+  background-color: #e4e4e3; /* コンクリートを思わせるライトグレー */
+  font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", sans-serif;
   overflow-x: hidden;
-  color: #e5e2dc; 
-  cursor: default;
+  color: #3b3b3b; 
+  cursor: default !important;
 }
 
 /* ==========================================
@@ -23,11 +23,11 @@ body, html {
   width: 100%;
   height: 100%;
   z-index: 9999;
-  background-color: #000000;
+  background-color: #f7f7f7;
   display: flex;
   justify-content: center;
   align-items: center;
-  transition: opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1), visibility 1.2s ease;
+  transition: opacity 1.2s ease, visibility 1.2s ease;
 }
 
 #op-video {
@@ -54,7 +54,7 @@ body, html {
   width: auto;
   max-width: 250px; 
   padding-top: 60px;
-  padding-right: 30px; 
+  padding-right: 40px; 
   box-sizing: border-box;
   display: flex;
   flex-direction: column; 
@@ -65,18 +65,17 @@ body, html {
 .sidebar-ad > div {
   display: block;
   width: fit-content;
-  border: 1px solid rgba(197, 160, 89, 0.3); /* 金色の繊細な枠線 */
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); 
-  background: #14161a;
+  border: none;
+  background: transparent;
   line-height: 0;
   box-sizing: border-box;
   position: relative;
-  transition: border-color 0.4s ease, box-shadow 0.4s ease;
+  opacity: 0.9;
+  transition: opacity 0.3s ease;
 }
 
 .sidebar-ad > div:hover {
-  border-color: rgba(197, 160, 89, 0.8);
-  box-shadow: 0 12px 35px rgba(197, 160, 89, 0.15);
+  opacity: 1;
 }
 
 .sidebar-ad a {
@@ -109,27 +108,20 @@ body, html {
 .inline-ad {
   display: flex;
   justify-content: center;
-  margin-top: 30px;
-  margin-bottom: 60px;
+  margin-top: 40px;
+  margin-bottom: 80px;
   width: 100%;
 }
 
 .inline-ad > div {
   display: block;
   width: fit-content;
-  border: 1px solid rgba(197, 160, 89, 0.3);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); 
-  background: #14161a;
+  border: none;
+  background: transparent;
   line-height: 0;
   box-sizing: border-box;
   max-width: 100%; 
   position: relative;
-  transition: border-color 0.4s ease, box-shadow 0.4s ease;
-}
-
-.inline-ad > div:hover {
-  border-color: rgba(197, 160, 89, 0.8);
-  box-shadow: 0 12px 35px rgba(197, 160, 89, 0.15);
 }
 
 .inline-ad a {
@@ -140,7 +132,7 @@ body, html {
 /* --- メインコンテンツ --- */
 #main-content {
   opacity: 0;
-  transition: opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.3s; 
+  transition: opacity 1.2s ease 0.3s; 
   flex: 1;
   max-width: 860px; 
   padding: 60px 20px;
@@ -149,97 +141,85 @@ body, html {
   min-width: 0; 
 }
 
-/* キャンバス */
+/* キャンバス（追尾無効化） */
 #charCanvas {
-  /* position: fixed;
-  top: 0;
-  left: 0;
-  pointer-events: none;
-  z-index: 100; */
   display: none !important;
 }
 
 section {
-  margin-bottom: 80px;
-  text-align: center;
+  margin-bottom: 100px;
 }
 
 h1 {
-  font-size: 2.8rem; 
-  color: #c5a059;
-  background: linear-gradient(135deg, #f0e3c4 0%, #c5a059 50%, #9a7b38 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  letter-spacing: 4px;
+  font-size: 2.2rem; 
+  color: #3b3b3b;
+  letter-spacing: 6px;
   margin-top: 0;
-  margin-bottom: 40px;
-  font-weight: 400; 
-  text-shadow: none;
-  font-family: "Cinzel", "Shippori Mincho", serif;
+  margin-bottom: 50px;
+  font-weight: 300; 
+  text-align: center;
 }
 
 h2 {
-  display: inline-block;
-  font-size: 1.1rem;
-  font-weight: 500;
-  color: #c5a059;
-  background-color: transparent; 
-  border: 1px solid rgba(197, 160, 89, 0.5);
-  padding: 12px 36px;
+  display: block;
+  font-size: 1rem;
+  font-weight: 400;
+  color: #666666;
+  border-bottom: 1px solid #d1d1d1;
+  padding-bottom: 10px;
   margin-bottom: 40px;
-  letter-spacing: 3px;
+  letter-spacing: 4px;
   text-transform: uppercase;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
 }
 
 /* ==========================================
    4. 紹介文カード
    ========================================== */
 .brand-intro-card {
-  background-color: #14161a; 
-  border: 1px solid rgba(197, 160, 89, 0.25);
-  padding: 50px 40px;
+  background-color: #fcfcfc; /* 画像右側の壁のようなピュアホワイト */
+  padding: 60px 50px;
   margin: 0 auto;
   text-align: left;
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02); /* 存在するかしないかレベルの極薄い影 */
 }
 
 .main-lead-badge {
   display: inline-block;
-  background: linear-gradient(135deg, #c5a059 0%, #9a7b38 100%);
-  color: #0e0f12;
-  border: none;
-  padding: 10px 24px;
-  font-size: 0.9rem;
-  font-weight: 600;
-  letter-spacing: 1.5px;
+  background: transparent;
+  color: #798a96; /* 陶器のブルーグレーを抽出 */
+  border: 1px solid #798a96;
+  padding: 8px 20px;
+  font-size: 0.8rem;
+  font-weight: 400;
+  letter-spacing: 2px;
   line-height: 1.5;
-  margin-bottom: 20px;
-  box-shadow: 0 4px 15px rgba(197, 160, 89, 0.2);
+  margin-bottom: 25px;
 }
 
 .sub-lead {
-  font-size: 1.05rem;
-  font-weight: 400;
-  color: #b0b4bc;
+  font-size: 1.1rem;
+  font-weight: 300;
+  color: #3b3b3b;
   letter-spacing: 1px;
-  margin: 10px 0 25px 0;
+  margin: 10px 0 30px 0;
+  line-height: 1.8;
 }
 
 .intro-divider {
   border: 0;
   height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(197, 160, 89, 0.4), transparent);
-  margin: 30px 0;
+  background: #eaeaea;
+  margin: 40px 0;
 }
 
 .about-text {
-  color: #d1d5db;
+  color: #555555;
   font-size: 0.95rem;
-  line-height: 2.1;
-  margin: 0 0 18px 0;
+  line-height: 2.2;
+  margin: 0 0 20px 0;
   text-align: justify; 
   letter-spacing: 0.5px;
+  font-weight: 300;
 }
 
 .about-text:last-child {
@@ -247,56 +227,28 @@ h2 {
 }
 
 .sns-button-container {
-  margin-top: 40px; 
+  margin-top: 50px; 
   display: flex; 
-  gap: 20px; 
+  gap: 15px; 
 }
 
 .sns-btn {
   display: inline-block;
-  padding: 14px 28px;
-  font-size: 0.85rem;
-  font-weight: 500;
+  padding: 12px 24px;
+  font-size: 0.8rem;
+  font-weight: 400;
   letter-spacing: 2px;
   text-decoration: none;
-  text-transform: uppercase;
-  border: 1px solid rgba(197, 160, 89, 0.4);
-  background: transparent;
-  color: #e5e2dc;
+  background: #fcfcfc;
+  color: #555555;
+  border: 1px solid #d1d1d1;
   transition: all 0.3s ease;
-  box-shadow: none;
 }
 
 .sns-btn:hover {
-  border-color: #c5a059;
-  background: rgba(197, 160, 89, 0.1);
-  color: #ffffff;
-  transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(197, 160, 89, 0.15);
-}
-
-.sns-btn:active {
-  transform: translateY(0);
-}
-
-.x-btn {
-  border-color: rgba(255, 255, 255, 0.2);
-}
-
-.x-btn:hover {
-  border-color: #ffffff;
-  background: rgba(255, 255, 255, 0.08);
-}
-
-.note-btn {
-  border-color: rgba(0, 187, 156, 0.4);
-  color: #00bb9c;
-}
-
-.note-btn:hover {
-  border-color: #00bb9c;
-  background: rgba(0, 187, 156, 0.1);
-  color: #ffffff;
+  background: #f0f0f0;
+  color: #3b3b3b;
+  border-color: #999999;
 }
 
 /* ==========================================
@@ -304,57 +256,49 @@ h2 {
    ========================================== */
 .category-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-  gap: 24px;
-  padding: 5px;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 20px;
 }
 
 .category-card {
-  background: #14161a;
-  border: 1px solid rgba(255, 255, 255, 0.08); 
-  padding: 30px 20px;
+  background: #fcfcfc;
+  border: 1px solid transparent; 
+  padding: 35px 20px;
   text-align: center;
   text-decoration: none;
-  color: #e5e2dc;
-  font-weight: 400;
+  color: #555555;
+  font-weight: 300;
   box-sizing: border-box;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3); 
-  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.02); 
+  transition: all 0.3s ease;
 }
 
 .category-card:hover {
-  background: #1a1d22;
-  border-color: rgba(197, 160, 89, 0.5);
-  color: #c5a059;
-  transform: translateY(-4px);
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5), 0 0 15px rgba(197, 160, 89, 0.1);
-}
-
-.category-card:active {
-  transform: translateY(-1px);
+  border-color: #e4e4e3;
+  color: #798a96; /* ホバー時にブルーグレー */
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.04);
 }
 
 .category-title {
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   letter-spacing: 1.5px;
 }
 
 .daily-box {
-  background: #14161a;
-  border: 1px solid rgba(197, 160, 89, 0.25);
-  padding: 40px;
-  max-width: 600px;
+  background: #fcfcfc;
+  padding: 50px;
+  max-width: 650px;
   margin: 0 auto;
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
 }
 
 footer {
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
-  padding-top: 50px;
-  padding-bottom: 30px;
-  margin-top: 100px;
+  border-top: 1px solid #d1d1d1;
+  padding-top: 60px;
+  padding-bottom: 40px;
+  margin-top: 120px;
   text-align: center;
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   letter-spacing: 1px;
 }
 
@@ -363,22 +307,20 @@ footer {
 }
 
 .footer-links a {
-  color: #a0a5b1;
+  color: #888888;
   text-decoration: none;
-  font-weight: 400;
-  margin: 0 18px;
+  font-weight: 300;
+  margin: 0 15px;
   transition: color 0.3s ease;
 }
 
 .footer-links a:hover {
-  color: #c5a059;
-  text-decoration: none;
+  color: #3b3b3b;
 }
 
 .copyright {
-  color: #636b7b;
+  color: #aaaaaa;
   margin: 0;
-  font-size: 0.8rem;
 }
 
 /* 表示制御クラス */
@@ -390,8 +332,6 @@ footer {
 /* ==========================================
    6. 可変レスポンシブ・サイズ調整エリア
    ========================================== */
-
-/* タブレット・小画面ブラウザ */
 @media (max-width: 1200px) and (min-width: 769px) {
   .page-container {
     padding: 0 20px;
@@ -399,26 +339,17 @@ footer {
   }
   .sidebar-ad {
     padding-top: 40px;
-    padding-right: 20px;
+    padding-right: 30px;
     width: 20%; 
-    min-width: 120px; 
-  }
-  #main-content {
-    padding: 40px 10px;
-  }
-  h1 {
-    font-size: 2.2rem;
   }
 }
 
-/* スマートフォン（768px以下） */
 @media (max-width: 768px) {
   .page-container {
     flex-direction: column; 
     align-items: center;
     padding: 0 15px;
   }
-
   .sidebar-ad {
     width: auto;
     max-width: 100%;
@@ -426,46 +357,27 @@ footer {
     padding-right: 0;
     order: 2;
   }
-
   .inline-ad {
-    margin-top: 20px;
-    margin-bottom: 40px;
+    margin-top: 30px;
+    margin-bottom: 50px;
   }
-  
-  .inline-ad > div {
-    max-width: 100%;
-  }
-
   #main-content {
-    padding: 30px 0;
+    padding: 40px 0;
     width: 100%;
     order: 1;
   }
-
   h1 { 
-    font-size: 1.8rem; 
-    letter-spacing: 2px;
+    font-size: 1.6rem; 
+    letter-spacing: 3px;
   }
-  .brand-intro-card { 
+  .brand-intro-card, .daily-box { 
     padding: 30px 20px; 
-  }
-  .main-lead-badge { 
-    font-size: 0.85rem; 
   }
   .category-grid { 
     grid-template-columns: 1fr; 
   }
   .sns-button-container {
     flex-direction: column;
-    gap: 12px;
+    gap: 10px;
   }
-  body { 
-    cursor: auto; 
-  }
-}
-
-/* 一時的な広告非表示設定 */
-.sidebar-ad,
-.inline-ad {
-  display: none !important;
 }
