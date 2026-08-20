@@ -83,7 +83,7 @@
             overflow-x: hidden;
             user-select: none;
             /* 馬鹿にしたカーソル */
-            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" style="font-size: 24px"><text y="24">🤡</text></svg>'), auto;
+            cursor: url('data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2232%22 height=%2232%22 style=%22font-size: 24px%22%3E%3Ctext y=%2224%22%3E🤡%3C/text%3E%3C/svg%3E'), auto;
         }
 
         ::-webkit-scrollbar {
@@ -137,6 +137,7 @@
                     <span class="text-[10px] bg-black text-toxic-yellow px-2 py-0.5 rounded-full font-bold border-2 border-toxic-pink rotate-3">JOKE SITE</span>
                 </div>
                 <p class="text-xs text-black font-bold tracking-tight">限界ゲロポップ広告機構 :: 情弱ホイホイ v9.9.9</p>
+                <p class="text-[10px] text-red-600 font-bold bg-white px-1 border border-red-600 rounded inline-block mt-1">※当サイトは実在の広告・警告・請求とは一切関係のないジョークプログラムです</p>
             </div>
         </div>
 
@@ -265,11 +266,12 @@
                 </p>
                 <p class="leading-relaxed">
                     このサイトは利用者をポップに小馬鹿にするフィクションのジョークシミュレーターです。実際の個人情報収集、ウイルス感染、金銭の請求は一切ありません（架空の遊びです）。笑って許せる人だけ遊んでね！
+                    <br><span class="text-toxic-pink">※実際のトラッキングCookie等は一切使用していません。このバナー自体もジョークです。</span>
                 </p>
             </div>
             <div class="flex flex-wrap gap-2 shrink-0">
                 <button onclick="acceptCookies(true)" class="bg-toxic-green hover:bg-green-400 border-2 border-black text-black font-gothic text-xs px-4 py-3 rounded-xl shadow-[4px_4px_0_#000] active:translate-y-1 active:shadow-none">
-                    ウケるｗ（全て同意）
+                    ウケるｗ（同意するフリ）
                 </button>
                 <button onclick="acceptCookies(false)" class="bg-gray-200 hover:bg-gray-300 border-2 border-black text-gray-600 text-xs px-4 py-3 rounded-xl shadow-[2px_2px_0_#000] active:translate-y-1 active:shadow-none">
                     真面目に閉じる
@@ -373,10 +375,10 @@
         const popAdPresets = [
             // --- 1-10: 偽警告・デバイス煽り系 ---
             { title: "【悲報】お前のPC、ポンコツすぎｗｗ", badge: "システム警告(偽)", bg: "bg-toxic-pink", border: "border-black", text: "＜※これはジョークです＞ え？まだそのブラウザ使ってんの？化石じゃんｗ 今すぐ最新の架空ブラウザ『GeroPop』に課金してアップデートしな！", btnText: "課金して情弱を卒業する", price: "手数料: 99,999pt", icon: "fa-triangle-exclamation", imgText: "SYSTEM YABAI" },
-            { title: "🚨【偽警告】検索履歴、全部見てるぞ", badge: "プライバシー警察", bg: "bg-black text-toxic-cyan", border: "border-toxic-cyan", text: "※架空の警告です。昨夜のあんな検索やこんな検索、フォロワーに公開されたくなかったらこの架空ソフトを買え！", btnText: "泣きながら口止め料を払う", price: "口止め料: 5,000pt", icon: "fa-eye", imgText: "履歴流出(嘘)" },
+            { title: "🚨【エスパー】君の脳内BGM、聞こえてるぞ", badge: "超能力(偽)", bg: "bg-black text-toxic-cyan", border: "border-toxic-cyan", text: "※架空の警告です。昨夜脳内で流れてたあのダサい曲、フォロワーに公開されたくなかったらこの架空ソフトを買え！", btnText: "泣きながら口止め料を払う", price: "口止め料: 5,000pt", icon: "fa-eye", imgText: "脳内流出(嘘)" },
             { title: "スマホの画面、バキバキじゃね？", badge: "マウント", bg: "bg-toxic-yellow", border: "border-black", text: "画面割れてるの放置してるとか貧乏くさｗｗ ※ジョークです。この架空の液晶保護フィルム（ペラペラ）を1万ptで買え！", btnText: "見栄を張って買う", price: "ぼったくり: 10,000pt", icon: "fa-mobile-screen-button", imgText: "BAKI BAKI" },
             { title: "タイピング遅すぎワロタ", badge: "煽り診断", bg: "bg-white", border: "border-toxic-pink", text: "お前のタイピング速度、おばあちゃん以下だろ。※架空の煽りです。タイピング速度が100倍になる『魔法のキーボード(嘘)』いかが？", btnText: "悔しいから買う", price: "値段: 3,000pt", icon: "fa-keyboard", imgText: "亀レベル" },
-            { title: "【危険】思考が漏洩しています", badge: "電波系(偽)", bg: "bg-toxic-green", border: "border-black", text: "アルミホイル巻かないと脳波が筒抜けだぞ！※フィクションです。最新の架空防具『アルミヘルメット改』を急いで装着しろ！", btnText: "陰謀論を信じて買う", price: "価格: 8,888pt", icon: "fa-satellite-dish", imgText: "電波ゆんゆん" },
+            { title: "🛸【超常現象】脳波が宇宙人にダダ漏れです", badge: "オカルト(偽)", bg: "bg-toxic-green", border: "border-black", text: "テレパシーの制御ができてないぞ！※フィクションです。最新の架空防具『アルミヘルメット改』を急いで装着して電波を防げ！", btnText: "宇宙人を信じて買う", price: "価格: 8,888pt", icon: "fa-satellite-dish", imgText: "電波ゆんゆん" },
             { title: "メモリ足りてないよ？脳みその", badge: "IQ煽り", bg: "bg-toxic-cyan", border: "border-black", text: "PCのメモリよりお前の脳のメモリ増設した方が良くない？※ただの悪口(冗談)です。この架空のスマートサプリでIQを3増やそう！", btnText: "IQ3になる", price: "知能指数: -10", icon: "fa-brain", imgText: "NO MISSO" },
             { title: "WiFi泥棒、見つけました(嘘)", badge: "偽セキュリティ", bg: "bg-black text-white", border: "border-toxic-yellow", text: "隣の家のおじさんが君のWiFiで動画見てるぞ！※完全なデタラメです。今すぐこの『超・妨害電波発生器(架空)』で撃退しろ！", btnText: "ご近所トラブルを起こす", price: "代償: 友情", icon: "fa-wifi", imgText: "タダ乗り禁止" },
             { title: "あなたのマウス、息してません", badge: "デバイス警察", bg: "bg-toxic-pink", border: "border-black", text: "マウスの動きがキモすぎる。もっとスマートに動かせよ。※架空のクレームです。この『プロゲーマー御用達(大嘘)マウス』を買え！", btnText: "エイムを金で買う", price: "価格: 50,000pt", icon: "fa-computer-mouse", imgText: "AIM GOMI" },
@@ -410,14 +412,14 @@
             // --- 31-40: 謎の開運グッズ・サプリ系 ---
             { title: "飲むだけで偏差値が80下がる水", badge: "謎サプリ", bg: "bg-toxic-cyan", border: "border-black", text: "あたまからっぽのほうがゆめつめこめるよ！※実在しません。この『アホアホウォーター』を飲んで悩みから解放されよう！", btnText: "アホになる", price: "価格: 500pt", icon: "fa-bottle-water", imgText: "AHO WATER" },
             { title: "【奇跡】隕石粉末入り？開運ペンダント", badge: "スピリチュアル", bg: "bg-toxic-yellow", border: "border-black", text: "これを着けたら宝くじで3億円当たりました！（※サクラの感想です）怪しさ満点のペンダントを今だけ99万ptで！", btnText: "オカルトに頼る", price: "定価: 999,999pt", icon: "fa-meteor", imgText: "LUCKY STONE" },
-            { title: "塗るだけでマッチョになるクリーム", badge: "嘘筋肉", bg: "bg-toxic-pink", border: "border-black", text: "筋トレなんて時代遅れ！※大嘘です。このクリームを塗ると皮膚が炎症を起こして膨れ上がります（危険）。", btnText: "偽りの筋肉を得る", price: "副作用: 激痛", icon: "fa-dumbbell", imgText: "FAKE MUSCLE" },
-            { title: "視力が8.0になる目薬(※成分:タバスコ)", badge: "人体実験", bg: "bg-black text-white", border: "border-toxic-pink", text: "※絶対に真似しないでください。刺激が強すぎて異次元が見えるようになる架空の目薬。今なら眼帯プレゼント！", btnText: "視力を捨てる", price: "代償: 両目", icon: "fa-eye-dropper", imgText: "DANGER EYE" },
+            { title: "💪 塗るだけでオーラがマッチョになるクリーム", badge: "嘘筋肉", bg: "bg-toxic-pink", border: "border-black", text: "筋トレなんて時代遅れ！※大嘘です。筋肉は一切つきませんが、なんとなく強そうなオーラが出ます（出ません）。", btnText: "偽りのオーラを得る", price: "副作用: 虚無感", icon: "fa-dumbbell", imgText: "FAKE MUSCLE" },
+            { title: "👁️ 視力がマッハになる架空のメガネ", badge: "謎テクノロジー", bg: "bg-black text-white", border: "border-toxic-pink", text: "※実在しません。かけるだけで壁の裏の素粒子が見える（気がする）不思議なメガネを今すぐGET！", btnText: "素粒子を見る", price: "代償: 常識", icon: "fa-glasses", imgText: "MACH EYE" },
             { title: "身長が1日5cm伸びる魔法の粉", badge: "誇大広告", bg: "bg-white", border: "border-toxic-cyan", text: "1ヶ月で150cm伸びます！※伸びません（ジョーク）。ただのプロテインに小麦粉を混ぜたものを高値で売りつけます！", btnText: "夢を見て買う", price: "ぼったくり: 5,000pt", icon: "fa-child-reaching", imgText: "TALL DREAM" },
             { title: "髪の毛がフサフサになる呪文", badge: "オカルト", bg: "bg-toxic-green", border: "border-black", text: "毎朝『ハゲマシテ』と100回唱えるだけ！※髪は生えません。呪文のテキストデータ(架空)を1万ptでダウンロード！", btnText: "藁にもすがる", price: "効果: 喉が渇く", icon: "fa-user-astronaut", imgText: "NO HAIR" },
             { title: "犬と会話できる翻訳機(※ランダム再生)", badge: "令和の詐欺", bg: "bg-[#ffb6c1]", border: "border-black", text: "犬の鳴き声を『腹減った』『散歩行け』の2種類にランダム翻訳する悪徳ガジェット(架空)！", btnText: "犬の気持ちを諦める", price: "価格: 8,000pt", icon: "fa-dog", imgText: "DOG TALK" },
             { title: "【極秘】モテフェロモン発生装置", badge: "恋愛商法", bg: "bg-toxic-yellow", border: "border-black", text: "スイッチを入れると強烈なニンニク臭が発生し、周囲の人間を遠ざけます。※嘘商品です。逆効果を狙え！", btnText: "孤立を選ぶ", price: "効果: 嫌われる", icon: "fa-spray-can", imgText: "GARLIC SMELL" },
             { title: "寝ている間に宿題が終わる小人", badge: "メルヘン詐欺", bg: "bg-toxic-cyan", border: "border-black", text: "朝起きるとノートが落書きだらけに！※架空のサービスです。小人(ただのネズミ)の派遣サービスを利用する？", btnText: "現実逃避する", price: "成績: 1（最低）", icon: "fa-pen-clip", imgText: "HOMEWORK" },
-            { title: "全知全能になれる謎のキノコ", badge: "ヤバい広告", bg: "bg-black text-toxic-pink", border: "border-toxic-green", text: "※絶対に食べないでください。食べるとマリオのように大きくなれる気がするだけの毒キノコ(架空CG)です。", btnText: "1UPを狙う", price: "GAME OVER", icon: "fa-mushroom", iconFallback: "fa-tree", imgText: "POISON🍄" },
+            { title: "🍄 全知全能になれる(気がする)デジタルキノコ", badge: "謎アイテム", bg: "bg-black text-toxic-pink", border: "border-toxic-green", text: "※実在の食品ではありません。クリックすると画面上で大きくなれる気がするだけの架空のデジタルアイテムです。", btnText: "1UPを狙う", price: "GAME OVER", icon: "fa-mushroom", iconFallback: "fa-tree", imgText: "DIGITAL🍄" },
 
             // --- 41-50: ソシャゲ・ガチャ・課金煽り系 ---
             { title: "ガチャ爆死お疲れ様ですｗｗ", badge: "ソシャゲ煽り", bg: "bg-toxic-pink", border: "border-black", text: "お前の推し、俺のデータにはいるよ？ｗ ※煽りジョークです。この架空の『天井スキップチケット』を10万ptで買え！", btnText: "怒りの魔法のカード", price: "課金額: 限界突破", icon: "fa-credit-card", imgText: "BAKUSHI" },
@@ -585,13 +587,13 @@
                 },
                 {
                     title: "🚨 逃げられると思った？(笑)",
-                    badge: "情弱警察",
+                    badge: "無限広告の術",
                     bg: "bg-black text-toxic-cyan",
                     border: "border-toxic-cyan border-4",
-                    text: "広告を閉じようとした罪で逮捕！君の恥ずかしい検索履歴（架空）をフォロワーに公開されたくなかったらpt払いな！",
+                    text: "広告を閉じようとしたね？残念！『無限広告の術』発動！※ジョーク演出です。許してほしければpt払いな！",
                     btnText: "土下座して和解金(100pt)を払う",
-                    price: "証拠: 押収済み",
-                    icon: "fa-handcuffs",
+                    price: "罰金: 100pt",
+                    icon: "fa-scroll",
                     imgText: "YOU ARE NOOB"
                 }
             ];
@@ -708,8 +710,7 @@
                 e.stopPropagation();
                 if (isTricky && Math.random() < 0.6 && activePopupCount < 12) { // トラップ発動
                     playErrorSound();
-                    document.body.classList.add('screen-shake');
-                    setTimeout(() => document.body.classList.remove('screen-shake'), 400);
+                    
                     showToast("🖕 ざぁこ♡ 閉じれると思った？");
                     
                     // 広告が増殖
