@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>⚡️爆安エナジー比較ナビ！定期便で年間数万円トクする裏ワザ simulator</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Google Fonts: M PLUS Rounded 1c & Outfit -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;700;800;900&family=Outfit:wght@800;900&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        pop: {
+                            yellow: '#FFDF00',
+                            pink: '#FF007A',
+                            purple: '#8B5CF6',
+                            cyan: '#00F0FF',
+                            neonGreen: '#00FF66',
+                            bg: '#FFFBEB'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['"M PLUS Rounded 1c"', 'sans-serif'],
+                        display: ['Outfit', 'sans-serif']
+                    },
+                    animation: {
+                        'pulse-fast': 'pulse 1s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'bounce-short': 'bounce 0.8s infinite',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #FFFDE7;
+            background-image: radial-gradient(#FDE047 1.5px, transparent 1.5px), radial-gradient(#FDE047 1.5px, #FFFDE7 1.5px);
+            background-size: 30px 30px;
+            background-position: 0 0, 15px 15px;
+            color: #1E293B;
+            font-family: 'M PLUS Rounded 1c', sans-serif;
+        }
+
+        .neo-box {
+            background-color: #ffffff;
+            border: 3px solid #000000;
+            box-shadow: 5px 5px 0px #000000;
+        }
+
+        .neo-box-pink {
+            background-color: #FFF1F2;
+            border: 3px solid #000000;
+            box-shadow: 5px 5px 0px #FF007A;
+        }
+
+        .neo-btn {
+            border: 3px solid #000000;
+            box-shadow: 4px 4px 0px #000000;
+            transition: all 0.1s ease;
+            font-weight: 800;
+        }
+        .neo-btn:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 6px 6px 0px #000000;
+        }
+        .neo-btn:active {
+            transform: translate(2px, 2px);
+            box-shadow: 2px 2px 0px #000000;
+        }
+
+        /* Ribbon accent */
+        .ribbon {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background: #FF007A;
+            color: white;
+            font-weight: 900;
+            padding: 4px 12px;
+            transform: rotate(12deg);
+            border: 2px solid #000;
+            box-shadow: 2px 2px 0px #000;
+        }
+
+        @keyframes marquee {
+            0% { transform: translateX(0%); }
+            100% { transform: translateX(-50%); }
+        }
+        .animate-marquee {
+            display: flex;
+            width: 200%;
+            animation: marquee 15s linear infinite;
+        }
+    </style>
+</head>
+<body class="min-h-screen pb-24 selection:bg-pink-500 selection:text-white">
+
+    <!-- Top Announcement Bar (Ad Ticker) -->
+    <div class="bg-gradient-to-r from-yellow-400 via-pink-500 to-cyan-400 border-b-4 border-black font-extrabold text-black text-xs sm:text-sm py-2 px-2 overflow-hidden shadow-md">
+        <div class="animate-marquee whitespace-nowrap flex items-center gap-8">
+            <span>🔥 【超吉報】Amazon新生活タイムセール開催中！エナジードリンク最大25%OFFクーポン配布中！</span>
+            <span>⚡️ モンスター・レッドブルの定期おトク便まとめ買いでポイント最大10倍GET！</span>
+            <span>🌐 運営者公式Webサイト（11gor.com）＆ note記事公開中！</span>
+            <span>🔥 【超吉報】Amazon新生活タイムセール開催中！エナジードリンク最大25%OFFクーポン配布中！</span>
+            <span>⚡️ モンスター・レッドブルの定期おトク便まとめ買いでポイント最大10倍GET！</span>
+        </div>
+    </div>
+
+    <!-- Main Navigation Header -->
+    <header class="bg-yellow-300 border-b-4 border-black sticky top-0 z-40">
+        <div class="max-w-7xl mx-auto px-4 py-3 flex flex-wrap items-center justify-between gap-3">
+            <div class="flex items-center gap-2">
+                <div class="w-10 h-10 bg-black text-yellow-300 rounded-xl flex items-center justify-center font-black text-2xl border-2 border-black transform -rotate-6 shadow-[3px_3px_0px_#FF007A]">
+                    ⚡️
+                </div>
+                <div>
+                    <h1 class="text-xl sm:text-2xl font-black italic tracking-tighter text-black flex items-center gap-1">
+                        爆安エナジー<span class="bg-black text-yellow-300 px-1.5 py-0.5 rounded shadow">天国</span>
+                    </h1>
+                    <p class="text-[10px] sm:text-xs font-bold text-black">毎日飲む人必見！定期便節約シミュレーター</p>
+                </div>
+            </div>
+            
+            <!-- Quick Link Buttons (Note & Web & Affiliate Deals) -->
+            <div class="flex flex-wrap items-center gap-2">
+                <!-- Website Button -->
+                <a href="https://11gor.com/" target="_blank" rel="noopener noreferrer" class="neo-btn bg-cyan-400 text-black px-3 py-1.5 rounded-xl text-xs sm:text-sm flex items-center gap-1.5 hover:bg-cyan-300">
+                    <i class="fa-solid fa-globe text-black"></i>
+                    <span>Webサイト</span>
+                </a>
+
+                <!-- Note Button -->
+                <a href="https://note.com/lively_yeti9225" target="_blank" rel="noopener noreferrer" class="neo-btn bg-emerald-400 text-black px-3 py-1.5 rounded-xl text-xs sm:text-sm flex items-center gap-1.5 hover:bg-emerald-300">
+                    <i class="fa-solid fa-pen-nib text-black"></i>
+                    <span>note</span>
+                </a>
+
+                <!-- 限定クーポン -->
+                <a href="#affiliate-deals" class="neo-btn bg-pink-500 text-white px-3 py-1.5 rounded-xl text-xs sm:text-sm flex items-center gap-1.5 animate-bounce-short">
+                    <i class="fa-solid fa-fire text-yellow-300"></i>
+                    <span>限定クーポン</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Top Big Banner Ad Section (PR) -->
+    <div class="max-w-7xl mx-auto px-4 mt-4">
+        <div class="neo-box bg-gradient-to-r from-purple-600 via-pink-600 to-red-500 text-white p-4 rounded-2xl relative overflow-hidden">
+            <span class="absolute top-2 left-2 bg-black text-yellow-300 text-[10px] font-bold px-2 py-0.5 rounded border border-yellow-300">スポンサーPR</span>
+            <div class="flex flex-col md:flex-row items-center justify-between gap-4 mt-2">
+                <div class="text-center md:text-left">
+                    <span class="bg-yellow-300 text-black text-xs font-black px-2.5 py-1 rounded-full border border-black mb-1 inline-block">期間限定15%OFFクーポンあり！</span>
+                    <h2 class="text-xl sm:text-2xl font-black italic">【Amazon公式】エナジードリンク定期おトク便特集</h2>
+                    <p class="text-xs text-yellow-100 mt-1">1箱(24本)で最大2,500円お得！毎月自動で自宅に届いて重い買い出しゼロに！</p>
+                </div>
+                <div class="flex items-center gap-3 shrink-0">
+                    <a href="https://amzn.to/4wKBsgR" target="_blank" rel="noopener noreferrer" class="neo-btn bg-yellow-300 text-black px-6 py-3 rounded-xl text-sm font-black flex items-center gap-2 hover:bg-yellow-200">
+                        <span>Amazonで価格チェック</span>
+                        <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <main class="max-w-7xl mx-auto px-4 mt-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+        <!-- LEFT COLUMN: Simulator Controls & Preset Buttons -->
+        <div class="lg:col-span-5 space-y-6">
+
+            <!-- Presets Box -->
+            <div class="neo-box rounded-2xl p-5 relative">
+                <div class="ribbon text-xs">一番人気！</div>
+                <h2 class="text-lg font-black text-black flex items-center gap-2 mb-3">
+                    <span class="bg-pink-500 text-white w-7 h-7 rounded-lg flex items-center justify-center text-xs border border-black">1</span>
+                    銘柄を選ぶ（爆安セット）
+                </h2>
+                <p class="text-xs font-bold text-slate-600 mb-4">選ぶだけで一般的な定価＆定期便価格が自動入力されるよ！</p>
+
+                <div class="grid grid-cols-2 gap-3" id="presetButtons">
+                    <button onclick="applyPreset('monster')" class="preset-btn active neo-btn bg-emerald-300 p-3 rounded-xl text-left relative group">
+                        <span class="text-[10px] font-extrabold text-black bg-white border border-black px-1.5 py-0.5 rounded absolute -top-2 right-2">王道定番</span>
+                        <div class="font-black text-base text-black flex items-center gap-1">
+                            👹 モンスター
+                        </div>
+                        <div class="text-[11px] font-bold text-slate-800">355ml × 24本</div>
+                    </button>
+
+                    <button onclick="applyPreset('redbull')" class="preset-btn neo-btn bg-sky-300 p-3 rounded-xl text-left relative group">
+                        <span class="text-[10px] font-extrabold text-white bg-blue-600 border border-black px-1.5 py-0.5 rounded absolute -top-2 right-2">翼をさずかる</span>
+                        <div class="font-black text-base text-black flex items-center gap-1">
+                            🐂 レッドブル
+                        </div>
+                        <div class="text-[11px] font-bold text-slate-800">250ml × 24本</div>
+                    </button>
+
+                    <button onclick="applyPreset('zone')" class="preset-btn neo-btn bg-purple-300 p-3 rounded-xl text-left relative group">
+                        <span class="text-[10px] font-extrabold text-white bg-purple-700 border border-black px-1.5 py-0.5 rounded absolute -top-2 right-2">大容量500</span>
+                        <div class="font-black text-base text-black flex items-center gap-1">
+                            👾 ZONe
+                        </div>
+                        <div class="text-[11px] font-bold text-slate-800">500ml × 24本</div>
+                    </button>
+
+                    <button onclick="applyPreset('cheap')" class="preset-btn neo-btn bg-amber-300 p-3 rounded-xl text-left relative group">
+                        <span class="text-[10px] font-extrabold text-black bg-yellow-400 border border-black px-1.5 py-0.5 rounded absolute -top-2 right-2">コスパ神</span>
+                        <div class="font-black text-base text-black flex items-center gap-1">
+                            ⚡️ 格安エナジー
+                        </div>
+                        <div class="text-[11px] font-bold text-slate-800">180ml × 30本</div>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Custom Controls Box -->
+            <div class="neo-box rounded-2xl p-5 space-y-5">
+                <h2 class="text-lg font-black text-black flex items-center gap-2 border-b-2 border-black pb-2">
+                    <span class="bg-cyan-400 text-black w-7 h-7 rounded-lg flex items-center justify-center text-xs border border-black">2</span>
+                    飲み方・条件をカスタム！
+                </h2>
+
+                <!-- Daily Count -->
+                <div>
+                    <div class="flex justify-between items-center mb-1">
+                        <label class="font-black text-sm text-black">🥤 1日に飲む本数</label>
+                        <span class="bg-pink-500 text-white font-black px-3 py-0.5 rounded-full text-base border border-black">
+                            <span id="dailyCountVal">1</span> 本
+                        </span>
+                    </div>
+                    <input type="range" id="dailyCount" min="0.5" max="4" step="0.5" value="1" 
+                        class="w-full h-3 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-pink-500 border-2 border-black" oninput="calculate()">
+                    <div class="flex justify-between text-[11px] font-bold text-slate-600 mt-1">
+                        <span>半本(2日1本)</span>
+                        <span>1本</span>
+                        <span>2本</span>
+                        <span>4本ガチ勢</span>
+                    </div>
+                </div>
+
+                <!-- Retail Single Price -->
+                <div>
+                    <label class="block text-xs font-black text-black mb-1">
+                        🏪 コンビニ・自販機の1本価格（税込）
+                    </label>
+                    <div class="relative">
+                        <input type="number" id="retailPrice" value="230" min="50" max="1000" step="5"
+                            class="w-full bg-yellow-100 border-2 border-black rounded-xl px-4 py-2 font-black text-black text-lg focus:bg-white focus:outline-none pr-12" oninput="calculate()">
+                        <span class="absolute right-4 top-1/2 -translate-y-1/2 font-black text-black">円</span>
+                    </div>
+                </div>
+
+                <!-- Box Details -->
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-black text-black mb-1">📦 定期便 1箱の本数</label>
+                        <div class="relative">
+                            <input type="number" id="boxCount" value="24" min="6" max="60" step="1"
+                                class="w-full bg-slate-100 border-2 border-black rounded-xl px-3 py-1.5 font-black text-black text-sm pr-8" oninput="calculate()">
+                            <span class="absolute right-3 top-1/2 -translate-y-1/2 font-bold text-xs">本</span>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-black text-black mb-1">💰 定期便 1箱の元値</label>
+                        <div class="relative">
+                            <input type="number" id="boxPrice" value="4900" min="500" max="20000" step="50"
+                                class="w-full bg-slate-100 border-2 border-black rounded-xl px-3 py-1.5 font-black text-black text-sm pr-8" oninput="calculate()">
+                            <span class="absolute right-3 top-1/2 -translate-y-1/2 font-bold text-xs">円</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Discount Rate Slider -->
+                <div>
+                    <div class="flex justify-between items-center mb-1">
+                        <label class="font-black text-xs text-black">🏷️ 定期便割引率 (Amazonおトク便など)</label>
+                        <span class="bg-cyan-400 text-black font-black px-2 py-0.5 rounded text-xs border border-black">
+                            <span id="discountVal">5</span> % OFF
+                        </span>
+                    </div>
+                    <input type="range" id="discountRate" min="0" max="25" step="1" value="5" 
+                        class="w-full h-3 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-cyan-500 border-2 border-black" oninput="calculate()">
+                </div>
+
+                <!-- Period Selector -->
+                <div>
+                    <label class="block text-xs font-black text-black mb-2">🗓️ 比較する期間</label>
+                    <div class="grid grid-cols-4 gap-2 font-black text-xs" id="periodSelector">
+                        <button onclick="setPeriod(1)" class="period-btn neo-btn bg-slate-100 py-2 rounded-xl text-center">1ヶ月</button>
+                        <button onclick="setPeriod(6)" class="period-btn neo-btn bg-slate-100 py-2 rounded-xl text-center">6ヶ月</button>
+                        <button onclick="setPeriod(12)" class="period-btn active neo-btn bg-yellow-300 py-2 rounded-xl text-center">1年</button>
+                        <button onclick="setPeriod(36)" class="period-btn neo-btn bg-slate-100 py-2 rounded-xl text-center">3年</button>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- In-Feed Side Ad Card -->
+            <div class="neo-box-pink rounded-2xl p-4 text-center relative overflow-hidden">
+                <span class="bg-black text-white text-[9px] font-bold px-1.5 py-0.5 rounded absolute top-2 left-2">AD</span>
+                <div class="text-xs font-black text-pink-600 uppercase tracking-widest mt-2">✨ 楽天スーパーSALE開催中 ✨</div>
+                <h3 class="font-black text-black text-base mt-1">楽天ポイント最大45.5倍！まとめ買いなら今！</h3>
+                <p class="text-xs font-bold text-slate-700 mt-1">エントリー＆クーポン獲得でMonsterエネルギー缶が実質最安値に！？</p>
+                <a href="https://amzn.to/4wKBsgR" target="_blank" rel="noopener noreferrer" class="mt-3 neo-btn bg-pink-500 text-white w-full py-2.5 rounded-xl block text-sm font-black hover:bg-pink-600">
+                    <i class="fa-solid fa-bag-shopping mr-1"></i> 最安値キャンペーンを確認する
+                </a>
+            </div>
+
+        </div>
+
+        <!-- RIGHT COLUMN: Results, Graph, Incentives, and More Ads -->
+        <div class="lg:col-span-7 space-y-6">
+
+            <!-- Result Display Box -->
+            <div class="neo-box bg-yellow-300 rounded-3xl p-6 relative overflow-hidden border-4 border-black">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-4 border-b-2 border-black pb-3">
+                    <div>
+                        <span class="bg-pink-500 text-white font-black text-xs px-2.5 py-1 rounded-full border border-black uppercase tracking-wider">SIMULATION RESULT</span>
+                        <h2 class="text-2xl sm:text-3xl font-black text-black mt-1">
+                            <span id="periodText">1年</span> で浮くお金は…！？
+                        </h2>
+                    </div>
+                    <div class="bg-white border-2 border-black rounded-xl px-3 py-1.5 text-xs font-black flex items-center gap-2">
+                        <span>1本単価:</span>
+                        <span class="line-through text-red-500" id="unitRetailText">230円</span>
+                        <i class="fa-solid fa-arrow-right text-pink-500"></i>
+                        <span class="text-emerald-600 font-extrabold text-base" id="unitSubText">194円</span>
+                    </div>
+                </div>
+
+                <!-- HUGE SAVINGS CALLOUT -->
+                <div class="bg-white rounded-2xl border-3 border-black p-5 mb-5 text-center sm:text-left flex flex-col sm:flex-row items-center justify-between gap-4 shadow-[4px_4px_0px_#000]">
+                    <div>
+                        <div class="text-xs font-extrabold text-slate-600 mb-1">🎉 定期便にするだけでゲットできる差額！</div>
+                        <div class="text-4xl sm:text-6xl font-black font-display text-pink-500 tracking-tight">
+                            ￥<span id="savedAmount">13,140</span>
+                        </div>
+                    </div>
+                    <div class="text-center sm:text-right border-t-2 sm:border-t-0 sm:border-l-2 border-black pt-3 sm:pt-0 sm:pl-6 w-full sm:w-auto">
+                        <div class="text-xs font-black text-slate-500 mb-0.5">おトク率</div>
+                        <div class="text-3xl font-black text-emerald-500" id="savedPercentage">15.7% OFF</div>
+                    </div>
+                </div>
+
+                <!-- Total Comparison Grid -->
+                <div class="grid grid-cols-2 gap-3 text-sm">
+                    <div class="bg-rose-100 border-2 border-black p-3 rounded-xl text-center">
+                        <div class="text-xs font-black text-rose-700 mb-1">🛒 コンビニ等で都度買い</div>
+                        <div class="text-lg font-black text-black">￥<span id="totalRetailCost">83,950</span></div>
+                    </div>
+                    <div class="bg-emerald-100 border-2 border-black p-3 rounded-xl text-center">
+                        <div class="text-xs font-black text-emerald-800 mb-1">📦 Amazon等で定期便利用</div>
+                        <div class="text-lg font-black text-emerald-700">￥<span id="totalSubCost">70,810</span></div>
+                    </div>
+                </div>
+
+                <!-- CTA Banner Inside Result -->
+                <div class="mt-5 pt-3 border-t-2 border-black text-center">
+                    <a id="resultCtaLink" href="https://amzn.to/4wKBsgR" target="_blank" rel="noopener noreferrer" class="neo-btn bg-pink-500 text-white py-3.5 px-6 rounded-2xl w-full block text-base font-black hover:bg-pink-600 shadow-lg animate-pulse-fast">
+                        🔥 差額でお小遣いGET！<span id="ctaBrandName">モンスター</span>の定期便最安値を即チェック <i class="fa-solid fa-angles-right ml-1"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Cost Accumulation Chart -->
+            <div class="neo-box rounded-2xl p-5 bg-white">
+                <div class="flex justify-between items-center mb-3">
+                    <h3 class="text-base font-black text-black flex items-center gap-2">
+                        📈 累積コストの推移グラフ
+                    </h3>
+                    <div class="flex items-center gap-3 text-xs font-black">
+                        <span class="flex items-center gap-1 text-rose-600"><span class="w-3 h-3 rounded-full bg-rose-500 border border-black"></span> 店舗購入</span>
+                        <span class="flex items-center gap-1 text-emerald-600"><span class="w-3 h-3 rounded-full bg-emerald-400 border border-black"></span> 定期便</span>
+                    </div>
+                </div>
+                <div class="relative h-60 w-full">
+                    <canvas id="costChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Native Banner Ad (Middle) -->
+            <div class="neo-box bg-gradient-to-r from-amber-300 via-orange-300 to-yellow-300 p-4 rounded-2xl flex flex-col sm:flex-row items-center justify-between gap-4 border-3 border-black">
+                <div class="flex items-center gap-3">
+                    <div class="w-12 h-12 bg-black text-yellow-300 rounded-xl flex items-center justify-center font-black text-2xl shrink-0">
+                        🎁
+                    </div>
+                    <div>
+                        <div class="text-[10px] font-black bg-black text-white px-1.5 py-0.5 rounded inline-block">スポンサー広告</div>
+                        <h4 class="font-black text-sm text-black">初回限定！Amazon Prime会員なら配送料無料！</h4>
+                        <p class="text-xs font-bold text-slate-800">30日間無料体験で定期おトク便の割引率がさらにアップ！</p>
+                    </div>
+                </div>
+                <a href="https://amzn.to/4wKBsgR" target="_blank" rel="noopener noreferrer" class="neo-btn bg-black text-white px-4 py-2 rounded-xl text-xs font-black shrink-0 hover:bg-slate-800">
+                    無料体験してみる
+                </a>
+            </div>
+
+            <!-- Saved Money Incentives Widget -->
+            <div class="neo-box rounded-2xl p-5 bg-cyan-100">
+                <h3 class="text-base font-black text-black flex items-center gap-2 mb-2">
+                    🎁 浮いたお金（￥<span id="incentiveAmount">13,140</span>）で買えるもの！
+                </h3>
+                <p class="text-xs font-bold text-slate-700 mb-4">定期便に変えるだけで、こんな豪華なご褒美が手に入る！</p>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3" id="incentiveList">
+                    <!-- Populated dynamically via JS -->
+                </div>
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- AFFILIATE RANKING & DEALS SECTION -->
+    <section id="affiliate-deals" class="max-w-7xl mx-auto px-4 mt-12">
+        <div class="neo-box bg-white rounded-3xl p-6 sm:p-8 relative">
+            <div class="text-center max-w-2xl mx-auto mb-8">
+                <span class="bg-pink-500 text-white font-black text-xs px-3 py-1 rounded-full border border-black uppercase">RECOMMENDED RANKING</span>
+                <h2 class="text-2xl sm:text-3xl font-black text-black mt-2">
+                    👑 定期便で売れてる！エナジードリンク爆安ランキング
+                </h2>
+                <p class="text-xs font-bold text-slate-600 mt-1">※ Amazon等で人気の定期おトク便対象銘柄おすすめピックアップ！</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+
+                <!-- Ranking Card 1: Monster -->
+                <div class="neo-box rounded-2xl p-5 bg-yellow-50 relative flex flex-col justify-between">
+                    <div class="absolute -top-3 left-4 bg-yellow-400 text-black font-black text-xs px-3 py-1 rounded-full border-2 border-black">
+                        🥇 第1位（殿堂入り）
+                    </div>
+                    <div class="mt-2">
+                        <div class="text-center my-3">
+                            <span class="text-5xl">👹</span>
+                            <h3 class="font-black text-lg text-black mt-2">モンスターエナジー 355ml×24本</h3>
+                            <p class="text-xs font-extrabold text-pink-600 mt-0.5">圧倒的人気No.1！カフェイン142mg配合</p>
+                        </div>
+                        <div class="bg-white border-2 border-black p-3 rounded-xl space-y-1 text-xs font-bold my-4">
+                            <div class="flex justify-between">
+                                <span class="text-slate-500">店頭参考価格:</span>
+                                <span class="line-through">￥5,520</span>
+                            </div>
+                            <div class="flex justify-between text-emerald-600 font-black text-sm">
+                                <span>定期便目安価格:</span>
+                                <span>￥4,655 (5%OFF)</span>
+                            </div>
+                            <div class="text-[10px] text-slate-500 text-right">1本あたり約194円！</div>
+                        </div>
+                    </div>
+                    <a href="https://amzn.to/4wKBsgR" target="_blank" rel="noopener noreferrer" class="neo-btn bg-yellow-400 text-black py-3 rounded-xl text-center text-xs font-black block hover:bg-yellow-300">
+                        <i class="fa-brands fa-amazon mr-1"></i> Amazonで最安値をチェック
+                    </a>
+                </div>
+
+                <!-- Ranking Card 2: Red Bull -->
+                <div class="neo-box rounded-2xl p-5 bg-sky-50 relative flex flex-col justify-between">
+                    <div class="absolute -top-3 left-4 bg-sky-400 text-white font-black text-xs px-3 py-1 rounded-full border-2 border-black">
+                        🥈 第2位
+                    </div>
+                    <div class="mt-2">
+                        <div class="text-center my-3">
+                            <span class="text-5xl">🐂</span>
+                            <h3 class="font-black text-lg text-black mt-2">レッドブル エナジードリンク 250ml×24本</h3>
+                            <p class="text-xs font-extrabold text-blue-600 mt-0.5">世界中で愛される王道エナジー！</p>
+                        </div>
+                        <div class="bg-white border-2 border-black p-3 rounded-xl space-y-1 text-xs font-bold my-4">
+                            <div class="flex justify-between">
+                                <span class="text-slate-500">店頭参考価格:</span>
+                                <span class="line-through">￥5,160</span>
+                            </div>
+                            <div class="flex justify-between text-emerald-600 font-black text-sm">
+                                <span>定期便目安価格:</span>
+                                <span>￥4,465 (5%OFF)</span>
+                            </div>
+                            <div class="text-[10px] text-slate-500 text-right">1本あたり約186円！</div>
+                        </div>
+                    </div>
+                    <a href="https://amzn.to/46cybvS" target="_blank" rel="noopener noreferrer" class="neo-btn bg-sky-400 text-white py-3 rounded-xl text-center text-xs font-black block hover:bg-sky-500">
+                        <i class="fa-brands fa-amazon mr-1"></i> Amazonで最安値をチェック
+                    </a>
+                </div>
+
+                <!-- Ranking Card 3: ZONe -->
+                <div class="neo-box rounded-2xl p-5 bg-purple-50 relative flex flex-col justify-between">
+                    <div class="absolute -top-3 left-4 bg-purple-500 text-white font-black text-xs px-3 py-1 rounded-full border-2 border-black">
+                        🥉 第3位
+                    </div>
+                    <div class="mt-2">
+                        <div class="text-center my-3">
+                            <span class="text-5xl">👾</span>
+                            <h3 class="font-black text-lg text-black mt-2">HYPER ZONe ENERGY 500ml×24本</h3>
+                            <p class="text-xs font-extrabold text-purple-600 mt-0.5">ガッツリ飲みたい派に大人気の大容量！</p>
+                        </div>
+                        <div class="bg-white border-2 border-black p-3 rounded-xl space-y-1 text-xs font-bold my-4">
+                            <div class="flex justify-between">
+                                <span class="text-slate-500">店頭参考価格:</span>
+                                <span class="line-through">￥4,800</span>
+                            </div>
+                            <div class="flex justify-between text-emerald-600 font-black text-sm">
+                                <span>定期便目安価格:</span>
+                                <span>￥3,610 (5%OFF)</span>
+                            </div>
+                            <div class="text-[10px] text-slate-500 text-right">1本あたり約150円！</div>
+                        </div>
+                    </div>
+                    <a href="https://amzn.to/3UprgNe" target="_blank" rel="noopener noreferrer" class="neo-btn bg-purple-500 text-white py-3 rounded-xl text-center text-xs font-black block hover:bg-purple-600">
+                        <i class="fa-brands fa-amazon mr-1"></i> Amazonで最安値をチェック
+                    </a>
+                </div>
+
+                <!-- Ranking Card 4: Cheap Amazon Energy -->
+                <div class="neo-box rounded-2xl p-5 bg-amber-50 relative flex flex-col justify-between">
+                    <div class="absolute -top-3 left-4 bg-amber-500 text-white font-black text-xs px-3 py-1 rounded-full border-2 border-black">
+                        🏅 コスパ爆発賞
+                    </div>
+                    <div class="mt-2">
+                        <div class="text-center my-3">
+                            <span class="text-5xl">⚡️</span>
+                            <h3 class="font-black text-lg text-black mt-2">Amazon限定 格安エナジー 30本</h3>
+                            <p class="text-xs font-extrabold text-amber-600 mt-0.5">毎日飲むならコレ！圧倒的ロープライス</p>
+                        </div>
+                        <div class="bg-white border-2 border-black p-3 rounded-xl space-y-1 text-xs font-bold my-4">
+                            <div class="flex justify-between">
+                                <span class="text-slate-500">店頭参考価格:</span>
+                                <span class="line-through">￥4,800</span>
+                            </div>
+                            <div class="flex justify-between text-emerald-600 font-black text-sm">
+                                <span>定期便目安価格:</span>
+                                <span>￥2,880 (10%OFF)</span>
+                            </div>
+                            <div class="text-[10px] text-slate-500 text-right">1本あたり約96円！</div>
+                        </div>
+                    </div>
+                    <a href="https://amzn.to/46beTXH" target="_blank" rel="noopener noreferrer" class="neo-btn bg-amber-400 text-black py-3 rounded-xl text-center text-xs font-black block hover:bg-amber-300">
+                        <i class="fa-brands fa-amazon mr-1"></i> Amazonで最安値をチェック
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- OFFICIAL LINKS & OWNER CREATOR SECTION -->
+    <section class="max-w-7xl mx-auto px-4 mt-12">
+        <div class="neo-box bg-gradient-to-r from-emerald-300 via-teal-200 to-cyan-300 rounded-3xl p-6 sm:p-8 relative">
+            <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+                <div class="space-y-2 text-center md:text-left">
+                    <span class="bg-black text-yellow-300 font-black text-xs px-3 py-1 rounded-full border border-yellow-300 uppercase">OFFICIAL LINKS</span>
+                    <h2 class="text-2xl sm:text-3xl font-black text-black">
+                        🚀 運営者公式メディア＆Webサイト
+                    </h2>
+                    <p class="text-xs sm:text-sm font-bold text-slate-800 max-w-xl">
+                        最新のおトク情報やライフハック、役立つガジェット・Webアプリの情報を発信中！ぜひチェックしてみてください！
+                    </p>
+                </div>
+
+                <div class="flex flex-col sm:flex-row items-center gap-4 w-full md:w-auto shrink-0">
+                    <!-- Website Link Button -->
+                    <a href="https://11gor.com/" target="_blank" rel="noopener noreferrer" class="neo-btn bg-cyan-400 text-black px-6 py-4 rounded-2xl w-full sm:w-auto text-center font-black flex items-center justify-center gap-3 hover:bg-cyan-300 text-base">
+                        <i class="fa-solid fa-globe text-2xl"></i>
+                        <div class="text-left">
+                            <div class="text-[10px] font-extrabold uppercase text-slate-700">Official Website</div>
+                            <div class="text-sm font-black">11gor.comを見る</div>
+                        </div>
+                    </a>
+
+                    <!-- Note Link Button -->
+                    <a href="https://note.com/lively_yeti9225" target="_blank" rel="noopener noreferrer" class="neo-btn bg-emerald-400 text-black px-6 py-4 rounded-2xl w-full sm:w-auto text-center font-black flex items-center justify-center gap-3 hover:bg-emerald-300 text-base">
+                        <i class="fa-solid fa-pen-nib text-2xl"></i>
+                        <div class="text-left">
+                            <div class="text-[10px] font-extrabold uppercase text-slate-700">Official Note</div>
+                            <div class="text-sm font-black">公式noteを読む</div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sticky Footer Ad Bar -->
+    <div id="stickyAd" class="fixed bottom-0 left-0 right-0 bg-black border-t-4 border-yellow-300 z-50 p-3 shadow-2xl transition-transform">
+        <div class="max-w-7xl mx-auto flex items-center justify-between gap-3">
+            <div class="flex items-center gap-3">
+                <span class="hidden sm:inline-block text-2xl animate-bounce">⚡️</span>
+                <div class="text-white text-xs sm:text-sm font-black">
+                    <span class="text-yellow-300">【要チェック】</span> Amazonおトク便でモンスター等のまとめ買いクーポンを配信中！
+                </div>
+            </div>
+            <div class="flex items-center gap-2 shrink-0">
+                <a href="https://amzn.to/4wKBsgR" target="_blank" rel="noopener noreferrer" class="neo-btn bg-yellow-300 text-black px-4 py-2 rounded-xl text-xs font-black hover:bg-yellow-200">
+                    今すぐGET！ <i class="fa-solid fa-arrow-right"></i>
+                </a>
+                <button onclick="document.getElementById('stickyAd').style.display='none'" class="text-slate-400 hover:text-white p-1 text-xs font-bold">
+                    ✕
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentPeriodMonths = 12; // default 1 year
+        let chartInstance = null;
+
+        const presets = {
+            monster: {
+                name: 'モンスター',
+                retailPrice: 230,
+                boxCount: 24,
+                boxPrice: 4900,
+                discountRate: 5,
+                url: 'https://amzn.to/4wKBsgR'
+            },
+            redbull: {
+                name: 'レッドブル',
+                retailPrice: 215,
+                boxCount: 24,
+                boxPrice: 4700,
+                discountRate: 5,
+                url: 'https://amzn.to/46cybvS'
+            },
+            zone: {
+                name: 'ZONe',
+                retailPrice: 200,
+                boxCount: 24,
+                boxPrice: 3800,
+                discountRate: 5,
+                url: 'https://amzn.to/3UprgNe'
+            },
+            cheap: {
+                name: '格安エナジー',
+                retailPrice: 160,
+                boxCount: 30,
+                boxPrice: 3200,
+                discountRate: 10,
+                url: 'https://amzn.to/46beTXH'
+            }
+        };
+
+        const rewardItems = [
+            { threshold: 3000, title: "高級スタバコーヒー 5杯分", icon: "☕️" },
+            { threshold: 5000, title: "最新人気ゲームソフト 1本", icon: "🎮" },
+            { threshold: 10000, title: "高音質ワイヤレスイヤホン", icon: "🎧" },
+            { threshold: 15000, title: "豪華焼き肉ディナーペア券", icon: "🥩" },
+            { threshold: 25000, title: "スマートウォッチ / ガジェット", icon: "⌚️" },
+            { threshold: 40000, title: "温泉旅行 1泊2日", icon: "♨️" },
+            { threshold: 70000, title: "最新PS5 / Switch有機EL", icon: "📺" }
+        ];
+
+        function applyPreset(key) {
+            const p = presets[key];
+            if (!p) return;
+
+            document.getElementById('retailPrice').value = p.retailPrice;
+            document.getElementById('boxCount').value = p.boxCount;
+            document.getElementById('boxPrice').value = p.boxPrice;
+            document.getElementById('discountRate').value = p.discountRate;
+            document.getElementById('discountVal').innerText = p.discountRate;
+
+            const ctaLink = document.getElementById('resultCtaLink');
+            if (ctaLink) {
+                ctaLink.href = p.url;
+            }
+            const ctaBrandName = document.getElementById('ctaBrandName');
+            if (ctaBrandName) {
+                ctaBrandName.innerText = p.name;
+            }
+
+            calculate();
+        }
+
+        function setPeriod(months) {
+            currentPeriodMonths = months;
+            const buttons = document.querySelectorAll('#periodSelector button');
+            buttons.forEach(btn => {
+                btn.classList.remove('bg-yellow-300');
+                btn.classList.add('bg-slate-100');
+            });
+            event.currentTarget.classList.remove('bg-slate-100');
+            event.currentTarget.classList.add('bg-yellow-300');
+
+            let text = `${months}ヶ月`;
+            if (months === 12) text = '1年';
+            if (months === 36) text = '3年';
+            document.getElementById('periodText').innerText = text;
+
+            calculate();
+        }
+
+        function calculate() {
+            const dailyCount = parseFloat(document.getElementById('dailyCount').value);
+            const retailPrice = parseFloat(document.getElementById('retailPrice').value) || 0;
+            const boxCount = parseInt(document.getElementById('boxCount').value) || 1;
+            const boxPrice = parseFloat(document.getElementById('boxPrice').value) || 0;
+            const discountRate = parseFloat(document.getElementById('discountRate').value) || 0;
+
+            document.getElementById('dailyCountVal').innerText = dailyCount;
+            document.getElementById('discountVal').innerText = discountRate;
+
+            const daysInMonth = 30.4375;
+            const totalDays = daysInMonth * currentPeriodMonths;
+            const totalCansNeeded = totalDays * dailyCount;
+
+            const totalRetailCost = Math.round(totalCansNeeded * retailPrice);
+
+            const discountedBoxPrice = boxPrice * (1 - (discountRate / 100));
+            const subUnitPrice = discountedBoxPrice / boxCount;
+
+            const totalSubCost = Math.round(totalCansNeeded * subUnitPrice);
+
+            const savedAmount = totalRetailCost - totalSubCost;
+            const savedPercent = totalRetailCost > 0 ? ((savedAmount / totalRetailCost) * 100).toFixed(1) : 0;
+
+            document.getElementById('unitRetailText').innerText = `${retailPrice.toLocaleString()}円`;
+            document.getElementById('unitSubText').innerText = `${Math.round(subUnitPrice).toLocaleString()}円`;
+            document.getElementById('savedAmount').innerText = Math.max(0, savedAmount).toLocaleString();
+            document.getElementById('savedPercentage').innerText = `${Math.max(0, savedPercent)}% OFF`;
+            document.getElementById('totalRetailCost').innerText = totalRetailCost.toLocaleString();
+            document.getElementById('totalSubCost').innerText = totalSubCost.toLocaleString();
+            document.getElementById('incentiveAmount').innerText = Math.max(0, savedAmount).toLocaleString();
+
+            updateChart(dailyCount, retailPrice, subUnitPrice, currentPeriodMonths);
+            updateIncentives(savedAmount);
+        }
+
+        function updateIncentives(saved) {
+            const container = document.getElementById('incentiveList');
+            container.innerHTML = '';
+
+            if (saved <= 0) {
+                container.innerHTML = `
+                    <div class="col-span-3 text-center py-4 text-xs font-black text-slate-500">
+                        定期便の方が高くなっています！価格設定を見直してみてください。
+                    </div>`;
+                return;
+            }
+
+            const eligible = rewardItems.filter(item => saved >= item.threshold * 0.7).slice(-3);
+            if (eligible.length === 0) eligible.push(rewardItems[0]);
+
+            eligible.forEach(item => {
+                const isAffordable = saved >= item.threshold;
+                const card = document.createElement('div');
+                card.className = `neo-box p-3 rounded-xl ${isAffordable ? 'bg-white' : 'bg-slate-100 opacity-60'} flex items-center gap-2`;
+                card.innerHTML = `
+                    <div class="text-2xl shrink-0">${item.icon}</div>
+                    <div>
+                        <div class="text-xs font-black text-black line-clamp-1">${item.title}</div>
+                        <div class="text-[10px] font-bold text-slate-500">目安: ￥${item.threshold.toLocaleString()}</div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function updateChart(dailyCount, retailPrice, subUnitPrice, totalMonths) {
+            const ctx = document.getElementById('costChart').getContext('2d');
+
+            const labels = [];
+            const retailData = [];
+            const subData = [];
+
+            const step = totalMonths <= 12 ? 1 : (totalMonths <= 24 ? 2 : 3);
+            const daysInMonth = 30.4375;
+
+            for (let m = 1; m <= totalMonths; m += step) {
+                labels.push(`${m}ヶ月目`);
+                const days = m * daysInMonth;
+                const cans = days * dailyCount;
+                retailData.push(Math.round(cans * retailPrice));
+                subData.push(Math.round(cans * subUnitPrice));
+            }
+
+            if (chartInstance) {
+                chartInstance.destroy();
+            }
+
+            chartInstance = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: '店頭単品購入',
+                            data: retailData,
+                            borderColor: '#F43F5E',
+                            backgroundColor: 'rgba(244, 63, 94, 0.1)',
+                            borderWidth: 3,
+                            tension: 0.2,
+                            fill: true
+                        },
+                        {
+                            label: '定期便購入',
+                            data: subData,
+                            borderColor: '#10B981',
+                            backgroundColor: 'rgba(16, 185, 129, 0.2)',
+                            borderWidth: 4,
+                            tension: 0.2,
+                            fill: true
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false }
+                    },
+                    scales: {
+                        x: {
+                            grid: { color: 'rgba(0,0,0,0.05)' },
+                            ticks: { font: { weight: 'bold', family: 'M PLUS Rounded 1c' } }
+                        },
+                        y: {
+                            grid: { color: 'rgba(0,0,0,0.05)' },
+                            ticks: { 
+                                font: { weight: 'bold', family: 'M PLUS Rounded 1c' },
+                                callback: function(val) { return '￥' + (val / 1000) + 'k'; }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            calculate();
+        });
+    </script>
+</body>
+</html>
