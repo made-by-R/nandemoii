@@ -197,6 +197,21 @@
                 <script src="https://adm.shinobi.jp/s/3ae1a25c4c48e8a336408f25e4f48f8a"></script>
                 <!-- admax -->
             </div>
+            <div>
+                <!-- admax -->
+                <script src="https://adm.shinobi.jp/s/ce10b152655a57cf82d40897e4670758"></script>
+                <!-- admax -->
+            </div>
+            <div>
+                <!-- admax -->
+                <script src="https://adm.shinobi.jp/s/8269df45b0e687bb01088268480d8ecc"></script>
+                <!-- admax -->
+            </div>
+            <div>
+                <!-- admax -->
+                <script src="https://adm.shinobi.jp/s/d28a47bc5217ce8ea3e624ec6eb95428"></script>
+                <!-- admax -->
+            </div>
         </div>
         <div class="text-[10px] text-gray-500 font-bold mt-1">▲ 本物の広告エリア ここまで ▲</div>
     </div>
@@ -205,6 +220,19 @@
     <main id="hell-canvas" class="relative w-full min-h-[calc(100vh-250px)] p-3 sm:p-6 overflow-hidden">
         
         <!-- Controls Dashboard Bar -->
+        <div class="max-w-4xl mx-auto bg-white border-4 border-black p-4 rounded-2xl shadow-[8px_8px_0_#000] mb-6 relative z-30">
+            <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+                <div class="flex items-center gap-4 w-full md:w-auto">
+                    <div class="w-16 h-16 bg-toxic-pink rounded-full border-4 border-black flex items-center justify-center text-3xl shadow-[4px_4px_0_#000] animate-spinfast" style="animation-duration: 3s;">
+                        🌀
+                    </div>
+                    <div>
+                        <h2 class="text-xl font-gothic text-black tracking-tight">地獄のダッシュボード</h2>
+                        <div class="flex items-center gap-2 mt-1">
+                            <span class="text-xs font-bold text-gray-700 bg-gray-200 px-2 py-0.5 rounded border border-black">現在の地獄度</span>
+                            <input type="range" id="chaos-slider" min="1" max="5" value="2" onchange="updateChaosLevel(this.value)" class="w-24 accent-toxic-pink">
+                            <span id="lvl-val" class="text-xs font-bold text-toxic-pink bg-black px-2 py-0.5 rounded border border-toxic-pink">LV. 2 (うざい)</span>
+                        </div>
                     </div>
                 </div>
 
@@ -748,10 +776,60 @@
             }
         }
 
+        // 広告クリック時の煽りコメントバリエーション (全40種)
+        const clickMockComments = [
+            "🤡 「{title}」踏んだｗｗ 養分乙！",
+            "🤪 え、「{title}」信じたの？ 純粋かよｗｗ",
+            "💸 「{title}」にお布施あざーっす！",
+            "🤡 「{title}」クリックする情弱おる？ ここにおったわｗｗ",
+            "💩 「{title}」とかマジで踏む奴いるんだ…引くわ…",
+            "🎯 ターゲット確認！「{title}」でカモネギ一丁！",
+            "💖 「{title}」に釣られるとか、チョロすぎない？",
+            "🤪 ｱﾋｬﾋｬ! 「{title}」ポチッちゃったねぇ！",
+            "🤡 お見事！見事に「{title}」の罠にハマりました！",
+            "💸 まさか「{title}」に騙されるとは…(呆れ)",
+            "🤡 君みたいな人がいるから「{title}」が無くならないんだよ！",
+            "🤢 うわ、「{title}」クリックした…手洗ってきなよ",
+            "🤡 「{title}」で騙されるIQ、測定不能です！",
+            "🤑 まいどあり！「{title}」の養分サンキュー！",
+            "🤡 「{title}」とかいうクソ広告踏む才能あるよ君！",
+            "🤪 「{title}」踏んじゃったか〜、来世に期待だね！",
+            "🤡 は？「{title}」押した？ 正気？",
+            "💸 ﾁﾘｰﾝ💰「{title}」で私の小遣いゲット！",
+            "🤡 「{title}」クリックでウイルス感染！(※嘘です)",
+            "🤪 ちょｗｗ「{title}」ってｗｗｗ 腹痛いｗｗ",
+            "🤡 「{title}」でお悩みですか？(笑) 乙！",
+            "🤑 いいねいいね〜！「{title}」踏んでくれて助かる〜！",
+            "🤡 「{title}」に吸い込まれる指先、美しかったよ(皮肉)",
+            "💩 「{title}」を踏むなんて、今日運勢最下位じゃない？",
+            "🤡 「{title}」ポチる速さだけは一流だな！",
+            "🤪 「{title}」で救われるとでも思った？ 残念！",
+            "🤡 君の「{title}」への情熱、受け取ったぜ！(養分として)",
+            "💸 「{title}」課金(架空)ありがとうございます！",
+            "🤡 「{title}」って書いてあれば何でも押すんでしょ？",
+            "🤢 汚いもの触ったね…「{title}」とか…",
+            "🤡 「{title}」で釣れるとか、入れ食い状態じゃんｗｗ",
+            "🤪 ほーら、「{title}」の罠だよ〜(笑)",
+            "🤡 「{title}」に興味津々で草",
+            "💸 その「{title}」へのワンクリックが、私の焼肉代に！",
+            "🤡 「{title}」押した瞬間の君の顔、見たかったわ〜",
+            "🤪 限界突破！「{title}」踏む底辺メンタル！",
+            "🤡 「{title}」で夢見ちゃった？ 現実は非情だよ！",
+            "💩 「{title}」とかいうゴミ拾いお疲れ様！",
+            "🤡 はい、「{title}」で情弱リスト入り確定〜！",
+            "🤪 「{title}」クリック…君、疲れてるんじゃない？"
+        ];
+
         function clickAdReward(title) {
             initAudio();
             updateSoulCount(100);
-            showToast(`🤡 「${title.substring(0, 10)}...」に騙されたね！養分乙！ (+100pt)`);
+            
+            // タイトルを少し長めに切り取る
+            const shortTitle = title.length > 12 ? title.substring(0, 12) + "..." : title;
+            // 40種の中からランダムで煽りコメントを選択し、{title}を置換
+            const randomComment = clickMockComments[Math.floor(Math.random() * clickMockComments.length)].replace("{title}", shortTitle);
+            
+            showToast(`${randomComment} <br><span class="text-[10px] text-toxic-pink bg-black px-1 rounded inline-block mt-1">+100pt GET</span>`);
             playSynthBeep(1200, 'square', 0.1);
             setTimeout(() => playSynthBeep(1600, 'square', 0.15), 100);
         }
