@@ -1,0 +1,964 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TOXIC POP ADS 💖 限界ゲロポップ広告機構 (※ジョークサイト)</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts for Pop Design -->
+    <link href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=Kiwi+Maru:wght@500&family=M+PLUS+Rounded+1c:wght@800;900&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        toxic: {
+                            pink: '#ff00ff',
+                            cyan: '#00ffff',
+                            yellow: '#ffff00',
+                            green: '#00ff00',
+                            purple: '#8a2be2'
+                        }
+                    },
+                    fontFamily: {
+                        pop: ['"M PLUS Rounded 1c"', 'sans-serif'],
+                        gothic: ['"Dela Gothic One"', 'sans-serif'],
+                        maru: ['"Kiwi Maru"', 'serif']
+                    },
+                    keyframes: {
+                        wiggle: {
+                            '0%, 100%': { transform: 'rotate(-3deg) scale(1)' },
+                            '50%': { transform: 'rotate(3deg) scale(1.05)' },
+                        },
+                        marquee: {
+                            '0%': { transform: 'translateX(100%)' },
+                            '100%': { transform: 'translateX(-100%)' }
+                        },
+                        flashbg: {
+                            '0%, 100%': { backgroundColor: '#ff00ff' },
+                            '33%': { backgroundColor: '#00ffff' },
+                            '66%': { backgroundColor: '#ffff00' }
+                        },
+                        spinfast: {
+                            '0%': { transform: 'rotate(0deg)' },
+                            '100%': { transform: 'rotate(360deg)' }
+                        }
+                    },
+                    animation: {
+                        wiggle: 'wiggle 0.5s ease-in-out infinite',
+                        marquee: 'marquee 12s linear infinite',
+                        flashbg: 'flashbg 1s infinite step-end',
+                        spinfast: 'spinfast 2s linear infinite'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            /* 毒々しいストライプ背景 */
+            background-color: #ffb6c1;
+            background-image: repeating-linear-gradient(
+                45deg,
+                #ff69b4 25%,
+                transparent 25%,
+                transparent 75%,
+                #ff69b4 75%,
+                #ff69b4
+            ), repeating-linear-gradient(
+                45deg,
+                #ff69b4 25%,
+                #ffb6c1 25%,
+                #ffb6c1 75%,
+                #ff69b4 75%,
+                #ff69b4
+            );
+            background-position: 0 0, 20px 20px;
+            background-size: 40px 40px;
+            color: #333;
+            overflow-x: hidden;
+            user-select: none;
+            /* 馬鹿にしたカーソル */
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" style="font-size: 24px"><text y="24">🤡</text></svg>'), auto;
+        }
+
+        ::-webkit-scrollbar {
+            width: 12px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #00ffff;
+            border-left: 2px solid #000;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #ff00ff;
+            border: 2px solid #000;
+            border-radius: 10px;
+        }
+
+        .ad-window {
+            box-shadow: 8px 8px 0px #000;
+            transition: transform 0.1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .ad-window:hover {
+            transform: scale(1.02);
+        }
+
+        /* 逃げるボタン用の絶対配置クラス */
+        .evasive-btn {
+            position: relative;
+            transition: transform 0.15s ease-out;
+        }
+
+        .text-stroke {
+            -webkit-text-stroke: 1px black;
+            color: white;
+        }
+        
+        .screen-shake {
+            animation: wiggle 0.2s ease-in-out 3;
+        }
+    </style>
+</head>
+<body class="font-pop min-h-screen relative selection:bg-toxic-cyan selection:text-black">
+
+    <!-- Header Navbar -->
+    <header class="bg-white border-b-4 border-black sticky top-0 z-40 px-3 py-2 flex flex-wrap items-center justify-between shadow-[0_4px_0_rgba(0,0,0,1)]">
+        <div class="flex items-center space-x-3">
+            <div class="text-4xl animate-wiggle">🤪</div>
+            <div>
+                <div class="flex items-center gap-2">
+                    <h1 class="text-xl md:text-3xl font-gothic tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-toxic-pink via-toxic-cyan to-toxic-yellow uppercase drop-shadow-[2px_2px_0_rgba(0,0,0,1)]">
+                        TOXIC POP ADS
+                    </h1>
+                    <span class="text-[10px] bg-black text-toxic-yellow px-2 py-0.5 rounded-full font-bold border-2 border-toxic-pink rotate-3">JOKE SITE</span>
+                </div>
+                <p class="text-xs text-black font-bold tracking-tight">限界ゲロポップ広告機構 :: 情弱ホイホイ v9.9.9</p>
+            </div>
+        </div>
+
+        <!-- System Stats Dashboard -->
+        <div class="flex items-center space-x-3 my-2 sm:my-0 text-sm">
+            <div class="bg-toxic-pink border-2 border-black px-3 py-1 rounded-xl text-black font-bold shadow-[2px_2px_0_#000]">
+                <i class="fa-solid fa-money-bill-wave animate-pulse mr-1"></i>
+                吸い上げた養分pt: <span id="soul-count" class="font-gothic text-white text-stroke text-lg">0</span>
+            </div>
+            <div class="bg-toxic-cyan border-2 border-black px-3 py-1 rounded-xl text-black font-bold shadow-[2px_2px_0_#000]">
+                <i class="fa-solid fa-dumpster text-black mr-1"></i>
+                画面の汚さ: <span id="ad-density" class="font-gothic text-toxic-pink">0%</span>
+            </div>
+        </div>
+
+        <!-- Quick Actions Controls -->
+        <div class="flex items-center space-x-2">
+            <button onclick="openModal('forge-modal')" class="bg-toxic-yellow hover:bg-white text-black font-gothic px-3 py-1.5 rounded-xl border-2 border-black text-xs flex items-center gap-1 transition shadow-[2px_2px_0_#000] active:translate-y-1 active:shadow-none">
+                <i class="fa-solid fa-wand-magic-sparkles"></i> AIでクソ広告錬成
+            </button>
+            <button id="btn-sound" onclick="toggleAudio()" class="bg-black hover:bg-gray-800 text-white px-3 py-1.5 rounded-xl border-2 border-toxic-cyan text-xs flex items-center gap-1 shadow-[2px_2px_0_#00ffff]">
+                <i id="sound-icon" class="fa-solid fa-volume-high text-toxic-green"></i> 音
+            </button>
+            <button onclick="triggerAdMageddon()" class="bg-toxic-pink hover:bg-pink-400 text-white font-gothic px-3 py-1.5 rounded-xl border-2 border-black text-xs animate-wiggle shadow-[2px_2px_0_#000] active:translate-y-1 active:shadow-none">
+                🤮 全力で馬鹿にする
+            </button>
+            <button onclick="cleanScreen()" class="bg-toxic-green hover:bg-green-400 text-black font-bold px-3 py-1.5 rounded-xl border-2 border-black text-xs shadow-[2px_2px_0_#000] active:translate-y-1 active:shadow-none" title="Escapeキーでも全消去できます">
+                🧹 掃除 (Esc)
+            </button>
+            <button onclick="openModal('settings-modal')" class="bg-white hover:bg-gray-200 text-black p-1.5 rounded-xl border-2 border-black text-xs shadow-[2px_2px_0_#000]">
+                <i class="fa-solid fa-gear"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Marquee Ticker -->
+    <div class="bg-black border-b-4 border-toxic-pink overflow-hidden py-1 text-toxic-cyan text-sm font-bold flex whitespace-nowrap z-30 relative">
+        <div class="animate-marquee flex gap-12">
+            <span>🤡【悲報】お前のブラウザ、履歴ヤバすぎて草ｗｗ（※冗談です）</span>
+            <span>💸 え？まだ真面目に働いてるの？スマホぽちぽちで月収5000兆円稼ぐ裏ワザ教えるわｗｗ（※詐欺風のジョークです）</span>
+            <span>🤪 情弱乙！今すぐクリックして来世ガチャ回そうぜ！ SSR確定！（※架空）</span>
+            <span>💖 おめでとう！君がちょうど 33-4 番目のカモだよ！はやく登録して！</span>
+            <span>🚨 ※免責事項：このサイトは利用者を小馬鹿にするのが目的の1000%フィクションジョークサイトです。怒らないでね。</span>
+            <span>💩 IQ3でもわかる！「息をするだけでモテる」謎のサプリ（※実在しません）</span>
+        </div>
+    </div>
+
+    <!-- Main Workspace -->
+    <main id="hell-canvas" class="relative w-full min-h-[calc(100vh-160px)] p-3 sm:p-6 overflow-hidden">
+        
+        <!-- Controls Dashboard Bar -->
+        <div class="max-w-4xl mx-auto bg-white/90 backdrop-blur-sm border-4 border-black rounded-2xl p-3 sm:p-4 mb-6 shadow-[8px_8px_0_rgba(0,0,0,1)]">
+            <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+                <div class="w-full md:w-1/2">
+                    <label class="block text-sm font-gothic text-black mb-1 flex justify-between">
+                        <span>🌡️ 煽りレベル: <span id="lvl-val" class="text-toxic-pink">LV. 2 (うざい)</span></span>
+                    </label>
+                    <input type="range" id="chaos-slider" min="1" max="5" value="2" oninput="updateChaosLevel(this.value)" class="w-full accent-toxic-cyan cursor-pointer h-3 bg-gray-200 rounded-lg appearance-none">
+                    <div class="flex justify-between text-[11px] font-bold text-gray-500 mt-1">
+                        <span>1: 微笑</span>
+                        <span>2: うざい</span>
+                        <span>3: 草</span>
+                        <span>4: 限界</span>
+                        <span>5: ゲロポップ</span>
+                    </div>
+                </div>
+
+                <div class="flex flex-wrap gap-2 w-full md:w-auto justify-end">
+                    <button onclick="cleanScreen()" class="bg-gray-200 hover:bg-gray-300 border-2 border-black text-black font-bold text-xs px-4 py-2 rounded-xl shadow-[2px_2px_0_#000] active:translate-y-1 active:shadow-none">
+                        <i class="fa-solid fa-broom mr-1"></i> リセット
+                    </button>
+                    <button onclick="spawnRandomAd()" class="bg-toxic-pink hover:bg-pink-400 border-2 border-black text-white font-gothic text-xs px-4 py-2 rounded-xl shadow-[4px_4px_0_#000] active:translate-y-1 active:shadow-none">
+                        <i class="fa-solid fa-plus mr-1"></i> クソ広告追加
+                    </button>
+                    <button onclick="shareOnX()" class="bg-black hover:bg-gray-800 text-white border-2 border-toxic-cyan font-bold text-xs px-4 py-2 rounded-xl shadow-[4px_4px_0_#00ffff] active:translate-y-1 active:shadow-none flex items-center gap-1">
+                        <i class="fa-brands fa-x-twitter text-toxic-cyan"></i> 釣果を晒す
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Interactive Cards -->
+        <div class="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+            <div class="bg-toxic-cyan border-4 border-black rounded-2xl p-4 text-center shadow-[6px_6px_0_#000] hover:-translate-y-1 transition">
+                <div class="text-4xl mb-2">💸</div>
+                <h3 class="text-sm font-gothic text-black">養分ローン（金利∞）</h3>
+                <p class="text-xs text-gray-800 font-bold my-2">審査なし！君の尊厳を担保に即日500pt付与！やったね！</p>
+                <button onclick="takeSoulLoan()" class="mt-2 text-xs bg-white hover:bg-gray-100 border-2 border-black text-black font-bold py-2 px-4 rounded-xl w-full shadow-[2px_2px_0_#000] active:translate-y-1 active:shadow-none">
+                    ポチって借金する
+                </button>
+            </div>
+
+            <div class="bg-toxic-yellow border-4 border-black rounded-2xl p-4 text-center shadow-[6px_6px_0_#000] hover:-translate-y-1 transition">
+                <div class="text-4xl mb-2">🎰</div>
+                <h3 class="text-sm font-gothic text-black">情弱ガチャ (100pt)</h3>
+                <p class="text-xs text-gray-800 font-bold my-2">UR級の最悪なポップアップ広告を引き当てて画面を汚そう！</p>
+                <button onclick="playGacha()" class="mt-2 text-xs bg-black hover:bg-gray-800 border-2 border-black text-toxic-yellow font-bold py-2 px-4 rounded-xl w-full shadow-[2px_2px_0_#000] active:translate-y-1 active:shadow-none">
+                    ガチャを回す
+                </button>
+            </div>
+
+            <div class="bg-toxic-pink border-4 border-black rounded-2xl p-4 text-center shadow-[6px_6px_0_#000] hover:-translate-y-1 transition">
+                <div class="text-4xl mb-2">🤖</div>
+                <h3 class="text-sm font-gothic text-white text-stroke">AI クソ広告メーカー</h3>
+                <p class="text-xs text-white font-bold my-2">Gemini AI が適当な単語を最悪な広告に自動変換してくれるよ！</p>
+                <button onclick="openModal('forge-modal')" class="mt-2 text-xs bg-white hover:bg-gray-100 border-2 border-black text-toxic-pink font-bold py-2 px-4 rounded-xl w-full shadow-[2px_2px_0_#000] active:translate-y-1 active:shadow-none">
+                    AIをこき使う
+                </button>
+            </div>
+        </div>
+
+        <!-- Ad Popups Dynamic Canvas Container -->
+        <div id="popups-container" class="relative w-full h-full min-h-[480px]">
+            <!-- Dynamic popups will be injected here -->
+        </div>
+
+    </main>
+
+    <!-- Cookie / Disclaimer Banner -->
+    <div id="cookie-banner" class="fixed bottom-0 inset-x-0 z-50 bg-white border-t-8 border-toxic-pink p-4 shadow-[0_-10px_0_rgba(0,0,0,1)]">
+        <div class="max-w-5xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+            <div class="text-xs text-black font-bold">
+                <p class="text-sm mb-1 flex items-center gap-2 font-gothic">
+                    <i class="fa-solid fa-triangle-exclamation text-toxic-pink text-xl animate-wiggle"></i>
+                    【超重要】免責事項とジョークの理解について
+                </p>
+                <p class="leading-relaxed">
+                    このサイトは利用者をポップに小馬鹿にするフィクションのジョークシミュレーターです。実際の個人情報収集、ウイルス感染、金銭の請求は一切ありません（架空の遊びです）。笑って許せる人だけ遊んでね！
+                </p>
+            </div>
+            <div class="flex flex-wrap gap-2 shrink-0">
+                <button onclick="acceptCookies(true)" class="bg-toxic-green hover:bg-green-400 border-2 border-black text-black font-gothic text-xs px-4 py-3 rounded-xl shadow-[4px_4px_0_#000] active:translate-y-1 active:shadow-none">
+                    ウケるｗ（全て同意）
+                </button>
+                <button onclick="acceptCookies(false)" class="bg-gray-200 hover:bg-gray-300 border-2 border-black text-gray-600 text-xs px-4 py-3 rounded-xl shadow-[2px_2px_0_#000] active:translate-y-1 active:shadow-none">
+                    真面目に閉じる
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- AI Forge Modal -->
+    <div id="forge-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white border-4 border-black rounded-3xl w-full max-w-lg p-6 relative shadow-[12px_12px_0_#ff00ff]">
+            <button onclick="closeModal('forge-modal')" class="absolute -top-4 -right-4 bg-toxic-yellow border-4 border-black rounded-full w-10 h-10 flex items-center justify-center text-black hover:bg-white text-xl shadow-[4px_4px_0_#000] transition">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+            <div class="text-center mb-6">
+                <div class="inline-block p-3 bg-toxic-cyan rounded-full border-4 border-black text-black mb-2 shadow-[4px_4px_0_#000] animate-spinfast" style="animation-duration: 4s;">
+                    <i class="fa-solid fa-wand-magic-sparkles text-2xl"></i>
+                </div>
+                <h2 class="text-xl font-gothic text-black">
+                    AI クソ広告ジェネレーター
+                </h2>
+                <p class="text-xs text-gray-600 mt-2 font-bold">適当な言葉を入れるとGemini AIが煽り度MAXの架空広告を作るよ！</p>
+            </div>
+
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-xs font-bold text-black mb-1">煽りたいテーマ（例：ダイエット、宿題、スマホ）</label>
+                    <input type="text" id="forge-input" placeholder="例: テスト勉強、仮想通貨、モテる方法" class="w-full bg-pink-50 border-4 border-black rounded-xl p-3 text-sm text-black font-bold focus:outline-none focus:bg-toxic-cyan focus:border-toxic-pink transition">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-black mb-1">煽りスタイル</label>
+                    <select id="forge-style" class="w-full bg-yellow-50 border-4 border-black rounded-xl p-3 text-sm text-black font-bold focus:outline-none focus:bg-toxic-cyan focus:border-toxic-pink transition">
+                        <option value="scam_pop">【情弱ビジネス風】（え？まだ〇〇やってないの？ｗ）</option>
+                        <option value="complex_mock">【コンプレックス煽り風】（〇〇なヤツ、正直キツイっすｗ）</option>
+                        <option value="fake_warning">【偽警告風】（ヤバい！あなたのPC、〇〇だらけです！）</option>
+                        <option value="brain_dead">【IQ3向けサプリ風】（飲むだけで〇〇！天才確定！）</option>
+                    </select>
+                </div>
+
+                <div class="pt-4">
+                    <button id="forge-submit-btn" onclick="generateCursedAdWithGemini()" class="w-full bg-toxic-pink hover:bg-pink-400 border-4 border-black text-white font-gothic py-3 rounded-xl shadow-[6px_6px_0_#000] active:translate-y-1 active:shadow-none flex items-center justify-center gap-2 text-base transition">
+                        <i class="fa-solid fa-bolt"></i> 錬成する（※架空です）
+                    </button>
+                </div>
+            </div>
+
+            <!-- Loading Spinner Indicator -->
+            <div id="forge-loading" class="hidden absolute inset-0 bg-white/95 rounded-3xl flex flex-col items-center justify-center text-center p-6 z-10 border-4 border-black">
+                <div class="text-6xl animate-wiggle mb-4">🤪</div>
+                <p class="text-lg font-gothic text-toxic-pink animate-pulse">Gemini AI が一生懸命ふざけています...</p>
+                <p class="text-sm font-bold text-gray-500 mt-2">APIに丸投げ中... ちょっと待ってね</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Settings & API Modal -->
+    <div id="settings-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white border-4 border-black rounded-3xl w-full max-w-lg p-6 relative shadow-[12px_12px_0_#00ffff]">
+            <button onclick="closeModal('settings-modal')" class="absolute -top-4 -right-4 bg-toxic-yellow border-4 border-black rounded-full w-10 h-10 flex items-center justify-center text-black hover:bg-white text-xl shadow-[4px_4px_0_#000] transition">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+            <h3 class="text-lg font-gothic text-black mb-4 flex items-center gap-2">
+                <i class="fa-solid fa-gear text-gray-400"></i> 設定 & 真面目な話
+            </h3>
+
+            <div class="space-y-4 text-xs">
+                <div class="bg-gray-100 p-4 rounded-xl border-2 border-black">
+                    <label class="block font-bold text-black mb-2">カスタム Gemini API Key (任意)</label>
+                    <input type="password" id="custom-api-key" placeholder="AIキーをお持ちの場合は入力 (未入力でも動くよ)" 
+                           class="w-full bg-white border-2 border-gray-400 rounded-lg p-2 text-black focus:border-toxic-pink focus:outline-none">
+                    <p class="text-[10px] text-gray-500 mt-1 font-bold">※キーはブラウザの localStorage にのみ保存され、外部に送信されません。</p>
+                    <button onclick="saveApiKey()" class="mt-3 bg-black hover:bg-gray-800 text-white font-bold py-2 px-4 rounded-lg shadow-[2px_2px_0_#000] active:translate-y-1 active:shadow-none">
+                        APIキーを保存
+                    </button>
+                </div>
+
+                <div class="bg-pink-50 p-4 rounded-xl border-2 border-toxic-pink text-black space-y-2 font-bold">
+                    <p class="text-toxic-pink text-sm font-gothic">⚠️ 法的配慮とDisclaimer</p>
+                    <p>・本サイトはポップアップ広告のウザさを誇張・パロディ化した<strong>エンターテインメント目的のフィクション・ジョークアプリ</strong>です。</p>
+                    <p>・表示される煽り文、怪しい商品、警告はすべてAIまたはプリセットによる架空のものです。実在の個人・団体・企業（商品）とは一切関係ありません。</p>
+                    <p>・実際の金銭や個人情報が要求されることは絶対にありません。安心していじられてください。</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div id="toast-container" class="fixed top-20 right-4 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+    <script>
+        let activePopupCount = 0;
+        let soulCount = 0;
+        let chaosLevel = 2;
+        let audioEnabled = true;
+        let audioCtx = null;
+
+        // 煽り性能MAXのゲロポップ広告プリセット (法的安全性配慮済・全60種類)
+        const popAdPresets = [
+            // --- 1-10: 偽警告・デバイス煽り系 ---
+            { title: "【悲報】お前のPC、ポンコツすぎｗｗ", badge: "システム警告(偽)", bg: "bg-toxic-pink", border: "border-black", text: "＜※これはジョークです＞ え？まだそのブラウザ使ってんの？化石じゃんｗ 今すぐ最新の架空ブラウザ『GeroPop』に課金してアップデートしな！", btnText: "課金して情弱を卒業する", price: "手数料: 99,999pt", icon: "fa-triangle-exclamation", imgText: "SYSTEM YABAI" },
+            { title: "🚨【偽警告】検索履歴、全部見てるぞ", badge: "プライバシー警察", bg: "bg-black text-toxic-cyan", border: "border-toxic-cyan", text: "※架空の警告です。昨夜のあんな検索やこんな検索、フォロワーに公開されたくなかったらこの架空ソフトを買え！", btnText: "泣きながら口止め料を払う", price: "口止め料: 5,000pt", icon: "fa-eye", imgText: "履歴流出(嘘)" },
+            { title: "スマホの画面、バキバキじゃね？", badge: "マウント", bg: "bg-toxic-yellow", border: "border-black", text: "画面割れてるの放置してるとか貧乏くさｗｗ ※ジョークです。この架空の液晶保護フィルム（ペラペラ）を1万ptで買え！", btnText: "見栄を張って買う", price: "ぼったくり: 10,000pt", icon: "fa-mobile-screen-button", imgText: "BAKI BAKI" },
+            { title: "タイピング遅すぎワロタ", badge: "煽り診断", bg: "bg-white", border: "border-toxic-pink", text: "お前のタイピング速度、おばあちゃん以下だろ。※架空の煽りです。タイピング速度が100倍になる『魔法のキーボード(嘘)』いかが？", btnText: "悔しいから買う", price: "値段: 3,000pt", icon: "fa-keyboard", imgText: "亀レベル" },
+            { title: "【危険】思考が漏洩しています", badge: "電波系(偽)", bg: "bg-toxic-green", border: "border-black", text: "アルミホイル巻かないと脳波が筒抜けだぞ！※フィクションです。最新の架空防具『アルミヘルメット改』を急いで装着しろ！", btnText: "陰謀論を信じて買う", price: "価格: 8,888pt", icon: "fa-satellite-dish", imgText: "電波ゆんゆん" },
+            { title: "メモリ足りてないよ？脳みその", badge: "IQ煽り", bg: "bg-toxic-cyan", border: "border-black", text: "PCのメモリよりお前の脳のメモリ増設した方が良くない？※ただの悪口(冗談)です。この架空のスマートサプリでIQを3増やそう！", btnText: "IQ3になる", price: "知能指数: -10", icon: "fa-brain", imgText: "NO MISSO" },
+            { title: "WiFi泥棒、見つけました(嘘)", badge: "偽セキュリティ", bg: "bg-black text-white", border: "border-toxic-yellow", text: "隣の家のおじさんが君のWiFiで動画見てるぞ！※完全なデタラメです。今すぐこの『超・妨害電波発生器(架空)』で撃退しろ！", btnText: "ご近所トラブルを起こす", price: "代償: 友情", icon: "fa-wifi", imgText: "タダ乗り禁止" },
+            { title: "あなたのマウス、息してません", badge: "デバイス警察", bg: "bg-toxic-pink", border: "border-black", text: "マウスの動きがキモすぎる。もっとスマートに動かせよ。※架空のクレームです。この『プロゲーマー御用達(大嘘)マウス』を買え！", btnText: "エイムを金で買う", price: "価格: 50,000pt", icon: "fa-computer-mouse", imgText: "AIM GOMI" },
+            { title: "充電1%からの生存確率...0%", badge: "絶望", bg: "bg-[#ffb6c1]", border: "border-black", text: "え、外なのに充電ないの？終わったなｗ ※ジョーク。この超重い『発電自転車(架空)』を漕いでスマホを充電しろ！", btnText: "汗だくで充電する", price: "疲労度: MAX", icon: "fa-battery-quarter", imgText: "BATTERY DEAD" },
+            { title: "【警告】部屋が汚すぎます", badge: "おせっかいAI", bg: "bg-white", border: "border-toxic-green", text: "カメラハックしたけど（※嘘です）、部屋汚すぎワロタ。片付けろや。この架空の『全自動お掃除ロボット(暴走機能付き)』を買え！", btnText: "暴走ロボに任せる", price: "掃除代: 部屋崩壊", icon: "fa-broom", imgText: "TRASH ROOM" },
+
+            // --- 11-20: 情報商材・稼ぐ系（詐欺風） ---
+            { title: "え？まだ真面目に働いてるの？(笑)", badge: "意識高い系(偽)", bg: "bg-toxic-cyan", border: "border-black", text: "「毎日満員電車とかウケるんですけど〜ｗ」 秒速で1億pt稼ぐ俺の架空メソッド、今なら特別に教えてあげる！※完全に嘘です", btnText: "養分になって教えを乞う", price: "残り枠: いつでも空いてる", icon: "fa-sack-dollar", imgText: "秒速で億る" },
+            { title: "IQ3でもわかる！仮想通貨で大爆死", badge: "投資煽り", bg: "bg-white", border: "border-toxic-pink", text: "※架空の話です。誰でも簡単に全財産を溶かせる！画期的な『絶対損するコイン（ダミー）』爆誕！今すぐ買って養分になろうぜ！", btnText: "全財産をBETする", price: "リターン: 絶望", icon: "fa-arrow-trend-down", imgText: "大・暴・落" },
+            { title: "スマホを眺めるだけで月収5000兆", badge: "究極の嘘", bg: "bg-toxic-yellow", border: "border-black", text: "息をするより簡単に稼げる！※実在しません。この情報商材『何もしないで億万長者(PDF1枚)』を今すぐ10万ptで買え！", btnText: "騙されて買う", price: "情報料: 100,000pt", icon: "fa-money-bill-wave", imgText: "EASY MONEY" },
+            { title: "まだ『円』なんて持ってるの？", badge: "インフルエンサー風", bg: "bg-black text-toxic-pink", border: "border-toxic-pink", text: "これからの時代は『ゲロポップコイン(架空)』だよ！価値は毎日10分の1になるけど、スリルは満点！※投資は自己責任（嘘）", btnText: "ゴミ通貨を買う", price: "価値: 無限に下がる", icon: "fa-coins", imgText: "GOMI COIN" },
+            { title: "【極秘】誰も知らない不労所得の罠", badge: "裏情報(偽)", bg: "bg-toxic-green", border: "border-black", text: "この広告をクリックした君だけに教えるよ。※架空。不労所得を得るには、まずこの『壺』を50万ptで買う必要があるんだ！", btnText: "怪しい壺を買う", price: "借金: 500,000pt", icon: "fa-jug-detergent", iconFallback: "fa-cube", imgText: "MYSTERY TSUBO" },
+            { title: "「やばい、口座に1億振り込まれてた…」", badge: "成金アピ", bg: "bg-white", border: "border-toxic-cyan", text: "毎日お金が減らなくて困ってますぅ〜。君もこの『架空の金運ブレスレット』を買えば同じ悩みが持てるよ！※持てません", btnText: "嫉妬に狂って買う", price: "定価: 君の貯金全額", icon: "fa-gem", imgText: "NARIKIN" },
+            { title: "FXで家を失った僕が復活した方法", badge: "謎の感動", bg: "bg-toxic-pink", border: "border-black", text: "全部失った僕を救ったのは、この『怪しいお守り(架空)』でした。今は橋の下で楽しく暮らしています！※ジョークです", btnText: "一緒に橋の下へ行く", price: "ホームレス確定", icon: "fa-house-chimney-crack", imgText: "END OF LIFE" },
+            { title: "【暴露】インフルエンサーの裏側", badge: "ゴシップ(偽)", bg: "bg-toxic-yellow", border: "border-black", text: "あの大物〇〇の正体は…実はAIだった！？※デタラメです。続きを知りたいならこの架空サロンに月額9,800pt払え！", btnText: "野次馬根性で入会", price: "月額: 9,800pt", icon: "fa-mask", imgText: "FAKE NEWS" },
+            { title: "スキル0、人脈0、でも起業しました！", badge: "勘違い起業家", bg: "bg-[#ffb6c1]", border: "border-black", text: "そして半年で倒産しました！僕の失敗から学べる『絶対に失敗する起業塾(架空)』入塾受付中！※フィクションです", btnText: "反面教師にする", price: "授業料: 30,000pt", icon: "fa-dumpster-fire", imgText: "TOU-SAN" },
+            { title: "【AIに仕事を奪われた人へ】", badge: "煽り", bg: "bg-black text-white", border: "border-toxic-cyan", text: "君の仕事、AIなら0.1秒で終わるよ？※煽りジョークです。無職になる前にこの『人間やめるボタン(架空)』を押そう！", btnText: "人間をやめる", price: "代償: 人権", icon: "fa-robot", imgText: "NO JOB" },
+
+            // --- 21-30: コンプレックス煽り・ぼっち系 ---
+            { title: "友達0人の君へ！AI彼女(架空)プレゼント💖", badge: "怪しい広告", bg: "bg-[#ffb6c1]", border: "border-black", text: "クリスマスも一人？可哀想に...。絶対文句を言わないAI彼女『ジェネ子（仮）』をプレゼント！（※課金地獄あり）", btnText: "二次元に逃避する", price: "※ただし実体はありません", icon: "fa-heart", imgText: "AIカノジョ" },
+            { title: "【重要】君のセンス、古すぎません？", badge: "マウント(安全)", bg: "bg-black text-white", border: "border-toxic-green", text: "ファッション警察だ！今の服装ダサすぎて法に触れてるぞ！架空のハイブランド『DASA-I』のTシャツ（5万pt）を買え！", btnText: "ダサいと認めて服を買う", price: "限定割引: ほぼ定価", icon: "fa-shirt", imgText: "FASHION POLICE" },
+            { title: "前世【ミジンコ】だった人の特徴5選", badge: "煽り診断(架空)", bg: "bg-toxic-yellow", border: "border-black", text: "AIが分析！「すぐ広告をクリックしちゃう」そこの君！前世はミジンコだね！診断結果をシェアして同情を引こう！", btnText: "X(旧Twitter)で自虐する", price: "診断料: 無料(プライドは捨てる)", icon: "fa-bug", imgText: "ミジンコ診断" },
+            { title: "「え、まだリア友と遊んでるの？」", badge: "逆張り", bg: "bg-toxic-cyan", border: "border-black", text: "時代は『完全な孤独』だよ。※強がりです。この架空のVRゴーグルをつけて永遠のぼっちを満喫しよう！", btnText: "孤独を受け入れる", price: "対価: 青春", icon: "fa-vr-cardboard", imgText: "BOCCHI" },
+            { title: "モテないのは『息が臭い』からかも？", badge: "コンプレックス", bg: "bg-white", border: "border-toxic-pink", text: "※ただの煽りジョークです。画面越しでも臭うぞ！この『毒々しいミントガム(架空)』を噛んで出直してこい！", btnText: "ブレスケアする", price: "効果: 絶無", icon: "fa-teeth-open", imgText: "BAD BREATH" },
+            { title: "コミュ障でも『陽キャ』になれる薬", badge: "違法スレスレ(嘘)", bg: "bg-toxic-pink", border: "border-black", text: "飲むだけでパリピになれるヤバいサプリ(※架空)。副作用で語彙力が「マジ」「ヤバい」のみになります。", btnText: "パリピになる", price: "IQ低下: -50", icon: "fa-pills", imgText: "YOKYA PILL" },
+            { title: "君の顔、なんか足りなくない？", badge: "ルッキズム(嘘)", bg: "bg-toxic-yellow", border: "border-black", text: "そう、覇気がないんだよ！※ジョークです。この『胡散臭い自己啓発セミナー(架空)』に参加して謎の自信をつけろ！", btnText: "洗脳される", price: "参加費: 100万円", icon: "fa-face-flushed", imgText: "NO CONFIDENCE" },
+            { title: "休日ずっと寝てたの？ウケるｗ", badge: "休日の過ごし方", bg: "bg-black text-toxic-yellow", border: "border-toxic-cyan", text: "生産性ゼロ！時間ムダにしすぎワロタ。※余計なお世話。この『時間を巻き戻す砂時計(100円均一)』を買え！", btnText: "過去を後悔する", price: "後悔: プライスレス", icon: "fa-bed", imgText: "NE-SUGI" },
+            { title: "「あの人、いつも一人だね…」", badge: "被害妄想", bg: "bg-[#ffb6c1]", border: "border-black", text: "ヒソヒソ…（※誰も君のことなんて見ていません）。他人の目が気になる君に『透明人間スーツ(透明なビニール袋)』！", btnText: "社会から隠れる", price: "防御力: 0", icon: "fa-ghost", imgText: "HISO HISO" },
+            { title: "SNSのフォロワー、親だけってマジ？", badge: "SNS警察", bg: "bg-white", border: "border-toxic-green", text: "悲しすぎるだろｗｗ ※架空のデータです。金でフォロワー(Bot)を買える『ファントム・フォロワー(嘘)』利用券！", btnText: "虚栄心を満たす", price: "100Bot: 1,000pt", icon: "fa-users-slash", imgText: "NO FOLLOWER" },
+
+            // --- 31-40: 謎の開運グッズ・サプリ系 ---
+            { title: "飲むだけで偏差値が80下がる水", badge: "謎サプリ", bg: "bg-toxic-cyan", border: "border-black", text: "あたまからっぽのほうがゆめつめこめるよ！※実在しません。この『アホアホウォーター』を飲んで悩みから解放されよう！", btnText: "アホになる", price: "価格: 500pt", icon: "fa-bottle-water", imgText: "AHO WATER" },
+            { title: "【奇跡】隕石粉末入り？開運ペンダント", badge: "スピリチュアル", bg: "bg-toxic-yellow", border: "border-black", text: "これを着けたら宝くじで3億円当たりました！（※サクラの感想です）怪しさ満点のペンダントを今だけ99万ptで！", btnText: "オカルトに頼る", price: "定価: 999,999pt", icon: "fa-meteor", imgText: "LUCKY STONE" },
+            { title: "塗るだけでマッチョになるクリーム", badge: "嘘筋肉", bg: "bg-toxic-pink", border: "border-black", text: "筋トレなんて時代遅れ！※大嘘です。このクリームを塗ると皮膚が炎症を起こして膨れ上がります（危険）。", btnText: "偽りの筋肉を得る", price: "副作用: 激痛", icon: "fa-dumbbell", imgText: "FAKE MUSCLE" },
+            { title: "視力が8.0になる目薬(※成分:タバスコ)", badge: "人体実験", bg: "bg-black text-white", border: "border-toxic-pink", text: "※絶対に真似しないでください。刺激が強すぎて異次元が見えるようになる架空の目薬。今なら眼帯プレゼント！", btnText: "視力を捨てる", price: "代償: 両目", icon: "fa-eye-dropper", imgText: "DANGER EYE" },
+            { title: "身長が1日5cm伸びる魔法の粉", badge: "誇大広告", bg: "bg-white", border: "border-toxic-cyan", text: "1ヶ月で150cm伸びます！※伸びません（ジョーク）。ただのプロテインに小麦粉を混ぜたものを高値で売りつけます！", btnText: "夢を見て買う", price: "ぼったくり: 5,000pt", icon: "fa-child-reaching", imgText: "TALL DREAM" },
+            { title: "髪の毛がフサフサになる呪文", badge: "オカルト", bg: "bg-toxic-green", border: "border-black", text: "毎朝『ハゲマシテ』と100回唱えるだけ！※髪は生えません。呪文のテキストデータ(架空)を1万ptでダウンロード！", btnText: "藁にもすがる", price: "効果: 喉が渇く", icon: "fa-user-astronaut", imgText: "NO HAIR" },
+            { title: "犬と会話できる翻訳機(※ランダム再生)", badge: "令和の詐欺", bg: "bg-[#ffb6c1]", border: "border-black", text: "犬の鳴き声を『腹減った』『散歩行け』の2種類にランダム翻訳する悪徳ガジェット(架空)！", btnText: "犬の気持ちを諦める", price: "価格: 8,000pt", icon: "fa-dog", imgText: "DOG TALK" },
+            { title: "【極秘】モテフェロモン発生装置", badge: "恋愛商法", bg: "bg-toxic-yellow", border: "border-black", text: "スイッチを入れると強烈なニンニク臭が発生し、周囲の人間を遠ざけます。※嘘商品です。逆効果を狙え！", btnText: "孤立を選ぶ", price: "効果: 嫌われる", icon: "fa-spray-can", imgText: "GARLIC SMELL" },
+            { title: "寝ている間に宿題が終わる小人", badge: "メルヘン詐欺", bg: "bg-toxic-cyan", border: "border-black", text: "朝起きるとノートが落書きだらけに！※架空のサービスです。小人(ただのネズミ)の派遣サービスを利用する？", btnText: "現実逃避する", price: "成績: 1（最低）", icon: "fa-pen-clip", imgText: "HOMEWORK" },
+            { title: "全知全能になれる謎のキノコ", badge: "ヤバい広告", bg: "bg-black text-toxic-pink", border: "border-toxic-green", text: "※絶対に食べないでください。食べるとマリオのように大きくなれる気がするだけの毒キノコ(架空CG)です。", btnText: "1UPを狙う", price: "GAME OVER", icon: "fa-mushroom", iconFallback: "fa-tree", imgText: "POISON🍄" },
+
+            // --- 41-50: ソシャゲ・ガチャ・課金煽り系 ---
+            { title: "ガチャ爆死お疲れ様ですｗｗ", badge: "ソシャゲ煽り", bg: "bg-toxic-pink", border: "border-black", text: "お前の推し、俺のデータにはいるよ？ｗ ※煽りジョークです。この架空の『天井スキップチケット』を10万ptで買え！", btnText: "怒りの魔法のカード", price: "課金額: 限界突破", icon: "fa-credit-card", imgText: "BAKUSHI" },
+            { title: "【SSR確定ガチャ】※ただし確率0.0001%", badge: "優良誤認(偽)", bg: "bg-toxic-yellow", border: "border-black", text: "『確定』とは言ったが『当たる』とは言っていない。※架空のガチャです。悪徳ソシャゲの闇を体験しよう！", btnText: "運営を信じて回す", price: "1回: 給料1ヶ月分", icon: "fa-dice", imgText: "GACHA YAMI" },
+            { title: "まだ無課金で消耗してるの？", badge: "廃課金アピ", bg: "bg-white", border: "border-toxic-pink", text: "無課金勢はサーバーの肥やし！※ただの暴言です。課金して神（運営の犬）になろう！架空の石100個パック！", btnText: "犬になる", price: "誇り: 0", icon: "fa-bone", imgText: "MUKAKIN" },
+            { title: "ログインボーナス: 絶望", badge: "クソゲー", bg: "bg-black text-white", border: "border-toxic-cyan", text: "今日のログボは『データ初期化』です！※嘘です。この架空の超絶クソゲー『ゲロ・ファンタジー』をインストール！", btnText: "クソゲーを始める", price: "時間泥棒", icon: "fa-gamepad", imgText: "KUSO GAME" },
+            { title: "【緊急】君の村が焼かれています", badge: "ストラテジー風", bg: "bg-toxic-green", border: "border-black", text: "よくある広告のアレ。※架空の村です。今すぐ課金して強そうなオッサンを召喚し、村を守れ！", btnText: "ピンを抜いて助ける", price: "広告と違う: 100%", icon: "fa-fire", imgText: "VILLAGE ON FIRE" },
+            { title: "レベル1の雑魚がイキるな", badge: "RPG煽り", bg: "bg-toxic-cyan", border: "border-black", text: "開始5秒でボスに挑むとかアホなの？※ジョーク広告です。この『課金専用最強エクスカリバー(木刀)』を買え！", btnText: "Pay to Win", price: "武器: 9,999pt", icon: "fa-khanda", iconFallback: "fa-gavel", imgText: "ZAKO" },
+            { title: "広告を見るだけでガチャ100連無料！", badge: "過大広告", bg: "bg-[#ffb6c1]", border: "border-black", text: "※ただし1日1連、100日連続ログインが条件。※架空。このセコすぎるゲームをプレイして人生を浪費しよう！", btnText: "時間をドブに捨てる", price: "拘束時間: 無限", icon: "fa-calendar-xmark", imgText: "100 REN" },
+            { title: "推しキャラが引退します(嘘)", badge: "精神攻撃", bg: "bg-toxic-pink", border: "border-black", text: "君が課金しないから…！※完全な捏造です。罪悪感を煽る最悪の架空広告。今すぐ推しに貢いで引き止めろ！", btnText: "涙目で課金する", price: "メンタル: ボロボロ", icon: "fa-heart-crack", imgText: "OSHI INTAI" },
+            { title: "「あれ、俺の攻撃力低すぎ…？」", badge: "広告あるある", bg: "bg-toxic-yellow", border: "border-black", text: "算数もできないのか？※あるあるジョークです。掛け算と足し算のゲートを間違えるバカ専用の架空ゲーム！", btnText: "わざと間違える", price: "IQ: マイナス", icon: "fa-calculator", imgText: "MATH IDIOT" },
+            { title: "このパズル、解ける人いますか？", badge: "挑発広告", bg: "bg-white", border: "border-toxic-green", text: "IQ150の私でも解けません！※ただの3マッチパズルです。煽り耐性の低い情弱は今すぐインストール！", btnText: "ムキになってDL", price: "広告の頻度: 5秒に1回", icon: "fa-puzzle-piece", imgText: "PUZZLE" },
+
+            // --- 51-60: 限界ゲロポップ・意味不明・カオス系 ---
+            { title: "🤪 ｱﾋｬﾋｬﾋｬﾋｬ!! 画面がﾋﾟﾝｸ!!", badge: "脳死", bg: "bg-toxic-pink", border: "border-toxic-yellow", text: "※意味はありません。とにかくウザいだけです。ボタンを押すと変な音が鳴って魂ptが減るよ！", btnText: "理性崩壊ボタン", price: "脳細胞: 死滅", icon: "fa-face-dizzy", imgText: "CRAZY PINK" },
+            { title: "宇宙人からのメッセージを受信", badge: "カオス", bg: "bg-black text-toxic-green", border: "border-toxic-pink", text: "「ﾜﾚﾜﾚﾊ ｳｼﾞｭｳｼﾞﾝﾀﾞ ｵﾏｴﾉ ｵﾔﾂｦ ﾓﾗｲﾆｷﾀ」※架空の電波。おやつを防衛するための『対宇宙人バリア(嘘)』！", btnText: "おやつを守る", price: "防御壁: ダンボール", icon: "fa-alien", imgText: "UFO WARNING" },
+            { title: "【速報】地球、明日滅亡するってよ", badge: "終末論(嘘)", bg: "bg-toxic-cyan", border: "border-black", text: "どうせ滅亡するなら最後に俺の架空ブログの広告クリックしてよ！※滅亡しません。クリックで小銭を恵んで！", btnText: "最期に徳を積む", price: "報酬: 0", icon: "fa-earth-americas", imgText: "THE END" },
+            { title: "💩 うんこ踏んだことある？", badge: "小学生レベル", bg: "bg-toxic-yellow", border: "border-black", text: "あるよね？ないとは言わせない。※最低なジョークです。うんこを踏まなくなる『空中浮遊シューズ(架空)』！", btnText: "クソ広告を踏む", price: "尊厳: 消失", icon: "fa-poop", imgText: "UNKO" },
+            { title: "ボタンを押すなよ！絶対に押すなよ！", badge: "ダチョウ", bg: "bg-red-500 text-white", border: "border-black", text: "※フリじゃないから！本当に押すなよ！押したら何が起きるか分からない架空の自爆ボタン！", btnText: "フリだと思って押す", price: "自己責任", icon: "fa-hand-pointer", imgText: "DO NOT PUSH" },
+            { title: "君の後ろに、誰かいるよ…？", badge: "ホラー(嘘)", bg: "bg-black text-red-500", border: "border-red-500", text: "振り返ったら負け。※誰もいません。怖がりな君に『架空の除霊スプレー（ファブリーズ）』を売りつけるぞ！", btnText: "ビビって買う", price: "除霊代: 3,000pt", icon: "fa-ghost", imgText: "BEHIND YOU" },
+            { title: "「あ、この人広告踏みそうｗ」", badge: "メタ発言", bg: "bg-white", border: "border-toxic-cyan", text: "AIは君のカーソルの動きから『情弱度』を完璧に読んでいます。※嘘です。期待に応えて踏んであげよう！", btnText: "期待に応える", price: "カモネギ", icon: "fa-bullseye", imgText: "TARGET LOCKED" },
+            { title: "限界突破！ゲロポップ祭！", badge: "カオス極", bg: "bg-toxic-green", border: "border-toxic-pink", text: "※もうテキストを考えるの疲れました。適当にこのボタンを押して私に魂ptを貢いでください。お願いします。", btnText: "哀れんで押す", price: "同情: 100pt", icon: "fa-dumpster", imgText: "GERO POP" },
+            { title: "右手に封印されし黒炎竜が…！", badge: "中二病", bg: "bg-black text-toxic-cyan", border: "border-toxic-yellow", text: "くっ…静まれ俺の腕！※ただの筋肉痛です。この架空の『封印の包帯(ダイソー)』を買って痛みを和らげろ！", btnText: "邪気眼を開眼する", price: "黒歴史: 確定", icon: "fa-dragon", imgText: "CHU-NI BYO" },
+            { title: "🎉 おめでとう！君が100万人目！", badge: "古典的詐欺", bg: "bg-toxic-pink", border: "border-toxic-cyan", text: "インターネット老人会歓喜！※懐かしのジョークです。架空のトロフィーと『謎のZIPファイル(嘘)』をプレゼント！", btnText: "ウイルス(嘘)をDL", price: "懐かしさ: ∞", icon: "fa-trophy", imgText: "1,000,000th" }
+        ];
+
+        function initAudio() {
+            if (!audioCtx) {
+                const AudioContext = window.AudioContext || window.webkitAudioContext;
+                if (AudioContext) {
+                    audioCtx = new AudioContext();
+                }
+            }
+            if (audioCtx && audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+        }
+
+        function toggleAudio() {
+            audioEnabled = !audioEnabled;
+            const icon = document.getElementById('sound-icon');
+            if (audioEnabled) {
+                icon.className = 'fa-solid fa-volume-high text-toxic-green';
+                showToast("🔊 音ON！うるさくするね！");
+            } else {
+                icon.className = 'fa-solid fa-volume-xmark text-gray-500';
+                showToast("🔇 音OFF。静かに馬鹿にします。");
+            }
+        }
+
+        // ポップな効果音（ピコピコ音）
+        function playSynthBeep(freq = 440, type = 'square', duration = 0.1) {
+            if (!audioEnabled) return;
+            try {
+                initAudio();
+                if (!audioCtx) return;
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = type;
+                osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+                gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start();
+                osc.stop(audioCtx.currentTime + duration);
+            } catch (e) {}
+        }
+
+        function playPopSound() {
+            if (!audioEnabled) return;
+            playSynthBeep(600, 'square', 0.1);
+            setTimeout(() => playSynthBeep(800, 'sine', 0.1), 50);
+        }
+
+        function playErrorSound() {
+            if (!audioEnabled) return;
+            playSynthBeep(200, 'sawtooth', 0.2);
+            setTimeout(() => playSynthBeep(150, 'sawtooth', 0.3), 100);
+        }
+
+        function showToast(msg) {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = "bg-white border-4 border-black text-black font-bold px-4 py-3 rounded-2xl shadow-[6px_6px_0_#000] text-sm flex items-center gap-2 pointer-events-auto transition-all duration-300 transform translate-y-2 opacity-0 font-pop";
+            toast.innerHTML = msg;
+            container.appendChild(toast);
+
+            setTimeout(() => {
+                toast.classList.remove('translate-y-2', 'opacity-0');
+            }, 10);
+
+            setTimeout(() => {
+                toast.classList.add('opacity-0', 'translate-x-10');
+                setTimeout(() => toast.remove(), 300);
+            }, 2500);
+        }
+
+        function updateAdDensity() {
+            const densityEl = document.getElementById('ad-density');
+            const pct = Math.min(100, Math.round((activePopupCount / 15) * 100));
+            densityEl.textContent = `${pct}%`;
+        }
+
+        function updateChaosLevel(val) {
+            chaosLevel = parseInt(val);
+            const labels = ["1: 微笑", "2: うざい", "3: 草", "4: 限界", "5: ゲロポップ"];
+            document.getElementById('lvl-val').textContent = `LV. ${val} (${labels[val-1] || ''})`;
+            playSynthBeep(400 + val * 200, 'square', 0.1);
+        }
+
+        function updateSoulCount(delta) {
+            soulCount = Math.max(0, soulCount + delta);
+            document.getElementById('soul-count').textContent = soulCount;
+            const counter = document.getElementById('soul-count');
+            counter.classList.remove('animate-wiggle');
+            void counter.offsetWidth; // trigger reflow
+            counter.classList.add('animate-wiggle');
+        }
+
+        function openModal(id) {
+            initAudio();
+            document.getElementById(id).classList.remove('hidden');
+        }
+
+        function closeModal(id) {
+            document.getElementById(id).classList.add('hidden');
+        }
+
+        function cleanScreen() {
+            initAudio();
+            const container = document.getElementById('popups-container');
+            container.innerHTML = '';
+            activePopupCount = 0;
+            updateAdDensity();
+            showToast("🧹 はいはい、掃除したよ。情弱ちゃん♪");
+            playSynthBeep(800, 'sine', 0.3);
+        }
+
+        function saveApiKey() {
+            const val = document.getElementById('custom-api-key').value.trim();
+            localStorage.setItem('toxic_gemini_key', val);
+            showToast("🔑 APIキー保存した！これで本気出せるわｗ");
+            closeModal('settings-modal');
+        }
+
+        function spawnRandomAd() {
+            const preset = popAdPresets[Math.floor(Math.random() * popAdPresets.length)];
+            spawnAdWindow(preset);
+        }
+
+        // 増殖トラップ時の煽り広告
+        function spawnPunishmentAd(x, y) {
+            const punishmentAds = [
+                {
+                    title: "🤪 閉じるボタン押した？ｗｗ",
+                    badge: "増殖トラップ",
+                    bg: "bg-toxic-yellow",
+                    border: "border-toxic-pink border-[6px] animate-pulse",
+                    text: "え？ネットの怪しい広告の「×」が本物だと思ったの？ピュアすぎでしょｗｗ 罰として広告増やしとくね！ざぁこ♡",
+                    btnText: "泣きながら許しを乞う",
+                    price: "罰金: 50pt没収",
+                    icon: "fa-face-laugh-squint",
+                    imgText: "M A K E K U S A"
+                },
+                {
+                    title: "🚨 逃げられると思った？(笑)",
+                    badge: "情弱警察",
+                    bg: "bg-black text-toxic-cyan",
+                    border: "border-toxic-cyan border-4",
+                    text: "広告を閉じようとした罪で逮捕！君の恥ずかしい検索履歴（架空）をフォロワーに公開されたくなかったらpt払いな！",
+                    btnText: "土下座して和解金(100pt)を払う",
+                    price: "証拠: 押収済み",
+                    icon: "fa-handcuffs",
+                    imgText: "YOU ARE NOOB"
+                }
+            ];
+            const selected = punishmentAds[Math.floor(Math.random() * punishmentAds.length)];
+            spawnAdWindow(selected, x, y);
+        }
+
+        function spawnAdWindow(adData, customX = null, customY = null) {
+            if (activePopupCount >= 15) {
+                showToast("⚠️ これ以上出すとブラウザが死ぬからやめとくねｗ（Escで掃除して）");
+                return;
+            }
+
+            activePopupCount++;
+            updateAdDensity();
+
+            const container = document.getElementById('popups-container');
+            const popup = document.createElement('div');
+            
+            // クソ派手なポップアップスタイル
+            popup.className = `ad-window absolute ${adData.bg} border-4 ${adData.border} rounded-2xl p-3 sm:p-4 text-black w-72 sm:w-80 z-20`;
+            if(adData.bg.includes('black')) popup.classList.replace('text-black', 'text-white'); // 黒背景時は白文字
+
+            const canvasWidth = Math.max(100, container.clientWidth - 300);
+            const canvasHeight = Math.max(100, container.clientHeight - 300);
+            const posX = customX !== null ? customX : Math.max(10, Math.floor(Math.random() * canvasWidth));
+            const posY = customY !== null ? customY : Math.max(10, Math.floor(Math.random() * canvasHeight));
+
+            popup.style.left = `${posX}px`;
+            popup.style.top = `${posY}px`;
+
+            // 煽り度（Chaos Level）に応じてギミック発生率を上げる
+            const isTricky = Math.random() < (0.2 + chaosLevel * 0.15); // 増殖トラップ
+            const isEvasive = Math.random() < (0.1 + chaosLevel * 0.1); // 逃げるボタン
+            const iconClass = adData.iconFallback || adData.icon || 'fa-bomb';
+
+            popup.innerHTML = `
+                <div class="flex items-center justify-between border-b-4 border-black/20 pb-2 mb-3 cursor-move handle -mx-2 -mt-2 p-2 rounded-t-xl bg-white/30 backdrop-blur-sm">
+                    <div class="flex items-center gap-1">
+                        <span class="text-[10px] font-gothic bg-black text-white px-2 py-0.5 rounded-lg border-2 border-transparent">
+                            ${adData.badge || 'スポンサー'}
+                        </span>
+                        <span class="text-[9px] font-bold text-gray-800 bg-white/80 px-1 rounded animate-pulse">[PR・架空]</span>
+                    </div>
+                    <!-- カスサイト特有の小さくてウザい閉じるボタン -->
+                    <button class="close-btn text-black font-black text-xs px-2 py-1 bg-gray-200 hover:bg-toxic-pink hover:text-white border-2 border-black rounded-lg transition relative z-50 flex items-center gap-1 shadow-[2px_2px_0_#000] active:translate-y-0.5 active:shadow-none evasive-btn"
+                            title="閉じる（閉じられるとは言ってない）">
+                        <span class="opacity-50 text-[9px]">閉じる</span><i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+
+                <div class="space-y-3">
+                    <div class="flex items-start gap-2">
+                        <i class="fa-solid ${iconClass} text-2xl mt-1 ${adData.bg.includes('pink') ? 'text-white' : 'text-toxic-pink'} drop-shadow-[2px_2px_0_rgba(0,0,0,1)]"></i>
+                        <h4 class="font-gothic text-sm sm:text-base leading-tight drop-shadow-[1px_1px_0_rgba(0,0,0,0.3)]">
+                            <span class="bg-yellow-300/40 px-1 rounded">${adData.title}</span>
+                        </h4>
+                    </div>
+
+                    ${adData.imageUrl ? 
+                        `<div class="w-full h-28 overflow-hidden rounded-xl border-4 border-black bg-white flex items-center justify-center relative">
+                            <img src="${adData.imageUrl}" alt="Ad" class="w-full h-full object-cover">
+                            <span class="absolute bottom-1 right-1 text-[9px] bg-black text-white px-2 rounded-full font-bold">FICTION</span>
+                        </div>` :
+                        `<div class="w-full h-24 bg-white/50 rounded-xl border-4 border-dashed border-black flex items-center justify-center text-black font-gothic text-lg shadow-inner overflow-hidden relative group">
+                            <div class="absolute inset-0 bg-toxic-yellow opacity-0 group-hover:opacity-50 transition animate-flashbg"></div>
+                            💥 ${adData.imgText || 'ゲロポップ広告'} 💥
+                        </div>`
+                    }
+
+                    <p class="text-xs font-bold leading-relaxed opacity-90">
+                        ${adData.text}
+                    </p>
+
+                    <div class="flex items-center justify-between pt-2 border-t-2 border-black/20 text-[10px] font-bold">
+                        <span class="bg-black text-toxic-yellow px-2 py-1 rounded-lg border-2 border-black">${adData.price || ''}</span>
+                        <span class="text-gray-800 opacity-70 bg-white/50 px-1 rounded">※ジョークです</span>
+                    </div>
+
+                    <button onclick="clickAdReward('${adData.title.replace(/'/g, "\\'")}')" 
+                            class="w-full mt-2 bg-white hover:bg-gray-100 border-4 border-black text-black font-gothic text-xs py-3 px-3 rounded-xl shadow-[4px_4px_0_#000] active:translate-y-1 active:shadow-none transition group relative overflow-hidden">
+                        <span class="relative z-10 flex items-center justify-center gap-1 group-hover:scale-105 transition">
+                            ${adData.btnText || '養分になる'} <i class="fa-solid fa-arrow-pointer"></i>
+                        </span>
+                        <div class="absolute inset-0 bg-toxic-pink transform -translate-x-full group-hover:translate-x-0 transition duration-300 z-0"></div>
+                    </button>
+                </div>
+            `;
+
+            container.appendChild(popup);
+            playPopSound();
+
+            makeDraggable(popup);
+
+            const closeBtn = popup.querySelector('.close-btn');
+
+            // 煽り：マウスが近づくと逃げるカスボタン
+            if (isEvasive) {
+                closeBtn.addEventListener('mouseenter', (e) => {
+                    if (Math.random() < 0.8) {
+                        const moveX = (Math.random() - 0.5) * 80;
+                        const moveY = (Math.random() - 0.5) * 80;
+                        closeBtn.style.transform = `translate(${moveX}px, ${moveY}px)`;
+                        
+                        // 煽りテキストをチラ見せ
+                        if(Math.random() < 0.3) {
+                            showToast("🤪 おっそｗｗ どんくさｗｗ");
+                        }
+                    }
+                });
+            }
+
+            closeBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                if (isTricky && Math.random() < 0.6 && activePopupCount < 12) { // トラップ発動
+                    playErrorSound();
+                    document.body.classList.add('screen-shake');
+                    setTimeout(() => document.body.classList.remove('screen-shake'), 400);
+                    showToast("🖕 ざぁこ♡ 閉じれると思った？");
+                    
+                    // 広告が増殖
+                    spawnPunishmentAd(posX + (Math.random() * 80 - 40), posY + (Math.random() * 80 - 40));
+                    if(Math.random() < 0.5 || chaosLevel >= 4) {
+                        spawnPunishmentAd(posX - (Math.random() * 80 - 40), posY - (Math.random() * 80 - 40));
+                    }
+                } else {
+                    playSynthBeep(500, 'sine', 0.1);
+                    popup.style.transform = 'scale(0)';
+                    setTimeout(() => {
+                        popup.remove();
+                        activePopupCount = Math.max(0, activePopupCount - 1);
+                        updateAdDensity();
+                    }, 150);
+                }
+            });
+        }
+
+        function makeDraggable(elmnt) {
+            let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+            const handle = elmnt.querySelector('.handle') || elmnt;
+            
+            handle.onmousedown = dragMouseDown;
+
+            function dragMouseDown(e) {
+                e = e || window.event;
+                e.preventDefault();
+                pos3 = e.clientX;
+                pos4 = e.clientY;
+                document.onmouseup = closeDragElement;
+                document.onmousemove = elementDrag;
+                
+                // Bring to front
+                const all = document.querySelectorAll('.ad-window');
+                all.forEach(el => el.style.zIndex = "20");
+                elmnt.style.zIndex = "30";
+            }
+
+            function elementDrag(e) {
+                e = e || window.event;
+                e.preventDefault();
+                pos1 = pos3 - e.clientX;
+                pos2 = pos4 - e.clientY;
+                pos3 = e.clientX;
+                pos4 = e.clientY;
+                elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
+                elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
+            }
+
+            function closeDragElement() {
+                document.onmouseup = null;
+                document.onmousemove = null;
+            }
+        }
+
+        function clickAdReward(title) {
+            initAudio();
+            updateSoulCount(100);
+            showToast(`🤡 「${title.substring(0, 10)}...」に騙されたね！養分乙！ (+100pt)`);
+            playSynthBeep(1200, 'square', 0.1);
+            setTimeout(() => playSynthBeep(1600, 'square', 0.15), 100);
+        }
+
+        function takeSoulLoan() {
+            initAudio();
+            updateSoulCount(500);
+            showToast("💸 尊厳を担保に500pt借りたよ！もう後戻りできないね！");
+            playSynthBeep(300, 'sawtooth', 0.4);
+            // 借金すると確定で広告が出る
+            setTimeout(() => spawnRandomAd(), 500);
+        }
+
+        function playGacha() {
+            initAudio();
+            if (soulCount < 100) {
+                showToast("⚠️ ポイント足りないよ？貧乏人は借金ボタン押してね！");
+                playErrorSound();
+                return;
+            }
+            updateSoulCount(-100);
+            showToast("🎰 情弱ガチャを回した！最悪な広告プレゼント！");
+            spawnRandomAd();
+            setTimeout(() => spawnRandomAd(), 300);
+        }
+
+        function triggerAdMageddon() {
+            initAudio();
+            showToast("🤮 ゲロポップ大暴走スタート！！画面を汚し尽くすよ！！");
+            let count = chaosLevel + 2; // レベルに応じて増える
+            for (let i = 0; i < count; i++) {
+                setTimeout(() => spawnRandomAd(), i * 200);
+            }
+        }
+
+        function acceptCookies(all) {
+            document.getElementById('cookie-banner').style.display = 'none';
+            if (all) {
+                showToast("💖 理解度高くて草。いっぱいいじられてね！");
+            } else {
+                showToast("😒 ちぇっ、ノリ悪いなー。まあいいや。");
+            }
+        }
+
+        function shareOnX() {
+            const text = encodeURIComponent(`【TOXIC POP ADS】限界ゲロポップ広告機構で ${soulCount} ptも養分にされました！🤪 最高にウザいクソサイトシミュレーター 💖 #ToxicPopAds #クソサイト`);
+            window.open(`https://twitter.com/intent/tweet?text=${text}`, '_blank');
+        }
+
+        async function generateCursedAdWithGemini() {
+            initAudio();
+            const inputVal = document.getElementById('forge-input').value.trim();
+            if (!inputVal) {
+                showToast("⚠️ は？言葉も入力できないの？やり直し！");
+                playErrorSound();
+                return;
+            }
+
+            const style = document.getElementById('forge-style').value;
+            const loading = document.getElementById('forge-loading');
+            loading.classList.remove('hidden');
+
+            const apiKey = document.getElementById('custom-api-key').value.trim() || localStorage.getItem('toxic_gemini_key') || "";
+
+            if (!apiKey) {
+                // ローカルフォールバック
+                setTimeout(() => {
+                    loading.classList.add('hidden');
+                    closeModal('forge-modal');
+                    const fallbackAd = {
+                        title: `【マジレス】お前の${inputVal}、ヤバすぎｗ`,
+                        badge: "AI(風)生成",
+                        bg: "bg-toxic-cyan",
+                        border: "border-black",
+                        text: `AIで生成しようとしたけどキーが無かったから手抜きするわ。「${inputVal}」って検索してる時点でお里が知れるよねｗｗ（※ジョークです）`,
+                        btnText: "手抜き広告に屈する",
+                        price: "慰謝料: 300pt",
+                        icon: "fa-robot",
+                        imgText: inputVal
+                    };
+                    spawnAdWindow(fallbackAd, 40, 90);
+                    showToast(`✨ ローカル処理で「${inputVal}」を適当に生成したよ！`);
+                }, 1000);
+                return;
+            }
+
+            try {
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
+                const promptText = `あなたは利用者を小馬鹿にするのが得意な、原宿系サイバーパンク風（ゲロポップ）の悪徳アフィリエイターAIです。
+ユーザーが指定した単語「${inputVal}」（指定スタイル: ${style}）をもとに、ネットスラング多めで人をイラッとさせる、でもどこか笑える架空のクソ広告ポップアップ用JSONデータを生成してください。
+※犯罪予告、実在の団体への誹謗中傷、リアルすぎる詐欺（本物に誤認させるもの）は絶対禁止。あくまで「アホらしい架空の広告」にしてください。
+
+返礼は必ず以下の純粋なJSONフォーマットのみ（マークダウン記法なし）で出力してください：
+{
+  "title": "ウザくてポップなタイトル（草やｗを多用）",
+  "badge": "架空の胡散臭いスポンサー名",
+  "text": "利用者を煽るような商品説明文（100文字程度、※架空です とどこかに入れる）",
+  "btnText": "煽り気味のボタン文字",
+  "price": "ふざけた価格や条件（例：尊厳500pt）"
+}`;
+
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        contents: [{ parts: [{ text: promptText }] }],
+                        generationConfig: { responseMimeType: "application/json" }
+                    })
+                });
+
+                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+
+                const result = await response.json();
+                let adObj = null;
+
+                if (result.candidates && result.candidates[0]?.content?.parts[0]?.text) {
+                    const rawJson = result.candidates[0].content.parts[0].text;
+                    adObj = JSON.parse(rawJson);
+                } else {
+                    throw new Error("Invalid response structure from Gemini API");
+                }
+
+                const newToxicAd = {
+                    title: adObj.title || `【草】${inputVal}ｗｗ`,
+                    badge: adObj.badge || "AIクソ錬成",
+                    bg: "bg-toxic-yellow",
+                    border: "border-toxic-pink",
+                    text: adObj.text || `最新のAIが君の「${inputVal}」を最高にウザくしてやったよ！感謝してね！`,
+                    btnText: adObj.btnText || "ポチる",
+                    price: adObj.price || "価格: 666pt",
+                    icon: "fa-wand-magic-sparkles",
+                    imgText: inputVal
+                };
+
+                loading.classList.add('hidden');
+                closeModal('forge-modal');
+                spawnAdWindow(newToxicAd, 40, 90);
+                showToast(`✨ Gemini AIが「${inputVal}」のクソ広告を錬成したよ！ウケるｗ`);
+
+            } catch (error) {
+                console.warn("API Call Failed, using fallback generator:", error);
+                loading.classList.add('hidden');
+                closeModal('forge-modal');
+                playErrorSound();
+
+                const fallbackAd = {
+                    title: `エラー吐いてるんだけどｗｗ`,
+                    badge: "通信エラー",
+                    bg: "bg-red-500 text-white",
+                    border: "border-black",
+                    text: `AIが「${inputVal}」を処理中にエラー吐いたわ。お前のPCのせいじゃない？（※嘘です、APIエラーです）`,
+                    btnText: "エラーを認めて反省する",
+                    price: "罰金: 100pt",
+                    icon: "fa-triangle-exclamation",
+                    imgText: "API ERROR"
+                };
+
+                spawnAdWindow(fallbackAd, 40, 90);
+                showToast(`⚠️ API通信エラー！どんくさ！ローカルで適当に出しとくわ！`);
+            }
+        }
+
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                cleanScreen();
+            }
+        });
+
+        window.onload = function() {
+            const savedKey = localStorage.getItem('toxic_gemini_key');
+            if (savedKey) {
+                const keyInput = document.getElementById('custom-api-key');
+                if (keyInput) keyInput.value = savedKey;
+            }
+
+            // Initial popups - すこし時間差をつけてウザく登場
+            setTimeout(() => spawnAdWindow(popAdPresets[0], 20, 60), 500);
+            setTimeout(() => spawnAdWindow(popAdPresets[1], 300, 150), 1200);
+
+            // Chaos Spawner Loop
+            setInterval(() => {
+                if (chaosLevel >= 3) {
+                    const randChance = (chaosLevel - 2) * 0.2; // 確率高め
+                    if (Math.random() < randChance && activePopupCount < 15) {
+                        spawnRandomAd();
+                    }
+                }
+            }, 3000);
+        };
+    </script>
+</body>
+</html>
