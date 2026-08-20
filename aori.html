@@ -112,6 +112,10 @@
             transition: transform 0.15s ease-out;
         }
 
+        .handle {
+            touch-action: none; /* スマホでのドラッグ時に画面全体がスクロールするのを防ぐ */
+        }
+
         .text-stroke {
             -webkit-text-stroke: 1px black;
             color: white;
@@ -210,6 +214,21 @@
             <div>
                 <!-- admax -->
                 <script src="https://adm.shinobi.jp/s/d28a47bc5217ce8ea3e624ec6eb95428"></script>
+                <!-- admax -->
+            </div>
+            <div>
+                <!-- admax -->
+                <script src="https://adm.shinobi.jp/s/f21286ea4178c7e0f0df529b64845014"></script>
+                <!-- admax -->
+            </div>
+            <div>
+                <!-- admax -->
+                <script src="https://adm.shinobi.jp/s/1c98373d2ff35e572147b843319992aa"></script>
+                <!-- admax -->
+            </div>
+            <div>
+                <!-- admax -->
+                <script src="https://adm.shinobi.jp/s/25720b92edb765aa68e51dba6eb5ca61"></script>
                 <!-- admax -->
             </div>
         </div>
@@ -746,7 +765,16 @@
         function makeDraggable(elmnt) {
             let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
             const handle = elmnt.querySelector('.handle') || elmnt;
+            
+            // PC用マウスイベント
             handle.onmousedown = dragMouseDown;
+            // スマホ用タッチイベント
+            handle.ontouchstart = dragTouchStart;
+
+            function bringToFront() {
+                document.querySelectorAll('.ad-window').forEach(el => el.style.zIndex = "20");
+                elmnt.style.zIndex = "30";
+            }
 
             function dragMouseDown(e) {
                 e = e || window.event;
@@ -755,8 +783,18 @@
                 pos4 = e.clientY;
                 document.onmouseup = closeDragElement;
                 document.onmousemove = elementDrag;
-                document.querySelectorAll('.ad-window').forEach(el => el.style.zIndex = "20");
-                elmnt.style.zIndex = "30";
+                bringToFront();
+            }
+
+            function dragTouchStart(e) {
+                e = e || window.event;
+                // タッチされた位置を取得
+                const touch = e.touches[0];
+                pos3 = touch.clientX;
+                pos4 = touch.clientY;
+                document.ontouchend = closeDragElement;
+                document.ontouchmove = elementTouchDrag;
+                bringToFront();
             }
 
             function elementDrag(e) {
@@ -770,9 +808,22 @@
                 elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
             }
 
+            function elementTouchDrag(e) {
+                e = e || window.event;
+                const touch = e.touches[0];
+                pos1 = pos3 - touch.clientX;
+                pos2 = pos4 - touch.clientY;
+                pos3 = touch.clientX;
+                pos4 = touch.clientY;
+                elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
+                elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
+            }
+
             function closeDragElement() {
                 document.onmouseup = null;
                 document.onmousemove = null;
+                document.ontouchend = null;
+                document.ontouchmove = null;
             }
         }
 
