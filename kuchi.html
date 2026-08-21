@@ -1,0 +1,1238 @@
+<!DOCTYPE html>
+<html lang="ja" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>唇のカサカサ度順 完全実物写真ガイド＆リアルタイム診断</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Noto+Sans+JP:wght@300;400;500;700;900&display=swap');
+        
+        body {
+            font-family: 'Noto Sans JP', 'Plus Jakarta Sans', sans-serif;
+            background-color: #faf7f8;
+            color: #2d2629;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.94);
+            backdrop-filter: blur(14px);
+            border: 1px solid rgba(243, 226, 231, 0.9);
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #e11d48 0%, #be123c 50%, #881337 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* カスタムスライダー */
+        .custom-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            background: #f43f5e;
+            border: 3px solid #ffffff;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(244, 63, 94, 0.45);
+            transition: transform 0.15s ease;
+        }
+        .custom-slider::-webkit-slider-thumb:hover {
+            transform: scale(1.18);
+        }
+
+        /* 画像カードホバーアニメーション */
+        .img-zoom-container {
+            overflow: hidden;
+            position: relative;
+        }
+        .img-zoom-container img {
+            transition: transform 0.5s ease;
+        }
+        .img-zoom-container:hover img {
+            transform: scale(1.05);
+        }
+
+        /* モーダル表示用 */
+        .modal-active {
+            display: flex !important;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between selection:bg-rose-100 selection:text-rose-900">
+
+    <header class="sticky top-0 z-50 glass-card border-b border-rose-100 shadow-sm">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center gap-2.5">
+                <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-rose-500 to-pink-500 text-white flex items-center justify-center font-bold text-lg shadow-md shadow-rose-200">
+                    <i data-lucide="camera" class="w-5 h-5"></i>
+                </div>
+                <div>
+                    <span class="font-black text-xl tracking-tight text-gray-900">Lip Care <span class="text-rose-500 font-extrabold">Photo Rank</span></span>
+                    <span class="hidden sm:inline-block text-[10px] bg-rose-100 text-rose-700 font-bold px-2.5 py-0.5 rounded-full ml-2">実物写真・カサカサ度順解析</span>
+                </div>
+            </div>
+            <nav class="hidden md:flex items-center gap-6 text-sm font-medium text-gray-600">
+                <a href="#simulator" class="hover:text-rose-600 transition-colors">写真シミュレーター</a>
+                <a href="#gallery" class="hover:text-rose-600 transition-colors">カサカサ度順ランク</a>
+                <a href="#compare" class="hover:text-rose-600 transition-colors">1対1写真比較</a>
+                <a href="#diagnosis" class="hover:text-rose-600 transition-colors">写真判定セルフチェック</a>
+                <a href="#care-guide" class="hover:text-rose-600 transition-colors">処方ケア</a>
+            </nav>
+            <button onclick="scrollToDiagnosis()" class="bg-rose-500 hover:bg-rose-600 text-white px-4 py-2 rounded-full text-xs sm:text-sm font-semibold transition-all shadow-md shadow-rose-200 flex items-center gap-1.5 active:scale-95">
+                <i data-lucide="stethoscope" class="w-4 h-4"></i>
+                <span>唇の状態を判定</span>
+            </button>
+        </div>
+    </header>
+
+    <main class="flex-grow">
+        <section class="relative overflow-hidden py-10 md:py-16 bg-gradient-to-b from-rose-100/80 via-pink-50/40 to-transparent">
+            <div class="max-w-5xl mx-auto px-4 sm:px-6 text-center relative z-10">
+                <span class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-bold bg-white/90 border border-rose-200 text-rose-700 mb-4 shadow-sm backdrop-blur-md">
+                    <i data-lucide="sparkles" class="w-4 h-4 text-rose-500"></i>
+                    実物の唇写真を症例順に並べ替え＆完全解説
+                </span>
+                <h1 class="text-3xl sm:text-5xl font-black text-gray-900 tracking-tight leading-tight mb-4">
+                    唇のカサカサ度順 <br class="hidden sm:inline"/>
+                    <span class="gradient-text">実物写真ランク＆レベル別治療ケア</span>
+                </h1>
+                <p class="text-gray-600 max-w-2xl mx-auto text-sm sm:text-base leading-relaxed mb-8">
+                    最も健康的で潤いのある状態（Level 1）から、乾燥による白いかさつき、広範囲の皮むけ、生々しいひび割れ出血（Level 5）まで、お預かりした5枚の実写真のカサカサ度順に並べて比較・診定します。
+                </p>
+                
+                <!-- Quick Navigation Badges -->
+                <div class="flex flex-wrap justify-center gap-2 max-w-3xl mx-auto">
+                    <a href="#level-1" class="px-3.5 py-1.5 bg-white border border-emerald-200 text-emerald-800 text-xs font-bold rounded-xl hover:bg-emerald-50 transition-all shadow-sm flex items-center gap-1.5">
+                        <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span> Level 1 (潤い健康)
+                    </a>
+                    <a href="#level-2" class="px-3.5 py-1.5 bg-white border border-teal-200 text-teal-800 text-xs font-bold rounded-xl hover:bg-teal-50 transition-all shadow-sm flex items-center gap-1.5">
+                        <span class="w-2.5 h-2.5 rounded-full bg-teal-500"></span> Level 2 (軽度乾燥)
+                    </a>
+                    <a href="#level-3" class="px-3.5 py-1.5 bg-white border border-amber-200 text-amber-800 text-xs font-bold rounded-xl hover:bg-amber-50 transition-all shadow-sm flex items-center gap-1.5">
+                        <span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span> Level 3 (白いかさつき)
+                    </a>
+                    <a href="#level-4" class="px-3.5 py-1.5 bg-white border border-orange-200 text-orange-800 text-xs font-bold rounded-xl hover:bg-orange-50 transition-all shadow-sm flex items-center gap-1.5">
+                        <span class="w-2.5 h-2.5 rounded-full bg-orange-500"></span> Level 4 (広範囲皮むけ)
+                    </a>
+                    <a href="#level-5" class="px-3.5 py-1.5 bg-white border border-rose-300 text-rose-800 text-xs font-bold rounded-xl hover:bg-rose-50 transition-all shadow-sm flex items-center gap-1.5">
+                        <span class="w-2.5 h-2.5 rounded-full bg-rose-600 animate-pulse"></span> Level 5 (亀裂・出血)
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section id="simulator" class="py-10 max-w-5xl mx-auto px-4 sm:px-6">
+            <div class="glass-card rounded-3xl p-6 sm:p-8 border border-rose-200 shadow-xl relative overflow-hidden">
+                <div class="flex flex-col md:flex-row items-center justify-between gap-6 mb-6">
+                    <div>
+                        <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-rose-100 text-rose-700 mb-2">
+                            <i data-lucide="sliders" class="w-3.5 h-3.5"></i> リアルタイム連動
+                        </div>
+                        <h2 class="text-2xl font-bold text-gray-900">乾燥度・水分量 実物写真シミュレーター</h2>
+                        <p class="text-xs sm:text-sm text-gray-500 mt-1">スライダーを移動させると、水分量に応じた写真がリアルタイムで連動表示されます。</p>
+                    </div>
+
+                    <!-- Live Indicator Badge -->
+                    <div id="simBadge" class="bg-emerald-500 text-white px-5 py-2.5 rounded-2xl shadow-md text-center min-w-[160px] transition-all">
+                        <span class="text-[10px] opacity-90 block font-medium uppercase tracking-wider">推定ステータス</span>
+                        <span id="simBadgeText" class="text-base font-black">Level 1：健康唇</span>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                    <!-- Photo Display Container -->
+                    <div class="lg:col-span-6 flex flex-col items-center justify-center bg-slate-900 p-4 rounded-2xl shadow-inner relative min-h-[280px]">
+                        <span class="absolute top-3 left-3 bg-black/60 backdrop-blur-md text-white/90 text-[10px] font-mono px-2.5 py-1 rounded-md border border-white/20 z-10 flex items-center gap-1">
+                            <i data-lucide="image" class="w-3 h-3 text-rose-400"></i>
+                            実物分析写真 Canvas
+                        </span>
+
+                        <div class="w-full aspect-[16/10] relative rounded-xl overflow-hidden shadow-2xl border border-white/10 group">
+                            <img id="simPhoto" src="9ce9191f-f8fa-4836-b47c-ac5ca1388d5c_2.jpg" 
+                                 onerror="handleImgError(this, '9ce9191f-f8fa-4836-b47c-ac5ca1388d5c.jpg', 1)" 
+                                 alt="Lip Condition Simulator" 
+                                 class="w-full h-full object-cover transition-all duration-300">
+                            
+                            <!-- Expand trigger overlay -->
+                            <button onclick="openModalCurrentSim()" class="absolute bottom-3 right-3 bg-black/70 hover:bg-black/90 text-white p-2 rounded-xl backdrop-blur-md transition-all text-xs flex items-center gap-1 opacity-90 group-hover:opacity-100">
+                                <i data-lucide="maximize-2" class="w-3.5 h-3.5"></i>
+                                <span>写真を拡大</span>
+                            </button>
+                        </div>
+
+                        <!-- Realtime Moisture Gauge Bar -->
+                        <div class="w-full mt-4">
+                            <div class="flex justify-between text-[11px] text-gray-300 font-medium mb-1.5">
+                                <span>唇の推定水分含有量 (Hydration Rate)</span>
+                                <span id="simWaterVal" class="font-black text-emerald-400 text-sm">95%</span>
+                            </div>
+                            <div class="w-full bg-gray-800 rounded-full h-3 overflow-hidden p-0.5 border border-gray-700">
+                                <div id="simWaterBar" class="bg-gradient-to-r from-emerald-400 to-teal-400 h-2 rounded-full transition-all duration-300" style="width: 95%"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Simulator Controls & Details -->
+                    <div class="lg:col-span-6 space-y-5">
+                        <div class="bg-rose-50/70 p-5 rounded-2xl border border-rose-100">
+                            <label class="block text-xs font-bold text-gray-700 mb-2 flex items-center justify-between">
+                                <span>水分量コントロールスライダー</span>
+                                <span class="text-rose-600 font-mono text-sm font-bold" id="sliderValDisplay">95% (潤い十分)</span>
+                            </label>
+                            <input type="range" id="moistureSlider" min="0" max="100" value="95" class="w-full h-3 bg-gray-200 rounded-lg appearance-none cursor-pointer custom-slider" oninput="updateLipSim(this.value)">
+                            <div class="flex justify-between text-[10px] text-gray-500 font-bold mt-2">
+                                <span>0% (亀裂・出血)</span>
+                                <span>50% (粉吹き)</span>
+                                <span>100% (健康・ツヤ)</span>
+                            </div>
+                        </div>
+
+                        <div class="space-y-3 text-xs">
+                            <div class="flex items-start gap-3 p-3.5 bg-white rounded-xl border border-gray-100 shadow-sm">
+                                <div class="p-2 rounded-lg bg-rose-100 text-rose-600 shrink-0">
+                                    <i data-lucide="eye" class="w-4 h-4"></i>
+                                </div>
+                                <div>
+                                    <strong class="text-gray-900 block font-bold mb-0.5">写真の視覚的症状</strong>
+                                    <p id="simSymptomText" class="text-gray-600 leading-relaxed">縦ジワが非常に少なく、自然な血色感とふっくらとしたツヤとなめらかさがあります。</p>
+                                </div>
+                            </div>
+
+                            <div class="flex items-start gap-3 p-3.5 bg-white rounded-xl border border-gray-100 shadow-sm">
+                                <div class="p-2 rounded-lg bg-emerald-100 text-emerald-600 shrink-0" id="simCareIcon">
+                                    <i data-lucide="shield-check" class="w-4 h-4"></i>
+                                </div>
+                                <div>
+                                    <strong class="text-gray-900 block font-bold mb-0.5">推奨されるケア処方</strong>
+                                    <p id="simAdviceText" class="text-gray-600 leading-relaxed">UVカット成分配合の保湿リップで毎日の潤い保護を継続しましょう。</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="gallery" class="py-12 max-w-6xl mx-auto px-4 sm:px-6">
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-10 border-b border-gray-200 pb-4">
+                <div>
+                    <h2 class="text-2xl sm:text-3xl font-black text-gray-900 flex items-center gap-2.5">
+                        <i data-lucide="layers" class="text-rose-500"></i>
+                        カサカサ順 実物唇写真ランク一覧
+                    </h2>
+                    <p class="text-gray-500 text-sm mt-1">水分保持率の高い健康状態（Level 1）から、荒れ・ひび割れが重度な状態（Level 5）への順序です。</p>
+                </div>
+                <div class="mt-4 md:mt-0 text-xs font-bold text-gray-500 bg-white border border-gray-200 px-3 py-1.5 rounded-xl shadow-sm flex items-center gap-1.5">
+                    <i data-lucide="arrow-down-narrow-wide" class="w-4 h-4 text-rose-500"></i>
+                    <span>並び順: 潤い健康 ➔ ひび割れ・出血</span>
+                </div>
+            </div>
+
+            <div class="space-y-10">
+
+                <!-- LEVEL 1 -->
+                <div id="level-1" class="glass-card rounded-3xl overflow-hidden shadow-md hover:shadow-lg transition-all border border-emerald-200/90">
+                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-0">
+                        <div class="lg:col-span-5 relative bg-emerald-950 p-4 flex flex-col items-center justify-center min-h-[280px]">
+                            <!-- Real Photo Level 1 -->
+                            <div class="w-full h-full aspect-[16/10] img-zoom-container rounded-2xl overflow-hidden shadow-lg border border-white/20 relative group cursor-pointer" onclick="openPhotoModal('9ce9191f-f8fa-4836-b47c-ac5ca1388d5c_2.jpg', '9ce9191f-f8fa-4836-b47c-ac5ca1388d5c.jpg', 'Level 1：もちもち潤い唇', '水分量90%〜100%')">
+                                <img src="9ce9191f-f8fa-4836-b47c-ac5ca1388d5c_2.jpg" 
+                                     onerror="handleImgError(this, '9ce9191f-f8fa-4836-b47c-ac5ca1388d5c.jpg', 1)" 
+                                     alt="Level 1 潤い健康唇の写真" 
+                                     class="w-full h-full object-cover">
+                                <div class="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-white font-bold text-xs gap-1">
+                                    <i data-lucide="search" class="w-4 h-4"></i> クリックで拡大表示
+                                </div>
+                            </div>
+                            <span class="absolute top-6 left-6 bg-emerald-600 text-white text-xs font-black px-3.5 py-1 rounded-full shadow-md tracking-wider">
+                                LEVEL 1 (最良)
+                            </span>
+                            <span class="text-emerald-200/80 text-[11px] font-mono mt-2">実物写真 ID: 9ce9191f...</span>
+                        </div>
+
+                        <div class="lg:col-span-7 p-6 sm:p-8 flex flex-col justify-between bg-white">
+                            <div>
+                                <div class="flex items-center justify-between mb-2">
+                                    <span class="text-xs font-bold tracking-wider text-emerald-600 uppercase">状態: 理想的な潤い（ノーマル）</span>
+                                    <span class="inline-flex items-center gap-1 text-xs font-bold text-emerald-700 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200">
+                                        <i data-lucide="check-circle-2" class="w-3.5 h-3.5"></i> カサカサ指数 ★☆☆☆☆
+                                    </span>
+                                </div>
+                                <h3 class="text-xl sm:text-2xl font-black text-gray-900 mb-3">もちもち潤い唇（健康・理想的）</h3>
+                                <p class="text-gray-600 text-sm leading-relaxed mb-4">
+                                    角質層の水分保持機能が高く維持されています。自然なピンク色の血色感とふっくらとしたツヤがあり、キメが整っていて縦ジワや皮むけは一切認められません。
+                                </p>
+                                
+                                <div class="grid grid-cols-2 gap-3 mb-4">
+                                    <div class="bg-emerald-50/60 p-3 rounded-xl border border-emerald-100">
+                                        <span class="text-[11px] font-bold text-emerald-800 block mb-0.5">写真の視覚的特徴</span>
+                                        <span class="text-xs text-gray-700 font-medium">美しいツヤ・キメ均一・ふっくら感</span>
+                                    </div>
+                                    <div class="bg-emerald-50/60 p-3 rounded-xl border border-emerald-100">
+                                        <span class="text-[11px] font-bold text-emerald-800 block mb-0.5">感覚・症状</span>
+                                        <span class="text-xs text-gray-700 font-medium">突っぱり感ゼロ・痛みなし</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="pt-4 border-t border-gray-100 flex items-center justify-between">
+                                <div class="text-xs text-gray-600">
+                                    <strong class="text-gray-900 font-bold">おすすめケア:</strong> 保湿リップクリームでUV・紫外線ケア＆水分維持
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- LEVEL 2 -->
+                <div id="level-2" class="glass-card rounded-3xl overflow-hidden shadow-md hover:shadow-lg transition-all border border-teal-200/90">
+                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-0">
+                        <div class="lg:col-span-5 relative bg-teal-950 p-4 flex flex-col items-center justify-center min-h-[280px]">
+                            <!-- Real Photo Level 2 -->
+                            <div class="w-full h-full aspect-[16/10] img-zoom-container rounded-2xl overflow-hidden shadow-lg border border-white/20 relative group cursor-pointer" onclick="openPhotoModal('c77e6d81-e019-4400-bdd4-1a311dceb3a8_2.jpg', 'c77e6d81-e019-4400-bdd4-1a311dceb3a8.jpg', 'Level 2：軽度乾燥・縦ジワ', '水分量70%〜85%')">
+                                <img src="c77e6d81-e019-4400-bdd4-1a311dceb3a8_2.jpg" 
+                                     onerror="handleImgError(this, 'c77e6d81-e019-4400-bdd4-1a311dceb3a8.jpg', 2)" 
+                                     alt="Level 2 軽度乾燥の唇の写真" 
+                                     class="w-full h-full object-cover">
+                                <div class="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-white font-bold text-xs gap-1">
+                                    <i data-lucide="search" class="w-4 h-4"></i> クリックで拡大表示
+                                </div>
+                            </div>
+                            <span class="absolute top-6 left-6 bg-teal-600 text-white text-xs font-black px-3.5 py-1 rounded-full shadow-md tracking-wider">
+                                LEVEL 2
+                            </span>
+                            <span class="text-teal-200/80 text-[11px] font-mono mt-2">実物写真 ID: c77e6d81...</span>
+                        </div>
+
+                        <div class="lg:col-span-7 p-6 sm:p-8 flex flex-col justify-between bg-white">
+                            <div>
+                                <div class="flex items-center justify-between mb-2">
+                                    <span class="text-xs font-bold tracking-wider text-teal-600 uppercase">状態: 軽度乾燥（乾燥初期サイン）</span>
+                                    <span class="inline-flex items-center gap-1 text-xs font-bold text-teal-700 bg-teal-50 px-3 py-1 rounded-full border border-teal-200">
+                                        <i data-lucide="alert-circle" class="w-3.5 h-3.5"></i> カサカサ指数 ★★☆☆☆
+                                    </span>
+                                </div>
+                                <h3 class="text-xl sm:text-2xl font-black text-gray-900 mb-3">軽度乾燥・縦ジワの目立ち</h3>
+                                <p class="text-gray-600 text-sm leading-relaxed mb-4">
+                                    一見すると綺麗に見えますが、表面のツヤ感が減少し、縦方向の細かいシワ模様がやや目立ち始めている状態です。まだ皮めくれはありませんが、乾燥の第一段階です。
+                                </p>
+                                
+                                <div class="grid grid-cols-2 gap-3 mb-4">
+                                    <div class="bg-teal-50/60 p-3 rounded-xl border border-teal-100">
+                                        <span class="text-[11px] font-bold text-teal-800 block mb-0.5">写真の視覚的特徴</span>
+                                        <span class="text-xs text-gray-700 font-medium">ツヤ減少・縦ジワの細線発生</span>
+                                    </div>
+                                    <div class="bg-teal-50/60 p-3 rounded-xl border border-teal-100">
+                                        <span class="text-[11px] font-bold text-teal-800 block mb-0.5">感覚・症状</span>
+                                        <span class="text-xs text-gray-700 font-medium">軽いつっぱり感・マットな質感</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="pt-4 border-t border-gray-100 flex flex-wrap items-center justify-between gap-2">
+                                <div class="text-xs text-gray-600">
+                                    <strong class="text-gray-900 font-bold">おすすめケア:</strong> 就寝前にヒアルロン酸・セラミド配合のリップバームを塗布
+                                </div>
+                                <button onclick="showRecommendModal(2)" class="text-xs font-bold bg-teal-600 hover:bg-teal-700 text-white px-3 py-1.5 rounded-xl shadow-sm transition-all flex items-center gap-1">
+                                    <i data-lucide="shopping-cart" class="w-3.5 h-3.5"></i> 推奨リップを見る
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- LEVEL 3 -->
+                <div id="level-3" class="glass-card rounded-3xl overflow-hidden shadow-md hover:shadow-lg transition-all border border-amber-200/90">
+                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-0">
+                        <div class="lg:col-span-5 relative bg-amber-950 p-4 flex flex-col items-center justify-center min-h-[280px]">
+                            <!-- Real Photo Level 3 -->
+                            <div class="w-full h-full aspect-[16/10] img-zoom-container rounded-2xl overflow-hidden shadow-lg border border-white/20 relative group cursor-pointer" onclick="openPhotoModal('58d79df8-a64f-47a2-ba79-dd66e777fe38_2.jpg', '58d79df8-a64f-47a2-ba79-dd66e777fe38.jpg', 'Level 3：白いかさつき・薄皮浮き', '水分量45%〜60%')">
+                                <img src="58d79df8-a64f-47a2-ba79-dd66e777fe38_2.jpg" 
+                                     onerror="handleImgError(this, '58d79df8-a64f-47a2-ba79-dd66e777fe38.jpg', 3)" 
+                                     alt="Level 3 かさつき唇の写真" 
+                                     class="w-full h-full object-cover">
+                                <div class="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-white font-bold text-xs gap-1">
+                                    <i data-lucide="search" class="w-4 h-4"></i> クリックで拡大表示
+                                </div>
+                            </div>
+                            <span class="absolute top-6 left-6 bg-amber-600 text-white text-xs font-black px-3.5 py-1 rounded-full shadow-md tracking-wider">
+                                LEVEL 3
+                            </span>
+                            <span class="text-amber-200/80 text-[11px] font-mono mt-2">実物写真 ID: 58d79df8...</span>
+                        </div>
+
+                        <div class="lg:col-span-7 p-6 sm:p-8 flex flex-col justify-between bg-white">
+                            <div>
+                                <div class="flex items-center justify-between mb-2">
+                                    <span class="text-xs font-bold tracking-wider text-amber-600 uppercase">状態: 中等度かさつき（粉吹き・境界線浮き）</span>
+                                    <span class="inline-flex items-center gap-1 text-xs font-bold text-amber-700 bg-amber-50 px-3 py-1 rounded-full border border-amber-200">
+                                        <i data-lucide="alert-triangle" class="w-3.5 h-3.5"></i> カサカサ指数 ★★★☆☆
+                                    </span>
+                                </div>
+                                <h3 class="text-xl sm:text-2xl font-black text-gray-900 mb-3">白いかさつき・表面の薄皮浮き</h3>
+                                <p class="text-gray-600 text-sm leading-relaxed mb-4">
+                                    角質層の水分保持力が低下し、唇中央や輪郭に沿って白く粉を吹いたような乾燥線や小さな薄皮が浮き出ている状態です。口を開けた際にザラザラ感を生じます。
+                                </p>
+                                
+                                <div class="grid grid-cols-2 gap-3 mb-4">
+                                    <div class="bg-amber-50/60 p-3 rounded-xl border border-amber-100">
+                                        <span class="text-[11px] font-bold text-amber-800 block mb-0.5">写真の視覚的特徴</span>
+                                        <span class="text-xs text-gray-700 font-medium">唇中央の白い乾燥縁・かさつき線</span>
+                                    </div>
+                                    <div class="bg-amber-50/60 p-3 rounded-xl border border-amber-100">
+                                        <span class="text-[11px] font-bold text-amber-800 block mb-0.5">感覚・症状</span>
+                                        <span class="text-xs text-gray-700 font-medium">表面の引っ掛かり・口を動かすと引きつれ</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="pt-4 border-t border-gray-100 flex flex-wrap items-center justify-between gap-2">
+                                <div class="text-xs text-gray-600">
+                                    <strong class="text-gray-900 font-bold">おすすめケア:</strong> ホットタオルで温めた後、高純度ワセリンで厚めに密閉パック
+                                </div>
+                                <button onclick="showRecommendModal(3)" class="text-xs font-bold bg-amber-600 hover:bg-amber-700 text-white px-3 py-1.5 rounded-xl shadow-sm transition-all flex items-center gap-1">
+                                    <i data-lucide="shopping-cart" class="w-3.5 h-3.5"></i> 推奨リップを見る
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- LEVEL 4 -->
+                <div id="level-4" class="glass-card rounded-3xl overflow-hidden shadow-md hover:shadow-lg transition-all border border-orange-200/90">
+                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-0">
+                        <div class="lg:col-span-5 relative bg-orange-950 p-4 flex flex-col items-center justify-center min-h-[280px]">
+                            <!-- Real Photo Level 4 -->
+                            <div class="w-full h-full aspect-[16/10] img-zoom-container rounded-2xl overflow-hidden shadow-lg border border-white/20 relative group cursor-pointer" onclick="openPhotoModal('a5bbff40-df07-4b23-8344-4b4fdb644f97_2.jpg', 'a5bbff40-df07-4b23-8344-4b4fdb644f97.jpg', 'Level 4：広範囲の皮むけ・めくれ', '水分量20%〜35%')">
+                                <img src="a5bbff40-df07-4b23-8344-4b4fdb644f97_2.jpg" 
+                                     onerror="handleImgError(this, 'a5bbff40-df07-4b23-8344-4b4fdb644f97.jpg', 4)" 
+                                     alt="Level 4 皮むけ唇の写真" 
+                                     class="w-full h-full object-cover">
+                                <div class="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-white font-bold text-xs gap-1">
+                                    <i data-lucide="search" class="w-4 h-4"></i> クリックで拡大表示
+                                </div>
+                            </div>
+                            <span class="absolute top-6 left-6 bg-orange-600 text-white text-xs font-black px-3.5 py-1 rounded-full shadow-md tracking-wider">
+                                LEVEL 4
+                            </span>
+                            <span class="text-orange-200/80 text-[11px] font-mono mt-2">実物写真 ID: a5bbff40...</span>
+                        </div>
+
+                        <div class="lg:col-span-7 p-6 sm:p-8 flex flex-col justify-between bg-white">
+                            <div>
+                                <div class="flex items-center justify-between mb-2">
+                                    <span class="text-xs font-bold tracking-wider text-orange-600 uppercase">状態: 重度皮むけ（広範囲の乾燥剥離）</span>
+                                    <span class="inline-flex items-center gap-1 text-xs font-bold text-orange-700 bg-orange-50 px-3 py-1 rounded-full border border-orange-200">
+                                        <i data-lucide="shield-alert" class="w-3.5 h-3.5"></i> カサカサ指数 ★★★★☆
+                                    </span>
+                                </div>
+                                <h3 class="text-xl sm:text-2xl font-black text-gray-900 mb-3">広範囲の皮むけ・めくれ・強い荒れ</h3>
+                                <p class="text-gray-600 text-sm leading-relaxed mb-4">
+                                    上唇・下唇の全面にわたって皮が大きくめくれ上がり、剥がれた皮膚の下の生皮が露出している状態です。無理に手でめくると出血し、治癒が遅れます。
+                                </p>
+                                
+                                <div class="grid grid-cols-2 gap-3 mb-4">
+                                    <div class="bg-orange-50/60 p-3 rounded-xl border border-orange-100">
+                                        <span class="text-[11px] font-bold text-orange-800 block mb-0.5">写真の視覚的特徴</span>
+                                        <span class="text-xs text-gray-700 font-medium">めくれた大きな皮片・全体的な皮むけ</span>
+                                    </div>
+                                    <div class="bg-orange-50/60 p-3 rounded-xl border border-orange-100">
+                                        <span class="text-[11px] font-bold text-orange-800 block mb-0.5">感覚・症状</span>
+                                        <span class="text-xs text-gray-700 font-medium">ヒリヒリ感・触れると痛い・刺激に過敏</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="pt-4 border-t border-gray-100 flex flex-wrap items-center justify-between gap-2">
+                                <div class="text-xs text-gray-600">
+                                    <strong class="text-gray-900 font-bold">おすすめケア:</strong> 医薬品リップクリーム（アラントイン・グリチルレチン酸配合）を使用
+                                </div>
+                                <button onclick="showRecommendModal(4)" class="text-xs font-bold bg-orange-600 hover:bg-orange-700 text-white px-3 py-1.5 rounded-xl shadow-sm transition-all flex items-center gap-1">
+                                    <i data-lucide="shopping-cart" class="w-3.5 h-3.5"></i> 推奨リップを見る
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- LEVEL 5 -->
+                <div id="level-5" class="glass-card rounded-3xl overflow-hidden shadow-md hover:shadow-lg transition-all border border-rose-300 bg-rose-50/30">
+                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-0">
+                        <div class="lg:col-span-5 relative bg-rose-950 p-4 flex flex-col items-center justify-center min-h-[280px]">
+                            <!-- Real Photo Level 5 -->
+                            <div class="w-full h-full aspect-[16/10] img-zoom-container rounded-2xl overflow-hidden shadow-lg border border-white/20 relative group cursor-pointer" onclick="openPhotoModal('686bdd87-8bcc-46cc-95a7-d26c6ade33b7_2.jpg', '686bdd87-8bcc-46cc-95a7-d26c6ade33b7.jpg', 'Level 5：深い亀裂・出血', '水分量0%〜10%')">
+                                <img src="686bdd87-8bcc-46cc-95a7-d26c6ade33b7_2.jpg" 
+                                     onerror="handleImgError(this, '686bdd87-8bcc-46cc-95a7-d26c6ade33b7.jpg', 5)" 
+                                     alt="Level 5 亀裂出血唇の写真" 
+                                     class="w-full h-full object-cover">
+                                <div class="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-white font-bold text-xs gap-1">
+                                    <i data-lucide="search" class="w-4 h-4"></i> クリックで拡大表示
+                                </div>
+                            </div>
+                            <span class="absolute top-6 left-6 bg-rose-600 text-white text-xs font-black px-3.5 py-1 rounded-full shadow-md tracking-wider animate-pulse">
+                                LEVEL 5 (最深刻)
+                            </span>
+                            <span class="text-rose-200/80 text-[11px] font-mono mt-2">実物写真 ID: 686bdd87...</span>
+                        </div>
+
+                        <div class="lg:col-span-7 p-6 sm:p-8 flex flex-col justify-between bg-white">
+                            <div>
+                                <div class="flex items-center justify-between mb-2">
+                                    <span class="text-xs font-bold tracking-wider text-rose-600 uppercase">状態: 深刻な亀裂・出血（口唇炎の疑い）</span>
+                                    <span class="inline-flex items-center gap-1 text-xs font-bold text-rose-700 bg-rose-100 px-3 py-1 rounded-full border border-rose-300">
+                                        <i data-lucide="flame" class="w-3.5 h-3.5"></i> カサカサ指数 ★★★★★
+                                    </span>
+                                </div>
+                                <h3 class="text-xl sm:text-2xl font-black text-gray-900 mb-3">深いパックリ亀裂・ひび割れ・出血</h3>
+                                <p class="text-gray-600 text-sm leading-relaxed mb-4">
+                                    乾燥が極限まで進行し、中央や口角に縦方向の深い裂け目（亀裂）が発生して赤く出血・凝固している危険状態です。開口時の刺痛や激しい痛みを伴います。
+                                </p>
+                                
+                                <div class="grid grid-cols-2 gap-3 mb-4">
+                                    <div class="bg-rose-50/70 p-3 rounded-xl border border-rose-100">
+                                        <span class="text-[11px] font-bold text-rose-900 block mb-0.5">写真の視覚的特徴</span>
+                                        <span class="text-xs text-rose-800 font-bold">縦方向の深い赤亀裂・出血斑・かさぶた</span>
+                                    </div>
+                                    <div class="bg-rose-50/70 p-3 rounded-xl border border-rose-100">
+                                        <span class="text-[11px] font-bold text-rose-900 block mb-0.5">感覚・症状</span>
+                                        <span class="text-xs text-rose-800 font-bold">強い痛む・食事や会話で開口出血</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="pt-4 border-t border-rose-100 flex flex-wrap items-center justify-between gap-2">
+                                <div class="text-xs text-rose-800 font-medium">
+                                    <strong class="text-rose-900 font-bold">おすすめケア:</strong> 刺激を与えず高純度白色ワセリンで保護。治らない場合は皮膚科を受診
+                                </div>
+                                <button onclick="showRecommendModal(5)" class="text-xs font-bold bg-rose-600 hover:bg-rose-700 text-white px-3 py-1.5 rounded-xl shadow-sm transition-all flex items-center gap-1">
+                                    <i data-lucide="shopping-cart" class="w-3.5 h-3.5"></i> 推奨リップを見る
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- LEVEL 3 -->
+                <div id="level-3" class="glass-card rounded-3xl overflow-hidden shadow-md hover:shadow-lg transition-all border border-amber-200/90">
+                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-0">
+                        <div class="lg:col-span-5 relative bg-amber-950 p-4 flex flex-col items-center justify-center min-h-[280px]">
+                            <!-- Real Photo Level 3 -->
+                            <div class="w-full h-full aspect-[16/10] img-zoom-container rounded-2xl overflow-hidden shadow-lg border border-white/20 relative group cursor-pointer" onclick="openPhotoModal('58d79df8-a64f-47a2-ba79-dd66e777fe38_2.jpg', '58d79df8-a64f-47a2-ba79-dd66e777fe38.jpg', 'Level 3：白いかさつき・薄皮浮き', '水分量45%〜60%')">
+                                <img src="58d79df8-a64f-47a2-ba79-dd66e777fe38_2.jpg" 
+                                     onerror="handleImgError(this, '58d79df8-a64f-47a2-ba79-dd66e777fe38.jpg', 3)" 
+                                     alt="Level 3 かさつき唇の写真" 
+                                     class="w-full h-full object-cover">
+                                <div class="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-white font-bold text-xs gap-1">
+                                    <i data-lucide="search" class="w-4 h-4"></i> クリックで拡大表示
+                                </div>
+                            </div>
+                            <span class="absolute top-6 left-6 bg-amber-600 text-white text-xs font-black px-3.5 py-1 rounded-full shadow-md tracking-wider">
+                                LEVEL 3
+                            </span>
+                            <span class="text-amber-200/80 text-[11px] font-mono mt-2">実物写真 ID: 58d79df8...</span>
+                        </div>
+
+                        <div class="lg:col-span-7 p-6 sm:p-8 flex flex-col justify-between bg-white">
+                            <div>
+                                <div class="flex items-center justify-between mb-2">
+                                    <span class="text-xs font-bold tracking-wider text-amber-600 uppercase">状態: 中等度かさつき（粉吹き・境界線浮き）</span>
+                                    <span class="inline-flex items-center gap-1 text-xs font-bold text-amber-700 bg-amber-50 px-3 py-1 rounded-full border border-amber-200">
+                                        <i data-lucide="alert-triangle" class="w-3.5 h-3.5"></i> カサカサ指数 ★★★☆☆
+                                    </span>
+                                </div>
+                                <h3 class="text-xl sm:text-2xl font-black text-gray-900 mb-3">白いかさつき・表面の薄皮浮き</h3>
+                                <p class="text-gray-600 text-sm leading-relaxed mb-4">
+                                    角質層の水分保持力が低下し、唇中央や輪郭に沿って白く粉を吹いたような乾燥線や小さな薄皮が浮き出ている状態です。口を開けた際にザラザラ感を生じます。
+                                </p>
+                                
+                                <div class="grid grid-cols-2 gap-3 mb-4">
+                                    <div class="bg-amber-50/60 p-3 rounded-xl border border-amber-100">
+                                        <span class="text-[11px] font-bold text-amber-800 block mb-0.5">写真の視覚的特徴</span>
+                                        <span class="text-xs text-gray-700 font-medium">唇中央の白い乾燥縁・かさつき線</span>
+                                    </div>
+                                    <div class="bg-amber-50/60 p-3 rounded-xl border border-amber-100">
+                                        <span class="text-[11px] font-bold text-amber-800 block mb-0.5">感覚・症状</span>
+                                        <span class="text-xs text-gray-700 font-medium">表面の引っ掛かり・口を動かすと引きつれ</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="pt-4 border-t border-gray-100 flex items-center justify-between">
+                                <div class="text-xs text-gray-600">
+                                    <strong class="text-gray-900 font-bold">おすすめケア:</strong> ホットタオルで温めた後、高純度ワセリンで厚めに密閉パック
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- LEVEL 4 -->
+                <div id="level-4" class="glass-card rounded-3xl overflow-hidden shadow-md hover:shadow-lg transition-all border border-orange-200/90">
+                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-0">
+                        <div class="lg:col-span-5 relative bg-orange-950 p-4 flex flex-col items-center justify-center min-h-[280px]">
+                            <!-- Real Photo Level 4 -->
+                            <div class="w-full h-full aspect-[16/10] img-zoom-container rounded-2xl overflow-hidden shadow-lg border border-white/20 relative group cursor-pointer" onclick="openPhotoModal('a5bbff40-df07-4b23-8344-4b4fdb644f97_2.jpg', 'a5bbff40-df07-4b23-8344-4b4fdb644f97.jpg', 'Level 4：広範囲の皮むけ・めくれ', '水分量20%〜35%')">
+                                <img src="a5bbff40-df07-4b23-8344-4b4fdb644f97_2.jpg" 
+                                     onerror="handleImgError(this, 'a5bbff40-df07-4b23-8344-4b4fdb644f97.jpg', 4)" 
+                                     alt="Level 4 皮むけ唇の写真" 
+                                     class="w-full h-full object-cover">
+                                <div class="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-white font-bold text-xs gap-1">
+                                    <i data-lucide="search" class="w-4 h-4"></i> クリックで拡大表示
+                                </div>
+                            </div>
+                            <span class="absolute top-6 left-6 bg-orange-600 text-white text-xs font-black px-3.5 py-1 rounded-full shadow-md tracking-wider">
+                                LEVEL 4
+                            </span>
+                            <span class="text-orange-200/80 text-[11px] font-mono mt-2">実物写真 ID: a5bbff40...</span>
+                        </div>
+
+                        <div class="lg:col-span-7 p-6 sm:p-8 flex flex-col justify-between bg-white">
+                            <div>
+                                <div class="flex items-center justify-between mb-2">
+                                    <span class="text-xs font-bold tracking-wider text-orange-600 uppercase">状態: 重度皮むけ（広範囲の乾燥剥離）</span>
+                                    <span class="inline-flex items-center gap-1 text-xs font-bold text-orange-700 bg-orange-50 px-3 py-1 rounded-full border border-orange-200">
+                                        <i data-lucide="shield-alert" class="w-3.5 h-3.5"></i> カサカサ指数 ★★★★☆
+                                    </span>
+                                </div>
+                                <h3 class="text-xl sm:text-2xl font-black text-gray-900 mb-3">広範囲の皮むけ・めくれ・強い荒れ</h3>
+                                <p class="text-gray-600 text-sm leading-relaxed mb-4">
+                                    上唇・下唇の全面にわたって皮が大きくめくれ上がり、剥がれた皮膚の下の生皮が露出している状態です。無理に手でめくると出血し、治癒が遅れます。
+                                </p>
+                                
+                                <div class="grid grid-cols-2 gap-3 mb-4">
+                                    <div class="bg-orange-50/60 p-3 rounded-xl border border-orange-100">
+                                        <span class="text-[11px] font-bold text-orange-800 block mb-0.5">写真の視覚的特徴</span>
+                                        <span class="text-xs text-gray-700 font-medium">めくれた大きな皮片・全体的な皮むけ</span>
+                                    </div>
+                                    <div class="bg-orange-50/60 p-3 rounded-xl border border-orange-100">
+                                        <span class="text-[11px] font-bold text-orange-800 block mb-0.5">感覚・症状</span>
+                                        <span class="text-xs text-gray-700 font-medium">ヒリヒリ感・触れると痛い・刺激に過敏</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="pt-4 border-t border-gray-100 flex items-center justify-between">
+                                <div class="text-xs text-gray-600">
+                                    <strong class="text-gray-900 font-bold">おすすめケア:</strong> 医薬品リップクリーム（アラントイン・グリチルレチン酸配合）を使用
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- LEVEL 5 -->
+                <div id="level-5" class="glass-card rounded-3xl overflow-hidden shadow-md hover:shadow-lg transition-all border border-rose-300 bg-rose-50/30">
+                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-0">
+                        <div class="lg:col-span-5 relative bg-rose-950 p-4 flex flex-col items-center justify-center min-h-[280px]">
+                            <!-- Real Photo Level 5 -->
+                            <div class="w-full h-full aspect-[16/10] img-zoom-container rounded-2xl overflow-hidden shadow-lg border border-white/20 relative group cursor-pointer" onclick="openPhotoModal('686bdd87-8bcc-46cc-95a7-d26c6ade33b7_2.jpg', '686bdd87-8bcc-46cc-95a7-d26c6ade33b7.jpg', 'Level 5：深い亀裂・出血', '水分量0%〜10%')">
+                                <img src="686bdd87-8bcc-46cc-95a7-d26c6ade33b7_2.jpg" 
+                                     onerror="handleImgError(this, '686bdd87-8bcc-46cc-95a7-d26c6ade33b7.jpg', 5)" 
+                                     alt="Level 5 亀裂出血唇の写真" 
+                                     class="w-full h-full object-cover">
+                                <div class="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-white font-bold text-xs gap-1">
+                                    <i data-lucide="search" class="w-4 h-4"></i> クリックで拡大表示
+                                </div>
+                            </div>
+                            <span class="absolute top-6 left-6 bg-rose-600 text-white text-xs font-black px-3.5 py-1 rounded-full shadow-md tracking-wider animate-pulse">
+                                LEVEL 5 (最深刻)
+                            </span>
+                            <span class="text-rose-200/80 text-[11px] font-mono mt-2">実物写真 ID: 686bdd87...</span>
+                        </div>
+
+                        <div class="lg:col-span-7 p-6 sm:p-8 flex flex-col justify-between bg-white">
+                            <div>
+                                <div class="flex items-center justify-between mb-2">
+                                    <span class="text-xs font-bold tracking-wider text-rose-600 uppercase">状態: 深刻な亀裂・出血（口唇炎の疑い）</span>
+                                    <span class="inline-flex items-center gap-1 text-xs font-bold text-rose-700 bg-rose-100 px-3 py-1 rounded-full border border-rose-300">
+                                        <i data-lucide="flame" class="w-3.5 h-3.5"></i> カサカサ指数 ★★★★★
+                                    </span>
+                                </div>
+                                <h3 class="text-xl sm:text-2xl font-black text-gray-900 mb-3">深いパックリ亀裂・ひび割れ・出血</h3>
+                                <p class="text-gray-600 text-sm leading-relaxed mb-4">
+                                    乾燥が極限まで進行し、中央や口角に縦方向の深い裂け目（亀裂）が発生して赤く出血・凝固している危険状態です。開口時の刺痛や激しい痛みを伴います。
+                                </p>
+                                
+                                <div class="grid grid-cols-2 gap-3 mb-4">
+                                    <div class="bg-rose-50/70 p-3 rounded-xl border border-rose-100">
+                                        <span class="text-[11px] font-bold text-rose-900 block mb-0.5">写真の視覚的特徴</span>
+                                        <span class="text-xs text-rose-800 font-bold">縦方向の深い赤亀裂・出血斑・かさぶた</span>
+                                    </div>
+                                    <div class="bg-rose-50/70 p-3 rounded-xl border border-rose-100">
+                                        <span class="text-[11px] font-bold text-rose-900 block mb-0.5">感覚・症状</span>
+                                        <span class="text-xs text-rose-800 font-bold">強い痛む・食事や会話で開口出血</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="pt-4 border-t border-rose-100 flex items-center justify-between">
+                                <div class="text-xs text-rose-800 font-medium">
+                                    <strong class="text-rose-900 font-bold">おすすめケア:</strong> 刺激を与えず高純度白色ワセリンで保護。治らない場合は皮膚科を受診
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <section id="compare" class="py-12 bg-rose-50/50 border-y border-rose-100">
+            <div class="max-w-5xl mx-auto px-4 sm:px-6">
+                <div class="text-center max-w-2xl mx-auto mb-8">
+                    <span class="text-xs font-bold bg-rose-100 text-rose-700 px-3 py-1 rounded-full inline-block mb-2">インタラクティブ写真対比</span>
+                    <h2 class="text-2xl sm:text-3xl font-bold text-gray-900">1対1 ビフォー・アフター実写真比較</h2>
+                    <p class="text-gray-600 text-sm mt-2">スライダーを左右にドラッグして、潤い健康状態（Level 1）と重度ひび割れ出血状態（Level 5）の写真の違いをダイレクトに比較できます。</p>
+                </div>
+
+                <!-- Comparison Container Widget -->
+                <div class="max-w-3xl mx-auto glass-card p-4 sm:p-6 rounded-3xl shadow-xl border border-rose-200">
+                    <div class="relative w-full aspect-[16/9] rounded-2xl overflow-hidden select-none bg-slate-900" id="compContainer">
+                        
+                        <!-- Layer 1 (Background): Level 5 Photo -->
+                        <div class="absolute inset-0 w-full h-full flex items-center justify-center bg-slate-900">
+                            <img src="686bdd87-8bcc-46cc-95a7-d26c6ade33b7_2.jpg" 
+                                 onerror="handleImgError(this, '686bdd87-8bcc-46cc-95a7-d26c6ade33b7.jpg', 5)" 
+                                 alt="Level 5 Crack Photo" 
+                                 class="w-full h-full object-cover">
+                            <span class="absolute bottom-3 right-3 bg-black/80 backdrop-blur-md text-white text-xs px-3 py-1 rounded-lg border border-rose-500 font-bold">
+                                Level 5: 亀裂・出血写真
+                            </span>
+                        </div>
+
+                        <!-- Layer 2 (Clipped Foreground): Level 1 Photo -->
+                        <div id="compClipped" class="absolute inset-0 w-1/2 h-full overflow-hidden border-r-2 border-white shadow-2xl bg-slate-900">
+                            <div class="w-full h-full flex items-center justify-center min-w-[300px]" id="compFgWrapper">
+                                <img src="9ce9191f-f8fa-4836-b47c-ac5ca1388d5c_2.jpg" 
+                                     onerror="handleImgError(this, '9ce9191f-f8fa-4836-b47c-ac5ca1388d5c.jpg', 1)" 
+                                     alt="Level 1 Healthy Photo" 
+                                     class="w-full h-full object-cover">
+                            </div>
+                            <span class="absolute bottom-3 left-3 bg-black/80 backdrop-blur-md text-white text-xs px-3 py-1 rounded-lg border border-emerald-500 font-bold">
+                                Level 1: 潤い健康写真
+                            </span>
+                        </div>
+
+                        <!-- Interactive Range Slider -->
+                        <input type="range" min="0" max="100" value="50" class="absolute inset-0 w-full h-full opacity-0 cursor-ew-resize custom-slider z-30" id="compRangeSlider" oninput="updateCompSlider(this.value)">
+
+                        <!-- Handle Divider line indicator -->
+                        <div id="compHandle" class="absolute top-0 bottom-0 left-1/2 -ml-3 w-6 pointer-events-none z-20 flex items-center justify-center">
+                            <div class="w-8 h-8 rounded-full bg-white text-rose-600 shadow-2xl flex items-center justify-center text-xs font-black border-2 border-rose-400">
+                                ↔
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-between items-center text-xs text-gray-500 mt-3 font-medium px-1">
+                        <span>← Level 1 (潤い・健康)</span>
+                        <span class="text-rose-600 font-bold bg-rose-100 px-3 py-1 rounded-full">スライダーを左右にドラッグ</span>
+                        <span>Level 5 (亀裂・出血) →</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="diagnosis" class="py-14 max-w-4xl mx-auto px-4 sm:px-6">
+            <div class="glass-card rounded-3xl p-6 sm:p-10 border border-rose-200 shadow-md">
+                <div class="text-center mb-8">
+                    <span class="bg-rose-100 text-rose-700 text-xs font-bold px-3 py-1 rounded-full inline-block mb-2">写真比較・簡易判定</span>
+                    <h2 class="text-2xl sm:text-3xl font-bold text-gray-900">あなたの唇 カサカサ度写真セルフチェック</h2>
+                    <p class="text-gray-600 text-sm mt-2">現在のあなたの唇に最も近い状態を1つ選択してください。判定レベルと対応する写真、おすすめ処方を表示します。</p>
+                </div>
+
+                <!-- Quiz Options -->
+                <div class="space-y-3" id="quizOptions">
+                    <button onclick="selectOption(1)" class="w-full text-left p-4 rounded-2xl border border-gray-200 hover:border-emerald-400 hover:bg-emerald-50/40 transition-all flex items-center justify-between group bg-white shadow-sm">
+                        <div class="flex items-center gap-3">
+                            <div class="w-9 h-9 rounded-xl bg-gray-100 text-gray-700 group-hover:bg-emerald-500 group-hover:text-white flex items-center justify-center font-bold text-sm transition-colors shrink-0">A</div>
+                            <span class="text-xs sm:text-sm font-bold text-gray-800">ツヤがあり、突っぱり感や皮むけは一切ない（Level 1相当）</span>
+                        </div>
+                        <i data-lucide="chevron-right" class="w-4 h-4 text-gray-400 group-hover:text-emerald-500 transition-colors"></i>
+                    </button>
+
+                    <button onclick="selectOption(2)" class="w-full text-left p-4 rounded-2xl border border-gray-200 hover:border-teal-400 hover:bg-teal-50/40 transition-all flex items-center justify-between group bg-white shadow-sm">
+                        <div class="flex items-center gap-3">
+                            <div class="w-9 h-9 rounded-xl bg-gray-100 text-gray-700 group-hover:bg-teal-500 group-hover:text-white flex items-center justify-center font-bold text-sm transition-colors shrink-0">B</div>
+                            <span class="text-xs sm:text-sm font-bold text-gray-800">皮はむけていないが、縦ジワや少し突っ張る感じがある（Level 2相当）</span>
+                        </div>
+                        <i data-lucide="chevron-right" class="w-4 h-4 text-gray-400 group-hover:text-teal-500 transition-colors"></i>
+                    </button>
+
+                    <button onclick="selectOption(3)" class="w-full text-left p-4 rounded-2xl border border-gray-200 hover:border-amber-400 hover:bg-amber-50/40 transition-all flex items-center justify-between group bg-white shadow-sm">
+                        <div class="flex items-center gap-3">
+                            <div class="w-9 h-9 rounded-xl bg-gray-100 text-gray-700 group-hover:bg-amber-500 group-hover:text-white flex items-center justify-center font-bold text-sm transition-colors shrink-0">C</div>
+                            <span class="text-xs sm:text-sm font-bold text-gray-800">表面が白く浮いたり、粉っぽいかさつきがある（Level 3相当）</span>
+                        </div>
+                        <i data-lucide="chevron-right" class="w-4 h-4 text-gray-400 group-hover:text-amber-500 transition-colors"></i>
+                    </button>
+
+                    <button onclick="selectOption(4)" class="w-full text-left p-4 rounded-2xl border border-gray-200 hover:border-orange-400 hover:bg-orange-50/40 transition-all flex items-center justify-between group bg-white shadow-sm">
+                        <div class="flex items-center gap-3">
+                            <div class="w-9 h-9 rounded-xl bg-gray-100 text-gray-700 group-hover:bg-orange-500 group-hover:text-white flex items-center justify-center font-bold text-sm transition-colors shrink-0">D</div>
+                            <span class="text-xs sm:text-sm font-bold text-gray-800">皮が全体的に大きくめくれていて、引っかかる・痛い（Level 4相当）</span>
+                        </div>
+                        <i data-lucide="chevron-right" class="w-4 h-4 text-gray-400 group-hover:text-orange-500 transition-colors"></i>
+                    </button>
+
+                    <button onclick="selectOption(5)" class="w-full text-left p-4 rounded-2xl border border-gray-200 hover:border-rose-500 hover:bg-rose-50/40 transition-all flex items-center justify-between group bg-white shadow-sm">
+                        <div class="flex items-center gap-3">
+                            <div class="w-9 h-9 rounded-xl bg-gray-100 text-gray-700 group-hover:bg-rose-600 group-hover:text-white flex items-center justify-center font-bold text-sm transition-colors shrink-0">E</div>
+                            <span class="text-xs sm:text-sm font-bold text-gray-800">縦裂け目（亀裂）があり出血している・開口すると激痛（Level 5相当）</span>
+                        </div>
+                        <i data-lucide="chevron-right" class="w-4 h-4 text-gray-400 group-hover:text-rose-600 transition-colors"></i>
+                    </button>
+                </div>
+
+                <!-- Result Card -->
+                <div id="diagResult" class="hidden mt-6 p-6 rounded-2xl bg-gradient-to-br from-rose-50 to-pink-50 border border-rose-200 text-left shadow-md">
+                    <div class="flex items-center justify-between mb-3">
+                        <span id="resultBadge" class="text-xs font-bold px-3 py-1 rounded-full bg-rose-500 text-white">判定結果</span>
+                        <button onclick="resetQuiz()" class="text-xs text-gray-500 hover:text-rose-600 underline flex items-center gap-1 font-medium">
+                            <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i> もう一度選択する
+                        </button>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
+                        <div class="md:col-span-4 aspect-[16/10] rounded-xl overflow-hidden shadow-md bg-slate-900 border border-gray-200">
+                            <img id="resultImg" src="" alt="Diagnosis Result Lip" class="w-full h-full object-cover">
+                        </div>
+                        <div class="md:col-span-8 space-y-2">
+                            <h3 id="resultTitle" class="text-lg sm:text-xl font-bold text-gray-900"></h3>
+                            <p id="resultDesc" class="text-xs sm:text-sm text-gray-600 leading-relaxed"></p>
+                            <div class="bg-white p-3 rounded-xl border border-rose-100 shadow-sm">
+                                <strong class="text-xs font-bold text-rose-600 block mb-0.5">💡 推奨処方ケア:</strong>
+                                <span id="resultAdvice" class="text-xs text-gray-700 font-medium"></span>
+                            </div>
+
+                            <!-- Level 2+ Dynamic Amazon Link Box -->
+                            <div id="resultAmazonBox" class="hidden pt-2">
+                                <div class="bg-gradient-to-r from-rose-100 to-amber-100 p-3 rounded-xl border border-rose-200">
+                                    <span class="text-[11px] font-black text-rose-800 block mb-1.5 flex items-center gap-1">
+                                        <i data-lucide="sparkles" class="w-3.5 h-3.5 text-rose-600"></i>
+                                        Level 2以上の乾燥対策：おすすめ集中リップケア
+                                    </span>
+                                    <div class="flex flex-col sm:flex-row gap-2">
+                                        <a href="https://amzn.to/4xStLGe" target="_blank" rel="noopener noreferrer" class="flex-1 bg-white hover:bg-rose-50 text-rose-700 border border-rose-300 px-3 py-1.5 rounded-lg text-xs font-bold shadow-sm flex items-center justify-center gap-1 transition-all">
+                                            <span>推奨ケア ① (Amazon)</span>
+                                            <i data-lucide="external-link" class="w-3 h-3"></i>
+                                        </a>
+                                        <a href="https://amzn.to/4wRK71e" target="_blank" rel="noopener noreferrer" class="flex-1 bg-white hover:bg-amber-50 text-amber-800 border border-amber-300 px-3 py-1.5 rounded-lg text-xs font-bold shadow-sm flex items-center justify-center gap-1 transition-all">
+                                            <span>推奨ケア ② (Amazon)</span>
+                                            <i data-lucide="external-link" class="w-3 h-3"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="care-guide" class="py-14 bg-white border-t border-gray-100">
+            <div class="max-w-5xl mx-auto px-4 sm:px-6">
+                <div class="text-center max-w-2xl mx-auto mb-10">
+                    <h2 class="text-2xl sm:text-3xl font-bold text-gray-900">カサカサを防ぐ！正しいリップケア習慣</h2>
+                    <p class="text-gray-500 text-sm mt-1">唇は皮膚が薄く皮脂腺がありません。毎日のNG習慣を見直しましょう。</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+                    <div class="p-6 rounded-2xl bg-rose-50/50 border border-rose-100">
+                        <div class="w-10 h-10 rounded-2xl bg-rose-500 text-white flex items-center justify-center mb-4 shadow-sm">
+                            <i data-lucide="arrow-down-up" class="w-5 h-5"></i>
+                        </div>
+                        <h3 class="font-bold text-gray-900 mb-2 text-base">1. 「縦方向」に塗り込む</h3>
+                        <p class="text-xs text-gray-600 leading-relaxed">
+                            リップクリームは横に塗り広げるのではなく、唇の縦ジワの溝に沿って「縦方向」に馴染ませることで、保湿成分が溝の奥まで届きます。
+                        </p>
+                    </div>
+
+                    <div class="p-6 rounded-2xl bg-rose-50/50 border border-rose-100">
+                        <div class="w-10 h-10 rounded-2xl bg-rose-500 text-white flex items-center justify-center mb-4 shadow-sm">
+                            <i data-lucide="ban" class="w-5 h-5"></i>
+                        </div>
+                        <h3 class="font-bold text-gray-900 mb-2 text-base">2. 唇を舐める・皮を引っ張るのはNG</h3>
+                        <p class="text-xs text-gray-600 leading-relaxed">
+                            唾液が蒸発する際に唇本来の水分まで奪い去ります。また浮いた皮を指や歯で引っ張ると、出血や色素沈着の原因になります。
+                        </p>
+                    </div>
+
+                    <div class="p-6 rounded-2xl bg-rose-50/50 border border-rose-100">
+                        <div class="w-10 h-10 rounded-2xl bg-rose-500 text-white flex items-center justify-center mb-4 shadow-sm">
+                            <i data-lucide="moon" class="w-5 h-5"></i>
+                        </div>
+                        <h3 class="font-bold text-gray-900 mb-2 text-base">3. 就寝前のワセリンラップパック</h3>
+                        <p class="text-xs text-gray-600 leading-relaxed">
+                            睡眠中は口呼吸などで最も乾燥します。多めの白色ワセリンを塗り、小さく切ったラップを約5分貼ると強力補修できます。
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Ingredient Matrix Table -->
+                <div class="glass-card p-6 rounded-2xl border border-gray-200 overflow-x-auto">
+                    <h3 class="text-base font-bold text-gray-900 mb-4 flex items-center gap-2">
+                        <i data-lucide="pill" class="text-rose-500 w-5 h-5"></i>
+                        症状レベル別 リップクリーム成分の選び方
+                    </h3>
+                    <table class="w-full text-left border-collapse text-xs">
+                        <thead>
+                            <tr class="border-b border-gray-200 bg-gray-50/80">
+                                <th class="p-3 font-bold text-gray-700">乾燥レベル</th>
+                                <th class="p-3 font-bold text-gray-700">分類</th>
+                                <th class="p-3 font-bold text-gray-700">有効なおすすめ成分</th>
+                                <th class="p-3 font-bold text-gray-700">目的</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-100">
+                            <tr>
+                                <td class="p-3 font-bold text-emerald-700">Level 1〜2</td>
+                                <td class="p-3 text-gray-600">化粧品リップ</td>
+                                <td class="p-3 text-gray-800">ヒアルロン酸、シアバター、ホホバオイル</td>
+                                <td class="p-3 text-gray-500">毎日の潤い補給とツヤ維持</td>
+                            </tr>
+                            <tr>
+                                <td class="p-3 font-bold text-amber-700">Level 3</td>
+                                <td class="p-3 text-gray-600">医薬部外品（薬用リップ）</td>
+                                <td class="p-3 text-gray-800">白色ワセリン、セラミド、ビタミンE</td>
+                                <td class="p-3 text-gray-500">カサつき防止・水分蒸発の密閉ガード</td>
+                            </tr>
+                            <tr>
+                                <td class="p-3 font-bold text-rose-700">Level 4〜5</td>
+                                <td class="p-3 text-gray-600">第3類医薬品リップ</td>
+                                <td class="p-3 text-gray-800">アラントイン、グリチルレチン酸、ピリドキシン(V.B6)</td>
+                                <td class="p-3 text-gray-500">皮むけ・ひび割れ・組織の修復と消炎</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Photo Modal Dialog -->
+    <div id="photoModal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 hidden items-center justify-center p-4 transition-all">
+        <div class="relative max-w-3xl w-full bg-slate-900 rounded-3xl p-4 sm:p-6 border border-white/20 shadow-2xl overflow-hidden">
+            <button onclick="closePhotoModal()" class="absolute top-4 right-4 bg-white/20 hover:bg-white/40 text-white w-9 h-9 rounded-full flex items-center justify-center transition-all z-20">
+                <i data-lucide="x" class="w-5 h-5"></i>
+            </button>
+            <div class="aspect-[16/10] w-full rounded-2xl overflow-hidden bg-black mb-4">
+                <img id="modalImg" src="" alt="Zoomed Lip Photo" class="w-full h-full object-contain">
+            </div>
+            <div class="flex items-center justify-between text-white">
+                <div>
+                    <h3 id="modalTitle" class="text-lg font-bold"></h3>
+                    <p id="modalSub" class="text-xs text-rose-300 font-mono mt-0.5"></p>
+                </div>
+                <button onclick="closePhotoModal()" class="bg-rose-500 hover:bg-rose-600 text-white px-4 py-2 rounded-xl text-xs font-bold transition-all">
+                    閉じる
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Level 2+ Recommended Products Modal Popup -->
+    <div id="recommendModal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 hidden items-center justify-center p-4 transition-all">
+        <div class="relative max-w-md w-full bg-white rounded-3xl p-6 border border-rose-200 shadow-2xl overflow-hidden">
+            <button onclick="closeRecommendModal()" class="absolute top-4 right-4 bg-gray-100 hover:bg-gray-200 text-gray-500 w-8 h-8 rounded-full flex items-center justify-center transition-all">
+                <i data-lucide="x" class="w-4 h-4"></i>
+            </button>
+            
+            <div class="text-center mb-5">
+                <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-rose-500 to-amber-500 text-white flex items-center justify-center mx-auto mb-3 shadow-md shadow-rose-200">
+                    <i data-lucide="sparkles" class="w-6 h-6"></i>
+                </div>
+                <span id="recModalLevelBadge" class="text-xs font-bold px-3 py-1 rounded-full bg-amber-100 text-amber-800 border border-amber-200 inline-block mb-1.5">
+                    Level 2以上の乾燥・荒れ対策
+                </span>
+                <h3 class="text-xl font-black text-gray-900">おすすめの集中リップケア</h3>
+                <p class="text-xs text-gray-600 mt-1 leading-relaxed">
+                    乾燥・カサつき・皮むけ・ひび割れが気になり始めた唇に。早期集中補修のためのおすすめアイテムです。
+                </p>
+            </div>
+
+            <div class="space-y-3 mb-5">
+                <!-- Recommended Product 1 -->
+                <a href="https://amzn.to/4xStLGe" target="_blank" rel="noopener noreferrer" class="flex items-center justify-between p-3.5 bg-gradient-to-r from-rose-50 to-pink-50 border border-rose-200 rounded-2xl hover:shadow-md hover:border-rose-300 transition-all group">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-xl bg-rose-500 text-white flex items-center justify-center shrink-0 shadow-sm">
+                            <i data-lucide="shopping-bag" class="w-5 h-5"></i>
+                        </div>
+                        <div>
+                            <span class="text-xs font-extrabold text-gray-900 block group-hover:text-rose-600 transition-colors">おすすめケアアイテム ①</span>
+                            <span class="text-[11px] text-gray-500 font-medium">高保湿・カサつき密閉バーム</span>
+                        </div>
+                    </div>
+                    <span class="bg-rose-500 text-white text-xs font-bold px-3 py-1.5 rounded-xl shadow-sm flex items-center gap-1 shrink-0 group-hover:bg-rose-600 transition-all">
+                        Amazon <i data-lucide="external-link" class="w-3 h-3"></i>
+                    </span>
+                </a>
+
+                <!-- Recommended Product 2 -->
+                <a href="https://amzn.to/4wRK71e" target="_blank" rel="noopener noreferrer" class="flex items-center justify-between p-3.5 bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200 rounded-2xl hover:shadow-md hover:border-amber-300 transition-all group">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-xl bg-amber-500 text-white flex items-center justify-center shrink-0 shadow-sm">
+                            <i data-lucide="shield-check" class="w-5 h-5"></i>
+                        </div>
+                        <div>
+                            <span class="text-xs font-extrabold text-gray-900 block group-hover:text-amber-700 transition-colors">おすすめケアアイテム ②</span>
+                            <span class="text-[11px] text-gray-500 font-medium">皮むけ・ひび割れ組織修復リップ</span>
+                        </div>
+                    </div>
+                    <span class="bg-amber-600 text-white text-xs font-bold px-3 py-1.5 rounded-xl shadow-sm flex items-center gap-1 shrink-0 group-hover:bg-amber-700 transition-all">
+                        Amazon <i data-lucide="external-link" class="w-3 h-3"></i>
+                    </span>
+                </a>
+            </div>
+
+            <button onclick="closeRecommendModal()" class="w-full bg-gray-100 hover:bg-gray-200 text-gray-700 py-2.5 rounded-xl text-xs font-bold transition-all">
+                閉じる
+            </button>
+        </div>
+    </div>
+
+    <footer class="bg-gray-900 text-gray-400 py-8 border-t border-gray-800">
+        <div class="max-w-5xl mx-auto px-4 text-center">
+            <div class="flex items-center justify-center gap-2 mb-3">
+                <div class="w-7 h-7 rounded-full bg-rose-500 text-white flex items-center justify-center text-xs font-bold">
+                    <i data-lucide="camera" class="w-4 h-4"></i>
+                </div>
+                <span class="text-white font-bold text-base">Lip Care Photo Rank</span>
+            </div>
+            <p class="text-xs text-gray-500 max-w-md mx-auto mb-4 leading-relaxed">
+                ※本Webサイトのレベル表示および解説は一般的なスキンケア指標です。強い痛みやひび割れ、出血が続く場合は皮膚科専門医にご相談ください。
+            </p>
+            <p class="text-xs text-gray-600">&copy; 2026 Lip Care Photo Rank Visual Guide. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Lucideアイコン初期化
+        lucide.createIcons();
+
+        // 5枚の実物写真データ定義（フォールバック用パス含む）
+        const lipPhotos = {
+            1: {
+                primary: "9ce9191f-f8fa-4836-b47c-ac5ca1388d5c_2.jpg",
+                secondary: "9ce9191f-f8fa-4836-b47c-ac5ca1388d5c.jpg",
+                title: "Level 1：もちもち潤い唇",
+                badge: "Level 1：健康唇",
+                badgeClass: "bg-emerald-500 text-white px-5 py-2.5 rounded-2xl shadow-md text-center min-w-[160px] transition-all",
+                waterVal: "95%",
+                waterBarClass: "bg-gradient-to-r from-emerald-400 to-teal-400 h-2 rounded-full transition-all duration-300",
+                symptom: "縦ジワが非常に少なく、自然な血色感とふっくらとしたツヤとなめらかさがあります。",
+                advice: "UVカット成分配合の保湿リップで毎日の潤い保護を継続しましょう。"
+            },
+            2: {
+                primary: "c77e6d81-e019-4400-bdd4-1a311dceb3a8_2.jpg",
+                secondary: "c77e6d81-e019-4400-bdd4-1a311dceb3a8.jpg",
+                title: "Level 2：軽度乾燥・縦ジワ",
+                badge: "Level 2：軽度乾燥",
+                badgeClass: "bg-teal-500 text-white px-5 py-2.5 rounded-2xl shadow-md text-center min-w-[160px] transition-all",
+                waterVal: "75%",
+                waterBarClass: "bg-teal-400 h-2 rounded-full transition-all duration-300",
+                symptom: "ツヤ感が減少し、縦方向の細かいシワ模様が目立ち始めて軽く突っ張ります。",
+                advice: "就寝前の保湿パックやセラミド配合リップで乾燥進行を防ぎましょう。"
+            },
+            3: {
+                primary: "58d79df8-a64f-47a2-ba79-dd66e777fe38_2.jpg",
+                secondary: "58d79df8-a64f-47a2-ba79-dd66e777fe38.jpg",
+                title: "Level 3：白いかさつき・薄皮浮き",
+                badge: "Level 3：白いかさつき",
+                badgeClass: "bg-amber-500 text-white px-5 py-2.5 rounded-2xl shadow-md text-center min-w-[160px] transition-all",
+                waterVal: "50%",
+                waterBarClass: "bg-amber-400 h-2 rounded-full transition-all duration-300",
+                symptom: "角質が粉を吹き、輪郭や中央に白っぽい薄皮のカサつきが浮き出ます。",
+                advice: "ホットタオルで温めた後に高純度ワセリンで厚めに密閉パックしてください。"
+            },
+            4: {
+                primary: "a5bbff40-df07-4b23-8344-4b4fdb644f97_2.jpg",
+                secondary: "a5bbff40-df07-4b23-8344-4b4fdb644f97.jpg",
+                title: "Level 4：広範囲の皮むけ",
+                badge: "Level 4：重度皮むけ",
+                badgeClass: "bg-orange-500 text-white px-5 py-2.5 rounded-2xl shadow-md text-center min-w-[160px] transition-all",
+                waterVal: "30%",
+                waterBarClass: "bg-orange-500 h-2 rounded-full transition-all duration-300",
+                symptom: "皮が全体的に大きく剥がれて下地が露出。刺激に過敏で痛みを生じます。",
+                advice: "アラントイン配合の第3類医薬品リップで炎症を抑えて組織を修復しましょう。"
+            },
+            5: {
+                primary: "686bdd87-8bcc-46cc-95a7-d26c6ade33b7_2.jpg",
+                secondary: "686bdd87-8bcc-46cc-95a7-d26c6ade33b7.jpg",
+                title: "Level 5：深い亀裂・出血",
+                badge: "Level 5：亀裂・出血",
+                badgeClass: "bg-rose-600 text-white px-5 py-2.5 rounded-2xl shadow-md text-center min-w-[160px] transition-all animate-pulse",
+                waterVal: "5%",
+                waterBarClass: "bg-rose-600 h-2 rounded-full transition-all duration-300",
+                symptom: "縦に深い割れ目（亀裂）が発生し、出血や会話・開口時の激しい痛みを伴います。",
+                advice: "刺激物を避け、低刺激ワセリンで保護。治らない場合は皮膚科受診を推奨します。"
+            }
+        };
+
+        let currentSimLevel = 1;
+
+        // 画像ロードエラーハンドリング（_2の有無を自動切り替え）
+        function handleImgError(imgElem, fallbackSrc, level) {
+            if (imgElem.dataset.failedOnce) {
+                // SVGフォールバック
+                imgElem.style.display = 'none';
+                const parent = imgElem.parentElement;
+                if (parent && !parent.querySelector('.svg-fallback')) {
+                    const fallbackDiv = document.createElement('div');
+                    fallbackDiv.className = 'svg-fallback w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-rose-950 to-slate-900 text-white p-4 text-center';
+                    fallbackDiv.innerHTML = `
+                        <div class="w-12 h-12 rounded-2xl bg-rose-500/30 flex items-center justify-center text-rose-300 mb-2">
+                            <i data-lucide="image" class="w-6 h-6"></i>
+                        </div>
+                        <span class="text-xs font-bold text-rose-200">Level ${level} 唇画像プレビュー</span>
+                        <span class="text-[10px] text-gray-400 mt-1">${fallbackSrc}</span>
+                    `;
+                    parent.appendChild(fallbackDiv);
+                    lucide.createIcons();
+                }
+            } else {
+                imgElem.dataset.failedOnce = "true";
+                imgElem.src = fallbackSrc;
+            }
+        }
+
+        // シミュレーターの連動制御
+        function updateLipSim(val) {
+            const valNum = parseInt(val, 10);
+            let lvl = 1;
+            if (valNum >= 80) lvl = 1;
+            else if (valNum >= 60) lvl = 2;
+            else if (valNum >= 40) lvl = 3;
+            else if (valNum >= 20) lvl = 4;
+            else lvl = 5;
+
+            const prevLevel = currentSimLevel;
+            currentSimLevel = lvl;
+            const data = lipPhotos[lvl];
+
+            document.getElementById('sliderValDisplay').textContent = `${valNum}%`;
+            document.getElementById('simWaterVal').textContent = `${valNum}%`;
+            document.getElementById('simWaterBar').style.width = `${valNum}%`;
+
+            const photoElem = document.getElementById('simPhoto');
+            photoElem.dataset.failedOnce = "";
+            photoElem.src = data.primary;
+            photoElem.onerror = () => handleImgError(photoElem, data.secondary, lvl);
+
+            document.getElementById('simBadge').className = data.badgeClass;
+            document.getElementById('simBadgeText').textContent = data.badge;
+            document.getElementById('simWaterBar').className = data.waterBarClass;
+            document.getElementById('simSymptomText').textContent = data.symptom;
+            document.getElementById('simAdviceText').textContent = data.advice;
+
+            // スライダー操作で Level 1 から Level 2 以上に変化した際にポップアップを表示
+            if (prevLevel === 1 && lvl >= 2) {
+                showRecommendModal(lvl);
+            }
+        }
+
+        function openModalCurrentSim() {
+            const data = lipPhotos[currentSimLevel];
+            openPhotoModal(data.primary, data.secondary, data.title, `推定水分量: ${data.waterVal}`);
+        }
+
+        // 1対1比較スライダー制御
+        function updateCompSlider(val) {
+            const clipped = document.getElementById('compClipped');
+            const handle = document.getElementById('compHandle');
+            clipped.style.width = val + '%';
+            handle.style.left = val + '%';
+        }
+
+        // 診断クイズ制御
+        function selectOption(id) {
+            const data = lipPhotos[id];
+            const resultBox = document.getElementById('diagResult');
+            const resultImg = document.getElementById('resultImg');
+            
+            resultImg.dataset.failedOnce = "";
+            resultImg.src = data.primary;
+            resultImg.onerror = () => handleImgError(resultImg, data.secondary, id);
+
+            document.getElementById('resultTitle').textContent = data.title;
+            document.getElementById('resultDesc').textContent = data.symptom;
+            document.getElementById('resultAdvice').textContent = data.advice;
+
+            const badge = document.getElementById('resultBadge');
+            badge.textContent = `判定: ${data.badge}`;
+
+            const amazonBox = document.getElementById('resultAmazonBox');
+            if (id >= 2) {
+                amazonBox.classList.remove('hidden');
+            } else {
+                amazonBox.classList.add('hidden');
+            }
+            
+            resultBox.classList.remove('hidden');
+            resultBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+            // Level 2以上が選ばれたらおすすめポップアップ表示
+            if (id >= 2) {
+                setTimeout(() => {
+                    showRecommendModal(id);
+                }, 400);
+            }
+        }
+
+        function resetQuiz() {
+            document.getElementById('diagResult').classList.add('hidden');
+        }
+
+        function scrollToDiagnosis() {
+            document.getElementById('diagnosis').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // モーダル画像拡大
+        function openPhotoModal(primarySrc, fallbackSrc, title, sub) {
+            const modal = document.getElementById('photoModal');
+            const modalImg = document.getElementById('modalImg');
+            
+            modalImg.dataset.failedOnce = "";
+            modalImg.src = primarySrc;
+            modalImg.onerror = () => handleImgError(modalImg, fallbackSrc, 1);
+
+            document.getElementById('modalTitle').textContent = title;
+            document.getElementById('modalSub').textContent = sub;
+
+            modal.classList.add('modal-active');
+        }
+
+        function closePhotoModal() {
+            document.getElementById('photoModal').classList.remove('modal-active');
+        }
+
+        // Level 2+ ポップアップ表示・非表示機能
+        function showRecommendModal(level) {
+            const modal = document.getElementById('recommendModal');
+            const badge = document.getElementById('recModalLevelBadge');
+            if (badge) {
+                badge.textContent = `Level ${level}（乾燥・カサつき・ひび割れ対策）`;
+            }
+            modal.classList.add('modal-active');
+            lucide.createIcons();
+        }
+
+        function closeRecommendModal() {
+            document.getElementById('recommendModal').classList.remove('modal-active');
+        }
+
+        // 初期化実行
+        window.onload = function() {
+            updateLipSim(95);
+            updateCompSlider(50);
+        };
+    </script>
+</body>
+</html>
