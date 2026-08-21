@@ -1,0 +1,986 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>無限残業：全国オンライン社畜番付</title>
+  <style>
+    :root {
+      --bg: #1e1e24;
+      --card-bg: #2b2c34;
+      --accent: #ff477e;
+      --gold: #ffd166;
+      --text: #f7fff7;
+      --danger: #ef476f;
+      --success: #06d6a0;
+    }
+    * {
+      box-sizing: border-box;
+      user-select: none;
+      -webkit-user-select: none;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Hiragino Kaku Gothic ProN", Meiryo, sans-serif;
+    }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      overflow-x: hidden;
+      transition: background 0.3s;
+    }
+    .shake {
+      animation: shake-anim 0.4s ease-in-out;
+    }
+    @keyframes shake-anim {
+      0%, 100% { transform: translate(0, 0); }
+      20% { transform: translate(-12px, 8px); }
+      40% { transform: translate(12px, -8px); }
+      60% { transform: translate(-8px, 4px); }
+      80% { transform: translate(8px, -4px); }
+    }
+    .ad-space {
+      width: 100%;
+      max-width: 450px;
+      height: 38px;
+      background: #111;
+      color: #666;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      border-bottom: 1px dashed #333;
+    }
+    .app {
+      width: 100%;
+      max-width: 450px;
+      display: flex;
+      flex-direction: column;
+      padding: 10px;
+      gap: 8px;
+      flex: 1;
+      position: relative;
+    }
+
+    /* 実績通知バナー */
+    .toast-banner {
+      position: fixed;
+      top: -70px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 90%;
+      max-width: 400px;
+      background: #ffd166;
+      color: #111;
+      padding: 10px 14px;
+      border-radius: 8px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+      z-index: 1000;
+      transition: top 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .toast-banner.show { top: 15px; }
+    .toast-icon { font-size: 24px; }
+    .toast-title { font-weight: bold; font-size: 13px; }
+    .toast-desc { font-size: 11px; color: #333; }
+
+    /* ダッシュボード */
+    .dashboard {
+      background: var(--card-bg);
+      padding: 10px 12px;
+      border-radius: 12px;
+      text-align: center;
+      border: 1px solid #444;
+      position: relative;
+    }
+    .header-tags {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 4px;
+    }
+    .title-badge {
+      background: #3f404d;
+      padding: 2px 8px;
+      border-radius: 12px;
+      font-size: 11px;
+      color: #ffd166;
+      border: 1px solid #555;
+    }
+    .industry-badge {
+      background: #111;
+      padding: 2px 8px;
+      border-radius: 12px;
+      font-size: 11px;
+      color: #06d6a0;
+    }
+    .warning-cards {
+      font-size: 11px;
+      color: var(--danger);
+      font-weight: bold;
+    }
+    .money-text {
+      font-size: 26px;
+      font-weight: 900;
+      color: var(--gold);
+      text-shadow: 0 0 8px rgba(255, 209, 102, 0.4);
+    }
+    .rate-text {
+      font-size: 11px;
+      color: #aaa;
+      margin-top: 2px;
+    }
+
+    /* ゲージ群 */
+    .gauge-row {
+      display: flex;
+      gap: 6px;
+      margin-top: 6px;
+    }
+    .gauge-container {
+      flex: 1;
+      background: #111;
+      height: 18px;
+      border-radius: 9px;
+      overflow: hidden;
+      position: relative;
+      border: 1px solid #555;
+    }
+    .gauge-fill-boss {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--success), var(--gold), var(--danger));
+      transition: width 0.1s linear;
+    }
+    .gauge-fill-mental {
+      height: 100%;
+      width: 100%;
+      background: linear-gradient(90deg, #4cc9f0, #4361ee);
+      transition: width 0.1s linear;
+    }
+    .gauge-label {
+      position: absolute;
+      width: 100%;
+      top: 1px;
+      left: 0;
+      font-size: 10px;
+      font-weight: bold;
+      text-align: center;
+      color: #fff;
+      text-shadow: 0 0 3px #000;
+    }
+
+    /* アクションフィールド */
+    .action-zone {
+      background: #17181c;
+      border: 2px solid #333;
+      border-radius: 16px;
+      height: 170px;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .paper-stack {
+      position: absolute;
+      bottom: -40px;
+      width: 180px;
+      height: 120px;
+      background: #e5e5e5;
+      border: 2px solid #999;
+      border-radius: 4px;
+      box-shadow: 0 -4px 0 #ccc;
+      transition: all 0.2s ease;
+      z-index: 1;
+    }
+    .boss-face {
+      position: absolute;
+      top: 6px;
+      font-size: 34px;
+      z-index: 2;
+      transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    .stamp-sheet {
+      width: 110px;
+      height: 85px;
+      background: #f8f9fa;
+      border: 2px solid #aaa;
+      box-shadow: 0 4px 0 #888;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      position: relative;
+      transform: translateY(12px);
+      transition: transform 0.05s;
+      z-index: 3;
+    }
+    .stamp-sheet:active {
+      transform: translateY(15px) scale(0.97);
+    }
+    .hanko-mark {
+      font-size: 24px;
+      font-weight: bold;
+      color: var(--danger);
+      border: 3px solid var(--danger);
+      border-radius: 50%;
+      width: 48px;
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0.2;
+      transform: rotate(-15deg);
+    }
+    .floater {
+      position: absolute;
+      font-weight: bold;
+      font-size: 15px;
+      pointer-events: none;
+      z-index: 10;
+      animation: float-up 0.5s ease-out forwards;
+    }
+    @keyframes float-up {
+      0% { opacity: 1; transform: translateY(0) scale(1); }
+      100% { opacity: 0; transform: translateY(-35px) scale(1.2); }
+    }
+
+    /* ボタン群 */
+    .button-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+    .btn {
+      border: none;
+      border-radius: 10px;
+      padding: 12px 8px;
+      font-weight: bold;
+      font-size: 14px;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+      color: #fff;
+    }
+    .btn-stamp {
+      background: linear-gradient(180deg, #e63946, #c1121f);
+      box-shadow: 0 4px 0 #780000;
+    }
+    .btn-snack {
+      background: linear-gradient(180deg, #f77f00, #d62828);
+      box-shadow: 0 4px 0 #9d0208;
+    }
+    .btn:active {
+      transform: translateY(3px);
+      box-shadow: 0 1px 0 #000;
+    }
+
+    /* タブ切り替え */
+    .tab-nav {
+      display: flex;
+      gap: 4px;
+      margin-top: 2px;
+    }
+    .tab-btn {
+      flex: 1;
+      padding: 6px;
+      background: #202127;
+      color: #888;
+      border: 1px solid #444;
+      border-bottom: none;
+      border-radius: 6px 6px 0 0;
+      font-size: 12px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .tab-btn.active {
+      background: var(--card-bg);
+      color: #fff;
+      border-color: #666;
+    }
+    .tab-content {
+      background: var(--card-bg);
+      border-radius: 0 0 10px 10px;
+      padding: 8px;
+      max-height: 200px;
+      overflow-y: auto;
+      border: 1px solid #666;
+    }
+    .tab-pane { display: none; }
+    .tab-pane.active { display: block; }
+
+    /* 各種リスト */
+    .upgrade-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 6px 8px;
+      background: #202127;
+      border-radius: 6px;
+      margin-bottom: 5px;
+      cursor: pointer;
+      border: 1px solid #333;
+    }
+    .upgrade-row.disabled { opacity: 0.4; pointer-events: none; }
+    .upgrade-name { font-size: 12px; font-weight: bold; }
+    .upgrade-desc { font-size: 10px; color: #888; }
+    .upgrade-cost { font-size: 11px; color: var(--gold); font-weight: bold; }
+
+    .rank-table { width: 100%; font-size: 11px; border-collapse: collapse; }
+    .rank-table th, .rank-table td { padding: 4px 6px; text-align: left; }
+    .rank-table tr:nth-child(even) { background: #202127; }
+    .rank-highlight { color: var(--gold); font-weight: bold; }
+
+    .achieve-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 5px;
+      background: #202127;
+      border-radius: 6px;
+      margin-bottom: 4px;
+      opacity: 0.5;
+    }
+    .achieve-item.unlocked {
+      opacity: 1;
+      border-left: 3px solid var(--gold);
+    }
+    .achieve-info { flex: 1; }
+    .achieve-name { font-size: 11px; font-weight: bold; }
+    .achieve-desc { font-size: 9px; color: #888; }
+    .achieve-bonus { font-size: 9px; color: var(--success); font-weight: bold; }
+
+    /* モーダル */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.85);
+      z-index: 2000;
+      align-items: center;
+      justify-content: center;
+    }
+    .modal-card {
+      background: var(--card-bg);
+      border: 2px solid #555;
+      border-radius: 12px;
+      padding: 16px;
+      width: 90%;
+      max-width: 360px;
+      text-align: center;
+    }
+    .input-name {
+      width: 80%;
+      padding: 8px;
+      margin: 10px 0;
+      background: #111;
+      border: 1px solid #666;
+      border-radius: 6px;
+      color: #fff;
+      font-size: 14px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="ad-space">【労基署】「始末書3枚で即刻クビ！全国ランキング連動中」</div>
+
+  <!-- 実績トースト -->
+  <div class="toast-banner" id="toast">
+    <div class="toast-icon">🏆</div>
+    <div>
+      <div class="toast-title" id="toastTitle">社畜実績解除！</div>
+      <div class="toast-desc" id="toastDesc">ボーナスを獲得しました</div>
+    </div>
+  </div>
+
+  <div class="app">
+    <!-- ダッシュボード -->
+    <div class="dashboard">
+      <div class="header-tags">
+        <span class="title-badge" id="titleBadge">新入社員</span>
+        <span class="industry-badge" id="industryBadge">🏢 一般事務</span>
+        <span class="warning-cards" id="warningCardDisplay">始末書: 0/3</span>
+      </div>
+      <div class="money-text" id="moneyText">0 円</div>
+      <div class="rate-text">
+        秒給: <span id="autoRate">0</span> 円 | ポテチ倍率: <span id="comboMultiplier">x1.0</span>
+      </div>
+      <div class="gauge-row">
+        <div class="gauge-container">
+          <div class="gauge-fill-boss" id="bossFill"></div>
+          <div class="gauge-label" id="bossStatus">上司: よそ見中</div>
+        </div>
+        <div class="gauge-container">
+          <div class="gauge-fill-mental" id="mentalFill"></div>
+          <div class="gauge-label" id="mentalStatus">メンタル: 100%</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- アクションフィールド -->
+    <div class="action-zone" id="actionZone">
+      <div class="paper-stack" id="paperStack"></div>
+      <div class="boss-face" id="bossFace">😴</div>
+      <div class="stamp-sheet" id="stampTarget">
+        <div class="hanko-mark">承認</div>
+      </div>
+    </div>
+
+    <!-- アクションボタン -->
+    <div class="button-grid">
+      <button class="btn btn-stamp" id="btnStamp">
+        <span>🔴 承認印を押す</span>
+        <span style="font-size:10px; opacity:0.8;">+<span id="clickPower">10</span>円</span>
+      </button>
+      <button class="btn btn-snack" id="btnSnack">
+        <span>🥔 ポテチを貪る</span>
+        <span style="font-size:10px; opacity:0.8;">倍率UP＆メンタル回復</span>
+      </button>
+    </div>
+
+    <!-- タブエリア -->
+    <div class="tab-nav">
+      <button class="tab-btn active" id="tabBtnShop">効率化</button>
+      <button class="tab-btn" id="tabBtnRanking">全国TOP10</button>
+      <button class="tab-btn" id="tabBtnAchieve">実績一覧</button>
+    </div>
+    <div class="tab-content">
+      <div id="tab-shop" class="tab-pane active">
+        <div id="shopList"></div>
+      </div>
+      <div id="tab-ranking" class="tab-pane">
+        <table class="rank-table">
+          <thead>
+            <tr><th>順位</th><th>社畜ネーム</th><th>獲得残業代</th></tr>
+          </thead>
+          <tbody id="rankList">
+            <tr><td colspan="3" style="text-align:center; color:#888;">ランキング読込中...</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div id="tab-achieve" class="tab-pane">
+        <div id="achieveList"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ゲームオーバー（懲戒解雇）モーダル -->
+  <div class="modal-overlay" id="gameOverModal">
+    <div class="modal-card">
+      <h2 style="color:var(--danger); font-size:22px; margin-bottom:4px;">🚨 懲戒解雇処分 🚨</h2>
+      <p style="font-size:12px; color:#aaa;" id="gameOverReason">始末書が規定の3枚に達しました。</p>
+      
+      <div style="margin:12px 0; background:#111; padding:10px; border-radius:8px;">
+        <div style="font-size:11px; color:#888;">今回の残業搾取額</div>
+        <div style="font-size:22px; font-weight:bold; color:var(--gold);" id="finalScoreText">0 円</div>
+      </div>
+
+      <p style="font-size:11px;">社畜ネームを登録して全国TOP10を奪い取れ:</p>
+      <input type="text" id="playerNameInput" class="input-name" maxlength="8" placeholder="社畜名(3〜8文字)" value="名無し社畜">
+
+      <div id="rankVerdict" style="font-size:12px; font-weight:bold; margin-bottom:10px; min-height:16px;"></div>
+
+      <button class="btn btn-stamp" style="width:100%;" id="btnSubmitScore">記録を刻んで次の会社へ</button>
+    </div>
+  </div>
+
+  <!-- Firebaseモジュール & メインスクリプト -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js";
+    import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-analytics.js";
+    import { 
+      getFirestore, collection, addDoc, query, orderBy, limit, onSnapshot, serverTimestamp 
+    } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
+
+    // Firebase 初期化
+    const firebaseConfig = {
+      apiKey: "AIzaSyBU9ToGBtrHnwZuwS-eBvjS6SJeZJdyCNE",
+      authDomain: "gamerank-66e75.firebaseapp.com",
+      projectId: "gamerank-66e75",
+      storageBucket: "gamerank-66e75.firebasestorage.app",
+      messagingSenderId: "726407055654",
+      appId: "1:726407055654:web:6341cd3bd653df6d9819e7",
+      measurementId: "G-170JMX5ELR"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const analytics = getAnalytics(app);
+    const db = getFirestore(app);
+
+    // ==========================================
+    // マスターデータ
+    // ==========================================
+    const STORAGE_KEY_ACHIEVE = 'mugen_zangyo_achieve_v3';
+
+    const INDUSTRIES = [
+      { id: 'office', name: '🏢 一般事務', bossSleep: '😴 (うたた寝)', bossAlert: '👀 (キョロキョロ)', bossRage: '👺「お茶汲みは！？」' },
+      { id: 'it', name: '💻 ITベンチャー', bossSleep: '🎧 (爆音Lo-Fi)', bossAlert: '🖥️ (Slack監視)', bossRage: '🔥「本番デプロイ炎上！」' },
+      { id: 'food', name: '🍳 深夜居酒屋', bossSleep: '🚬 (裏で一服)', bossAlert: '🍺 (注文ラッシュ)', bossRage: '💢「生一丁まだ！？」' },
+      { id: 'gov', name: '🏛️ 窓口公務員', bossSleep: '☕ (お茶タイム)', bossAlert: '📑 (押印書類確認)', bossRage: '📐「規定外のフォント！」' }
+    ];
+
+    const TITLES = [
+      { threshold: 0, title: "新入社員" },
+      { threshold: 5000, title: "万年平社員" },
+      { threshold: 30000, title: "主任代理補佐" },
+      { threshold: 150000, title: "不夜城の番人" },
+      { threshold: 1000000, title: "伝説の社畜" },
+      { threshold: 10000000, title: "解脱せし労働機械" }
+    ];
+
+    const UPGRADES = [
+      { id: 'coffee', name: '超濃縮エナドリ', desc: '手押しクリック力 +15', cost: 100, count: 0, clickAdd: 15, autoAdd: 0 },
+      { id: 'partTime', name: '無給インターン生', desc: '書類を代わりに処理 (秒給+30円)', cost: 300, count: 0, clickAdd: 0, autoAdd: 30 },
+      { id: 'autoSeal', name: '全自動ハンコ連打マシン', desc: '秒給+150円', cost: 1500, count: 0, clickAdd: 0, autoAdd: 150 },
+      { id: 'macro', name: 'Excel謎マクロの神', desc: '秒給+800円', cost: 8000, count: 0, clickAdd: 0, autoAdd: 800 },
+      { id: 'ai', name: '適当謝罪生成AI', desc: '秒給+5,000円', cost: 50000, count: 0, clickAdd: 0, autoAdd: 5000 },
+      { id: 'clone', name: '影分身クローン社員', desc: '秒給+40,000円', cost: 300000, count: 0, clickAdd: 0, autoAdd: 40000 }
+    ];
+
+    const ACHIEVEMENTS = [
+      { id: 'm1', name: '最初の一歩は泥沼', desc: '残業代 1,000円達成', cond: s => s.money >= 1000, bonus: '全収益 +1%', apply: b => { b.allMul += 0.01; } },
+      { id: 'm2', name: '立派な歯車', desc: '残業代 50,000円達成', cond: s => s.money >= 50000, bonus: 'クリック +5%', apply: b => { b.clickMul += 0.05; } },
+      { id: 'm3', name: '過労死ライン突破', desc: '残業代 500,000円達成', cond: s => s.money >= 500000, bonus: '秒給 +5%', apply: b => { b.autoMul += 0.05; } },
+      { id: 's1', name: '連打の鬼神', desc: 'ハンコ 100回押下', cond: s => s.totalClicks >= 100, bonus: 'クリック +5%', apply: b => { b.clickMul += 0.05; } },
+      { id: 'b1', name: '始末書コレクター', desc: '始末書 2枚受領', cond: s => s.warnings >= 2, bonus: 'メンタル減衰 -10%', apply: b => { b.mentalDrain -= 0.1; } },
+      { id: 'c1', name: '堂々たるサボり', desc: 'ポテチコンボ x3.0 達成', cond: s => s.maxCombo >= 3.0, bonus: 'ポテチ回復力 +20%', apply: b => { b.snackHeal += 4; } }
+    ];
+
+    // ==========================================
+    // 状態変数
+    // ==========================================
+    let money = 0;
+    let clickVal = 10;
+    let autoIncome = 0;
+    let combo = 1.0;
+    let mental = 100;
+    let warnings = 0;
+    let isGameOver = false;
+
+    let currentIndustry = INDUSTRIES[0];
+    let unlockedAchievements = [];
+    let rankingData = []; // Firestoreから取得したTOP10
+
+    let stats = { totalClicks: 0, warnings: 0, maxCombo: 1.0, money: 0 };
+    let bonusModifiers = { allMul: 1.0, clickMul: 1.0, autoMul: 1.0, mentalDrain: 1.0, snackHeal: 20 };
+
+    let alertLevel = 0;
+    let isBossLooking = false;
+
+    // ==========================================
+    // Web Audio 効果音
+    // ==========================================
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    function beep(freq, duration, type='sine') {
+      if (audioCtx.state === 'suspended') audioCtx.resume();
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.type = type;
+      osc.frequency.value = freq;
+      gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+      osc.start();
+      osc.stop(audioCtx.currentTime + duration);
+    }
+    function playGameOverSound() {
+      [220, 196, 174, 130].forEach((f, i) => {
+        setTimeout(() => beep(f, 0.25, 'sawtooth'), i * 150);
+      });
+    }
+
+    // ==========================================
+    // Firestore リアルタイムランキング購読
+    // ==========================================
+    function initFirestoreRanking() {
+      const q = query(collection(db, "rankings"), orderBy("score", "desc"), limit(10));
+      onSnapshot(q, (snapshot) => {
+        rankingData = [];
+        snapshot.forEach((doc) => {
+          rankingData.push(doc.data());
+        });
+        renderRanking();
+      }, (error) => {
+        console.error("Firestore sync error:", error);
+      });
+    }
+
+    async function sendScoreToFirestore(name, score) {
+      try {
+        await addDoc(collection(db, "rankings"), {
+          name: name,
+          score: Math.floor(score),
+          industry: currentIndustry.name,
+          createdAt: serverTimestamp()
+        });
+      } catch (e) {
+        console.error("Error adding score: ", e);
+      }
+    }
+
+    // ==========================================
+    // ローカル実績ストレージ
+    // ==========================================
+    function loadAchievements() {
+      const saved = localStorage.getItem(STORAGE_KEY_ACHIEVE);
+      if (saved) {
+        try { unlockedAchievements = JSON.parse(saved); } catch (e) { unlockedAchievements = []; }
+      }
+    }
+    function saveAchievements() {
+      localStorage.setItem(STORAGE_KEY_ACHIEVE, JSON.stringify(unlockedAchievements));
+    }
+
+    // ==========================================
+    // ゲームロジック
+    // ==========================================
+    function getActualClickVal() {
+      return Math.floor(clickVal * combo * bonusModifiers.clickMul * bonusModifiers.allMul);
+    }
+    function getActualAutoIncome() {
+      return Math.floor(autoIncome * combo * bonusModifiers.autoMul * bonusModifiers.allMul);
+    }
+
+    function stamp() {
+      if (isGameOver) return;
+      const earned = getActualClickVal();
+      money += earned;
+      stats.money = money;
+      stats.totalClicks++;
+
+      mental = Math.max(0, mental - 0.4);
+      beep(200, 0.05, 'square');
+      createFloater(`+${earned}円`, '#ffd166');
+      checkGameState();
+      updateUI();
+    }
+
+    function eatSnack() {
+      if (isGameOver) return;
+      if (isBossLooking) {
+        warnings++;
+        stats.warnings = warnings;
+        combo = 1.0;
+        alertLevel = 0;
+        isBossLooking = false;
+        mental = Math.max(0, mental - 30);
+
+        document.body.classList.add('shake');
+        setTimeout(() => document.body.classList.remove('shake'), 400);
+
+        beep(100, 0.3, 'sawtooth');
+        createFloater(`バレた！始末書+1！`, '#ef476f');
+      } else {
+        combo += 0.2;
+        if (combo > stats.maxCombo) stats.maxCombo = combo;
+        mental = Math.min(100, mental + bonusModifiers.snackHeal);
+        alertLevel = Math.min(100, alertLevel + 15);
+        beep(800 + combo * 50, 0.06, 'sine');
+        createFloater(`メンタル回復！ x${combo.toFixed(1)}`, '#06d6a0');
+      }
+      checkGameState();
+      updateUI();
+    }
+
+    function checkGameState() {
+      checkAchievements();
+      if (warnings >= 3) {
+        triggerGameOver("始末書が3枚累積し、懲戒解雇処分となりました。");
+      } else if (mental <= 0) {
+        triggerGameOver("メンタルが限界を迎え、会社で失神・緊急搬送されました。");
+      }
+    }
+
+    function triggerGameOver(reason) {
+      if (isGameOver) return;
+      isGameOver = true;
+      playGameOverSound();
+
+      document.getElementById('gameOverReason').innerText = reason;
+      document.getElementById('finalScoreText').innerText = `${Math.floor(money).toLocaleString()} 円`;
+      document.getElementById('gameOverModal').style.display = 'flex';
+
+      const rankPos = getPotentialRank(money);
+      const verdictElem = document.getElementById('rankVerdict');
+      if (rankPos <= 10) {
+        verdictElem.style.color = 'var(--gold)';
+        verdictElem.innerText = `🔥 全国の猛者を倒し 暫定 ${rankPos}位 にランクイン可能！`;
+      } else {
+        verdictElem.style.color = '#888';
+        verdictElem.innerText = `圏外です。全国の社畜たちに敗北しました。`;
+      }
+    }
+
+    function getPotentialRank(score) {
+      const copy = [...rankingData, { score }];
+      copy.sort((a, b) => b.score - a.score);
+      return copy.findIndex(r => r.score === score) + 1;
+    }
+
+    function createFloater(text, color) {
+      const f = document.createElement('div');
+      f.className = 'floater';
+      f.innerText = text;
+      f.style.color = color;
+      f.style.left = (document.getElementById('actionZone').clientWidth / 2 - 40 + (Math.random() * 60 - 30)) + 'px';
+      f.style.top = '80px';
+      document.getElementById('actionZone').appendChild(f);
+      setTimeout(() => f.remove(), 500);
+    }
+
+    // ==========================================
+    // UI レンダリング
+    // ==========================================
+    function checkAchievements() {
+      ACHIEVEMENTS.forEach(a => {
+        if (!unlockedAchievements.includes(a.id) && a.cond(stats)) {
+          unlockedAchievements.push(a.id);
+          showToast(a.name, `${a.desc} 達成！ (${a.bonus})`);
+          saveAchievements();
+          renderAchievements();
+        }
+      });
+    }
+
+    function showToast(title, desc) {
+      const toast = document.getElementById('toast');
+      document.getElementById('toastTitle').innerText = `🏆 ${title}`;
+      document.getElementById('toastDesc').innerText = desc;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 3500);
+    }
+
+    function renderShop() {
+      const shopList = document.getElementById('shopList');
+      shopList.innerHTML = '';
+      UPGRADES.forEach((up, idx) => {
+        const row = document.createElement('div');
+        row.className = `upgrade-row ${money < up.cost ? 'disabled' : ''}`;
+        row.innerHTML = `
+          <div>
+            <div class="upgrade-name">${up.name} [Lv.${up.count}]</div>
+            <div class="upgrade-desc">${up.desc}</div>
+          </div>
+          <div class="upgrade-cost">${Math.floor(up.cost).toLocaleString()}円</div>
+        `;
+        row.onclick = () => buyUpgrade(idx);
+        shopList.appendChild(row);
+      });
+    }
+
+    function buyUpgrade(idx) {
+      if (isGameOver) return;
+      const up = UPGRADES[idx];
+      if (money >= up.cost) {
+        money -= up.cost;
+        up.count++;
+        clickVal += up.clickAdd;
+        autoIncome += up.autoAdd;
+        up.cost = Math.floor(up.cost * 1.25);
+        beep(520, 0.08, 'triangle');
+        updateUI();
+        renderShop();
+      }
+    }
+
+    function renderRanking() {
+      const rankList = document.getElementById('rankList');
+      rankList.innerHTML = '';
+      
+      for (let i = 0; i < 10; i++) {
+        const r = rankingData[i];
+        const tr = document.createElement('tr');
+        if (r) {
+          tr.innerHTML = `
+            <td class="${i < 3 ? 'rank-highlight' : ''}">${i + 1}位</td>
+            <td>${r.name}</td>
+            <td>${Math.floor(r.score).toLocaleString()}円</td>
+          `;
+        } else {
+          tr.innerHTML = `
+            <td>${i + 1}位</td>
+            <td style="color:#555;">(空席)</td>
+            <td style="color:#555;">0円</td>
+          `;
+        }
+        rankList.appendChild(tr);
+      }
+    }
+
+    function renderAchievements() {
+      const achieveList = document.getElementById('achieveList');
+      achieveList.innerHTML = '';
+      ACHIEVEMENTS.forEach(a => {
+        const unlocked = unlockedAchievements.includes(a.id);
+        const div = document.createElement('div');
+        div.className = `achieve-item ${unlocked ? 'unlocked' : ''}`;
+        div.innerHTML = `
+          <div style="font-size:18px;">${unlocked ? '🏆' : '🔒'}</div>
+          <div class="achieve-info">
+            <div class="achieve-name">${a.name}</div>
+            <div class="achieve-desc">${a.desc}</div>
+          </div>
+          <div class="achieve-bonus">${a.bonus}</div>
+        `;
+        achieveList.appendChild(div);
+      });
+    }
+
+    function updateUI() {
+      document.getElementById('moneyText').innerText = `${Math.floor(money).toLocaleString()} 円`;
+      document.getElementById('autoRate').innerText = getActualAutoIncome().toLocaleString();
+      document.getElementById('comboMultiplier').innerText = `x${combo.toFixed(1)}`;
+      document.getElementById('clickPower').innerText = getActualClickVal().toLocaleString();
+      document.getElementById('warningCardDisplay').innerText = `始末書: ${warnings}/3`;
+
+      document.getElementById('bossFill').style.width = `${alertLevel}%`;
+      document.getElementById('mentalFill').style.width = `${mental}%`;
+      document.getElementById('mentalStatus').innerText = `メンタル: ${Math.floor(mental)}%`;
+
+      let curTitle = TITLES[0].title;
+      TITLES.forEach(t => { if (money >= t.threshold) curTitle = t.title; });
+      document.getElementById('titleBadge').innerText = curTitle;
+
+      const bossFace = document.getElementById('bossFace');
+      const bossStatus = document.getElementById('bossStatus');
+      if (isBossLooking) {
+        bossFace.innerText = currentIndustry.bossRage;
+        bossStatus.innerText = '上司: 激怒監視中！';
+      } else if (alertLevel > 70) {
+        bossFace.innerText = currentIndustry.bossAlert;
+        bossStatus.innerText = '上司: 視線接近中...';
+      } else {
+        bossFace.innerText = currentIndustry.bossSleep;
+        bossStatus.innerText = '上司: よそ見中';
+      }
+
+      const stackHeight = Math.min(50, Math.floor(stats.totalClicks / 4));
+      document.getElementById('paperStack').style.boxShadow = `0 -${stackHeight}px 0 #ccc, 0 -${stackHeight*1.5}px 0 #bbb`;
+
+      const rows = document.getElementById('shopList').children;
+      UPGRADES.forEach((up, idx) => {
+        if (rows[idx]) {
+          rows[idx].className = `upgrade-row ${money < up.cost ? 'disabled' : ''}`;
+        }
+      });
+    }
+
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+      
+      if (tabId === 'shop') {
+        document.getElementById('tabBtnShop').classList.add('active');
+        document.getElementById('tab-shop').classList.add('active');
+      } else if (tabId === 'ranking') {
+        document.getElementById('tabBtnRanking').classList.add('active');
+        document.getElementById('tab-ranking').classList.add('active');
+      } else if (tabId === 'achieve') {
+        document.getElementById('tabBtnAchieve').classList.add('active');
+        document.getElementById('tab-achieve').classList.add('active');
+      }
+    }
+
+    // ==========================================
+    // メインループ
+    // ==========================================
+    let lastTime = performance.now();
+    function loop(time) {
+      const dt = (time - lastTime) / 1000;
+      lastTime = time;
+
+      if (!isGameOver) {
+        if (autoIncome > 0) {
+          const gained = getActualAutoIncome() * dt;
+          money += gained;
+          stats.money = money;
+        }
+
+        mental = Math.max(0, mental - dt * 1.2 * bonusModifiers.mentalDrain);
+
+        if (!isBossLooking) {
+          alertLevel += dt * 9;
+          if (alertLevel >= 100) {
+            isBossLooking = true;
+            alertLevel = 100;
+            setTimeout(() => {
+              isBossLooking = false;
+              alertLevel = 0;
+            }, 1800);
+          }
+        }
+
+        if (combo > 1.0) {
+          combo = Math.max(1.0, combo - dt * 0.1);
+        }
+
+        checkGameState();
+        updateUI();
+      }
+
+      requestAnimationFrame(loop);
+    }
+
+    // ==========================================
+    // イベントバインド
+    // ==========================================
+    document.getElementById('btnSubmitScore').addEventListener('click', async () => {
+      const input = document.getElementById('playerNameInput');
+      const cleanName = input.value.trim().slice(0, 8) || "名無し社畜";
+
+      // Firestoreへ非同期送信（TOP10はリアルタイムリスナー経由で自動入れ替え）
+      await sendScoreToFirestore(cleanName, money);
+
+      // リスタート処理
+      money = 0;
+      clickVal = 10;
+      autoIncome = 0;
+      combo = 1.0;
+      mental = 100;
+      warnings = 0;
+      alertLevel = 0;
+      isBossLooking = false;
+      stats.totalClicks = 0;
+      stats.warnings = 0;
+      stats.money = 0;
+
+      UPGRADES.forEach(u => { u.count = 0; u.cost = Math.floor(u.cost / Math.pow(1.25, u.count)); });
+      currentIndustry = INDUSTRIES[Math.floor(Math.random() * INDUSTRIES.length)];
+      document.getElementById('industryBadge').innerText = currentIndustry.name;
+
+      document.getElementById('gameOverModal').style.display = 'none';
+      isGameOver = false;
+      renderShop();
+      updateUI();
+    });
+
+    document.getElementById('btnStamp').addEventListener('click', stamp);
+    document.getElementById('stampTarget').addEventListener('click', stamp);
+    document.getElementById('btnSnack').addEventListener('click', eatSnack);
+
+    document.getElementById('tabBtnShop').addEventListener('click', () => switchTab('shop'));
+    document.getElementById('tabBtnRanking').addEventListener('click', () => switchTab('ranking'));
+    document.getElementById('tabBtnAchieve').addEventListener('click', () => switchTab('achieve'));
+
+    // 起動
+    loadAchievements();
+    initFirestoreRanking();
+    renderShop();
+    renderAchievements();
+    requestAnimationFrame(loop);
+  </script>
+</body>
+</html>
