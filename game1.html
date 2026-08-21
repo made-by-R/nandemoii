@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-  <title>無限残業：全国オンライン社畜番付</title>
+  <link rel="icon" href="data:,">
+  <title>無限残業：社畜マスターエディション - 殿堂入りTOP10</title>
   <style>
     :root {
       --bg: #1e1e24;
@@ -65,7 +66,7 @@
       position: relative;
     }
 
-    /* 実績通知バナー */
+    /* 実績通知トースト */
     .toast-banner {
       position: fixed;
       top: -70px;
@@ -137,7 +138,7 @@
       margin-top: 2px;
     }
 
-    /* ゲージ群 */
+    /* ゲージ */
     .gauge-row {
       display: flex;
       gap: 6px;
@@ -176,7 +177,7 @@
       text-shadow: 0 0 3px #000;
     }
 
-    /* アクションフィールド */
+    /* アクションエリア */
     .action-zone {
       background: #17181c;
       border: 2px solid #333;
@@ -253,7 +254,7 @@
       100% { opacity: 0; transform: translateY(-35px) scale(1.2); }
     }
 
-    /* ボタン群 */
+    /* ボタン */
     .button-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -293,7 +294,7 @@
     }
     .tab-btn {
       flex: 1;
-      padding: 6px;
+      padding: 8px 4px;
       background: #202127;
       color: #888;
       border: 1px solid #444;
@@ -319,7 +320,7 @@
     .tab-pane { display: none; }
     .tab-pane.active { display: block; }
 
-    /* 各種リスト */
+    /* アップグレード & ランキング */
     .upgrade-row {
       display: flex;
       justify-content: space-between;
@@ -337,7 +338,7 @@
     .upgrade-cost { font-size: 11px; color: var(--gold); font-weight: bold; }
 
     .rank-table { width: 100%; font-size: 11px; border-collapse: collapse; }
-    .rank-table th, .rank-table td { padding: 4px 6px; text-align: left; }
+    .rank-table th, .rank-table td { padding: 5px 6px; text-align: left; }
     .rank-table tr:nth-child(even) { background: #202127; }
     .rank-highlight { color: var(--gold); font-weight: bold; }
 
@@ -378,23 +379,27 @@
       width: 90%;
       max-width: 360px;
       text-align: center;
+      position: relative;
+      z-index: 2001;
     }
     .input-name {
-      width: 80%;
-      padding: 8px;
+      width: 85%;
+      padding: 10px;
       margin: 10px 0;
       background: #111;
-      border: 1px solid #666;
+      border: 1px solid #777;
       border-radius: 6px;
       color: #fff;
       font-size: 14px;
       text-align: center;
+      user-select: text;
+      -webkit-user-select: text;
     }
   </style>
 </head>
 <body>
 
-  <div class="ad-space">【労基署】「始末書3枚で即刻クビ！全国ランキング連動中」</div>
+  <div class="ad-space">【労基署】「始末書3枚で即刻クビ！ポテチは計画的に」</div>
 
   <!-- 実績トースト -->
   <div class="toast-banner" id="toast">
@@ -452,9 +457,9 @@
 
     <!-- タブエリア -->
     <div class="tab-nav">
-      <button class="tab-btn active" id="tabBtnShop">効率化</button>
-      <button class="tab-btn" id="tabBtnRanking">全国TOP10</button>
-      <button class="tab-btn" id="tabBtnAchieve">実績一覧</button>
+      <button class="tab-btn active" id="tabBtn-shop">効率化</button>
+      <button class="tab-btn" id="tabBtn-ranking">殿堂入りTOP10</button>
+      <button class="tab-btn" id="tabBtn-achieve">実績一覧</button>
     </div>
     <div class="tab-content">
       <div id="tab-shop" class="tab-pane active">
@@ -465,9 +470,7 @@
           <thead>
             <tr><th>順位</th><th>社畜ネーム</th><th>獲得残業代</th></tr>
           </thead>
-          <tbody id="rankList">
-            <tr><td colspan="3" style="text-align:center; color:#888;">ランキング読込中...</td></tr>
-          </tbody>
+          <tbody id="rankList"></tbody>
         </table>
       </div>
       <div id="tab-achieve" class="tab-pane">
@@ -476,7 +479,7 @@
     </div>
   </div>
 
-  <!-- ゲームオーバー（懲戒解雇）モーダル -->
+  <!-- ゲームオーバーモーダル -->
   <div class="modal-overlay" id="gameOverModal">
     <div class="modal-card">
       <h2 style="color:var(--danger); font-size:22px; margin-bottom:4px;">🚨 懲戒解雇処分 🚨</h2>
@@ -487,42 +490,34 @@
         <div style="font-size:22px; font-weight:bold; color:var(--gold);" id="finalScoreText">0 円</div>
       </div>
 
-      <p style="font-size:11px;">社畜ネームを登録して全国TOP10を奪い取れ:</p>
+      <p style="font-size:11px;">社畜ネームを登録してTOP10入りを狙え:</p>
       <input type="text" id="playerNameInput" class="input-name" maxlength="8" placeholder="社畜名(3〜8文字)" value="名無し社畜">
 
-      <div id="rankVerdict" style="font-size:12px; font-weight:bold; margin-bottom:10px; min-height:16px;"></div>
+      <div id="rankVerdict" style="font-size:12px; font-weight:bold; margin-bottom:12px; min-height:16px;"></div>
 
-      <button class="btn btn-stamp" style="width:100%;" id="btnSubmitScore">記録を刻んで次の会社へ</button>
+      <button class="btn btn-stamp" style="width:100%; cursor:pointer;" id="btnSubmitScore">記録を刻んで次の会社へ</button>
     </div>
   </div>
 
-  <!-- Firebaseモジュール & メインスクリプト -->
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-app.js";
-    import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-analytics.js";
-    import { 
-      getFirestore, collection, addDoc, query, orderBy, limit, onSnapshot, serverTimestamp 
-    } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-firestore.js";
-
-    // Firebase 初期化
-    const firebaseConfig = {
-      apiKey: "AIzaSyBU9ToGBtrHnwZuwS-eBvjS6SJeZJdyCNE",
-      authDomain: "gamerank-66e75.firebaseapp.com",
-      projectId: "gamerank-66e75",
-      storageBucket: "gamerank-66e75.firebasestorage.app",
-      messagingSenderId: "726407055654",
-      appId: "1:726407055654:web:6341cd3bd653df6d9819e7",
-      measurementId: "G-170JMX5ELR"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const analytics = getAnalytics(app);
-    const db = getFirestore(app);
-
+  <script>
     // ==========================================
-    // マスターデータ
+    // 1. 定義データ & 初回用TOP10
     // ==========================================
-    const STORAGE_KEY_ACHIEVE = 'mugen_zangyo_achieve_v3';
+    const STORAGE_KEY_RANK = 'mugen_zangyo_top10_v4';
+    const STORAGE_KEY_ACHIEVE = 'mugen_zangyo_achieve_v4';
+
+    const DEFAULT_RANKING = [
+      { name: "CEOの犬", score: 500000 },
+      { name: "終電見送り係", score: 250000 },
+      { name: "エナドリ中毒", score: 100000 },
+      { name: "無休の戦士", score: 50000 },
+      { name: "Excel職人", score: 20000 },
+      { name: "窓際サイボーグ", score: 10000 },
+      { name: "コピー機と同化", score: 5000 },
+      { name: "万年居残り", score: 2000 },
+      { name: "定時恐怖症", score: 1000 },
+      { name: "仮配属ルーキー", score: 500 }
+    ];
 
     const INDUSTRIES = [
       { id: 'office', name: '🏢 一般事務', bossSleep: '😴 (うたた寝)', bossAlert: '👀 (キョロキョロ)', bossRage: '👺「お茶汲みは！？」' },
@@ -542,7 +537,7 @@
 
     const UPGRADES = [
       { id: 'coffee', name: '超濃縮エナドリ', desc: '手押しクリック力 +15', cost: 100, count: 0, clickAdd: 15, autoAdd: 0 },
-      { id: 'partTime', name: '無給インターン生', desc: '書類を代わりに処理 (秒給+30円)', cost: 300, count: 0, clickAdd: 0, autoAdd: 30 },
+      { id: 'partTime', name: '無給インターン生', desc: '秒給+30円', cost: 300, count: 0, clickAdd: 0, autoAdd: 30 },
       { id: 'autoSeal', name: '全自動ハンコ連打マシン', desc: '秒給+150円', cost: 1500, count: 0, clickAdd: 0, autoAdd: 150 },
       { id: 'macro', name: 'Excel謎マクロの神', desc: '秒給+800円', cost: 8000, count: 0, clickAdd: 0, autoAdd: 800 },
       { id: 'ai', name: '適当謝罪生成AI', desc: '秒給+5,000円', cost: 50000, count: 0, clickAdd: 0, autoAdd: 5000 },
@@ -559,7 +554,7 @@
     ];
 
     // ==========================================
-    // 状態変数
+    // 2. 状態管理
     // ==========================================
     let money = 0;
     let clickVal = 10;
@@ -571,30 +566,44 @@
 
     let currentIndustry = INDUSTRIES[0];
     let unlockedAchievements = [];
-    let rankingData = []; // Firestoreから取得したTOP10
+    let rankingData = [];
 
-    let stats = { totalClicks: 0, warnings: 0, maxCombo: 1.0, money: 0 };
-    let bonusModifiers = { allMul: 1.0, clickMul: 1.0, autoMul: 1.0, mentalDrain: 1.0, snackHeal: 20 };
+    let stats = {
+      totalClicks: 0,
+      warnings: 0,
+      maxCombo: 1.0,
+      money: 0
+    };
+
+    let bonusModifiers = {
+      allMul: 1.0,
+      clickMul: 1.0,
+      autoMul: 1.0,
+      mentalDrain: 1.0,
+      snackHeal: 20
+    };
 
     let alertLevel = 0;
     let isBossLooking = false;
 
     // ==========================================
-    // Web Audio 効果音
+    // 3. サウンド
     // ==========================================
     const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
     function beep(freq, duration, type='sine') {
-      if (audioCtx.state === 'suspended') audioCtx.resume();
-      const osc = audioCtx.createOscillator();
-      const gain = audioCtx.createGain();
-      osc.type = type;
-      osc.frequency.value = freq;
-      gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
-      osc.connect(gain);
-      gain.connect(audioCtx.destination);
-      osc.start();
-      osc.stop(audioCtx.currentTime + duration);
+      try {
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = type;
+        osc.frequency.value = freq;
+        gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + duration);
+      } catch (e) {}
     }
     function playGameOverSound() {
       [220, 196, 174, 130].forEach((f, i) => {
@@ -603,49 +612,40 @@
     }
 
     // ==========================================
-    // Firestore リアルタイムランキング購読
+    // 4. ストレージ処理
     // ==========================================
-    function initFirestoreRanking() {
-      const q = query(collection(db, "rankings"), orderBy("score", "desc"), limit(10));
-      onSnapshot(q, (snapshot) => {
-        rankingData = [];
-        snapshot.forEach((doc) => {
-          rankingData.push(doc.data());
-        });
-        renderRanking();
-      }, (error) => {
-        console.error("Firestore sync error:", error);
-      });
-    }
-
-    async function sendScoreToFirestore(name, score) {
+    function saveStorage() {
       try {
-        await addDoc(collection(db, "rankings"), {
-          name: name,
-          score: Math.floor(score),
-          industry: currentIndustry.name,
-          createdAt: serverTimestamp()
-        });
+        localStorage.setItem(STORAGE_KEY_RANK, JSON.stringify(rankingData));
+        localStorage.setItem(STORAGE_KEY_ACHIEVE, JSON.stringify(unlockedAchievements));
       } catch (e) {
-        console.error("Error adding score: ", e);
+        console.error("Save error", e);
+      }
+    }
+
+    function loadStorage() {
+      try {
+        const savedRank = localStorage.getItem(STORAGE_KEY_RANK);
+        if (savedRank) {
+          rankingData = JSON.parse(savedRank);
+        } else {
+          rankingData = [...DEFAULT_RANKING];
+          saveStorage();
+        }
+      } catch (e) {
+        rankingData = [...DEFAULT_RANKING];
+      }
+
+      try {
+        const savedAch = localStorage.getItem(STORAGE_KEY_ACHIEVE);
+        if (savedAch) unlockedAchievements = JSON.parse(savedAch);
+      } catch (e) {
+        unlockedAchievements = [];
       }
     }
 
     // ==========================================
-    // ローカル実績ストレージ
-    // ==========================================
-    function loadAchievements() {
-      const saved = localStorage.getItem(STORAGE_KEY_ACHIEVE);
-      if (saved) {
-        try { unlockedAchievements = JSON.parse(saved); } catch (e) { unlockedAchievements = []; }
-      }
-    }
-    function saveAchievements() {
-      localStorage.setItem(STORAGE_KEY_ACHIEVE, JSON.stringify(unlockedAchievements));
-    }
-
-    // ==========================================
-    // ゲームロジック
+    // 5. アクション処理
     // ==========================================
     function getActualClickVal() {
       return Math.floor(clickVal * combo * bonusModifiers.clickMul * bonusModifiers.allMul);
@@ -662,6 +662,7 @@
       stats.totalClicks++;
 
       mental = Math.max(0, mental - 0.4);
+
       beep(200, 0.05, 'square');
       createFloater(`+${earned}円`, '#ffd166');
       checkGameState();
@@ -711,16 +712,18 @@
 
       document.getElementById('gameOverReason').innerText = reason;
       document.getElementById('finalScoreText').innerText = `${Math.floor(money).toLocaleString()} 円`;
-      document.getElementById('gameOverModal').style.display = 'flex';
+      
+      const modal = document.getElementById('gameOverModal');
+      modal.style.display = 'flex';
 
       const rankPos = getPotentialRank(money);
       const verdictElem = document.getElementById('rankVerdict');
       if (rankPos <= 10) {
         verdictElem.style.color = 'var(--gold)';
-        verdictElem.innerText = `🔥 全国の猛者を倒し 暫定 ${rankPos}位 にランクイン可能！`;
+        verdictElem.innerText = `🔥 暫定 ${rankPos}位 にランクイン！`;
       } else {
         verdictElem.style.color = '#888';
-        verdictElem.innerText = `圏外です。全国の社畜たちに敗北しました。`;
+        verdictElem.innerText = `圏外です。社畜としての修行が足りません。`;
       }
     }
 
@@ -735,21 +738,21 @@
       f.className = 'floater';
       f.innerText = text;
       f.style.color = color;
-      f.style.left = (document.getElementById('actionZone').clientWidth / 2 - 40 + (Math.random() * 60 - 30)) + 'px';
+      f.style.left = (actionZone.clientWidth / 2 - 40 + (Math.random() * 60 - 30)) + 'px';
       f.style.top = '80px';
-      document.getElementById('actionZone').appendChild(f);
+      actionZone.appendChild(f);
       setTimeout(() => f.remove(), 500);
     }
 
     // ==========================================
-    // UI レンダリング
+    // 6. UI & レンダリング
     // ==========================================
     function checkAchievements() {
       ACHIEVEMENTS.forEach(a => {
         if (!unlockedAchievements.includes(a.id) && a.cond(stats)) {
           unlockedAchievements.push(a.id);
           showToast(a.name, `${a.desc} 達成！ (${a.bonus})`);
-          saveAchievements();
+          saveStorage();
           renderAchievements();
         }
       });
@@ -763,8 +766,24 @@
       setTimeout(() => toast.classList.remove('show'), 3500);
     }
 
+    const moneyText = document.getElementById('moneyText');
+    const autoRateText = document.getElementById('autoRate');
+    const comboText = document.getElementById('comboMultiplier');
+    const titleBadge = document.getElementById('titleBadge');
+    const warningCardDisplay = document.getElementById('warningCardDisplay');
+    const bossFill = document.getElementById('bossFill');
+    const bossStatus = document.getElementById('bossStatus');
+    const mentalFill = document.getElementById('mentalFill');
+    const mentalStatus = document.getElementById('mentalStatus');
+    const bossFace = document.getElementById('bossFace');
+    const actionZone = document.getElementById('actionZone');
+    const paperStack = document.getElementById('paperStack');
+    const shopList = document.getElementById('shopList');
+    const rankList = document.getElementById('rankList');
+    const achieveList = document.getElementById('achieveList');
+    const clickPowerSpan = document.getElementById('clickPower');
+
     function renderShop() {
-      const shopList = document.getElementById('shopList');
       shopList.innerHTML = '';
       UPGRADES.forEach((up, idx) => {
         const row = document.createElement('div');
@@ -797,11 +816,11 @@
     }
 
     function renderRanking() {
-      const rankList = document.getElementById('rankList');
       rankList.innerHTML = '';
+      const top10 = rankingData.slice(0, 10);
       
       for (let i = 0; i < 10; i++) {
-        const r = rankingData[i];
+        const r = top10[i];
         const tr = document.createElement('tr');
         if (r) {
           tr.innerHTML = `
@@ -812,7 +831,7 @@
         } else {
           tr.innerHTML = `
             <td>${i + 1}位</td>
-            <td style="color:#555;">(空席)</td>
+            <td style="color:#555;">---</td>
             <td style="color:#555;">0円</td>
           `;
         }
@@ -821,7 +840,6 @@
     }
 
     function renderAchievements() {
-      const achieveList = document.getElementById('achieveList');
       achieveList.innerHTML = '';
       ACHIEVEMENTS.forEach(a => {
         const unlocked = unlockedAchievements.includes(a.id);
@@ -840,22 +858,20 @@
     }
 
     function updateUI() {
-      document.getElementById('moneyText').innerText = `${Math.floor(money).toLocaleString()} 円`;
-      document.getElementById('autoRate').innerText = getActualAutoIncome().toLocaleString();
-      document.getElementById('comboMultiplier').innerText = `x${combo.toFixed(1)}`;
-      document.getElementById('clickPower').innerText = getActualClickVal().toLocaleString();
-      document.getElementById('warningCardDisplay').innerText = `始末書: ${warnings}/3`;
+      moneyText.innerText = `${Math.floor(money).toLocaleString()} 円`;
+      autoRateText.innerText = getActualAutoIncome().toLocaleString();
+      comboText.innerText = `x${combo.toFixed(1)}`;
+      clickPowerSpan.innerText = getActualClickVal().toLocaleString();
+      warningCardDisplay.innerText = `始末書: ${warnings}/3`;
 
-      document.getElementById('bossFill').style.width = `${alertLevel}%`;
-      document.getElementById('mentalFill').style.width = `${mental}%`;
-      document.getElementById('mentalStatus').innerText = `メンタル: ${Math.floor(mental)}%`;
+      bossFill.style.width = `${alertLevel}%`;
+      mentalFill.style.width = `${mental}%`;
+      mentalStatus.innerText = `メンタル: ${Math.floor(mental)}%`;
 
       let curTitle = TITLES[0].title;
       TITLES.forEach(t => { if (money >= t.threshold) curTitle = t.title; });
-      document.getElementById('titleBadge').innerText = curTitle;
+      titleBadge.innerText = curTitle;
 
-      const bossFace = document.getElementById('bossFace');
-      const bossStatus = document.getElementById('bossStatus');
       if (isBossLooking) {
         bossFace.innerText = currentIndustry.bossRage;
         bossStatus.innerText = '上司: 激怒監視中！';
@@ -868,9 +884,9 @@
       }
 
       const stackHeight = Math.min(50, Math.floor(stats.totalClicks / 4));
-      document.getElementById('paperStack').style.boxShadow = `0 -${stackHeight}px 0 #ccc, 0 -${stackHeight*1.5}px 0 #bbb`;
+      paperStack.style.boxShadow = `0 -${stackHeight}px 0 #ccc, 0 -${stackHeight*1.5}px 0 #bbb`;
 
-      const rows = document.getElementById('shopList').children;
+      const rows = shopList.children;
       UPGRADES.forEach((up, idx) => {
         if (rows[idx]) {
           rows[idx].className = `upgrade-row ${money < up.cost ? 'disabled' : ''}`;
@@ -878,24 +894,24 @@
       });
     }
 
+    // タブ切り替え処理
     function switchTab(tabId) {
       document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
       document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
       
-      if (tabId === 'shop') {
-        document.getElementById('tabBtnShop').classList.add('active');
-        document.getElementById('tab-shop').classList.add('active');
-      } else if (tabId === 'ranking') {
-        document.getElementById('tabBtnRanking').classList.add('active');
-        document.getElementById('tab-ranking').classList.add('active');
-      } else if (tabId === 'achieve') {
-        document.getElementById('tabBtnAchieve').classList.add('active');
-        document.getElementById('tab-achieve').classList.add('active');
+      const targetBtn = document.getElementById(`tabBtn-${tabId}`);
+      const targetPane = document.getElementById(`tab-${tabId}`);
+      if (targetBtn && targetPane) {
+        targetBtn.classList.add('active');
+        targetPane.classList.add('active');
+      }
+      if (tabId === 'ranking') {
+        renderRanking();
       }
     }
 
     // ==========================================
-    // メインループ
+    // 7. ゲームループ
     // ==========================================
     let lastTime = performance.now();
     function loop(time) {
@@ -935,16 +951,23 @@
     }
 
     // ==========================================
-    // イベントバインド
+    // 8. イベント登録 & 初期化
     // ==========================================
-    document.getElementById('btnSubmitScore').addEventListener('click', async () => {
+    document.getElementById('btnSubmitScore').addEventListener('click', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+
       const input = document.getElementById('playerNameInput');
-      const cleanName = input.value.trim().slice(0, 8) || "名無し社畜";
+      const cleanName = (input.value || "").trim().slice(0, 8) || "名無し社畜";
 
-      // Firestoreへ非同期送信（TOP10はリアルタイムリスナー経由で自動入れ替え）
-      await sendScoreToFirestore(cleanName, money);
+      // 記録保存
+      rankingData.push({ name: cleanName, score: Math.floor(money) });
+      rankingData.sort((a, b) => b.score - a.score);
+      rankingData = rankingData.slice(0, 10);
+      saveStorage();
+      renderRanking();
 
-      // リスタート処理
+      // リスタートリセット
       money = 0;
       clickVal = 10;
       autoIncome = 0;
@@ -963,22 +986,26 @@
 
       document.getElementById('gameOverModal').style.display = 'none';
       isGameOver = false;
+
       renderShop();
       updateUI();
+      switchTab('ranking');
     });
 
+    // タブクリックイベント
+    document.getElementById('tabBtn-shop').addEventListener('click', () => switchTab('shop'));
+    document.getElementById('tabBtn-ranking').addEventListener('click', () => switchTab('ranking'));
+    document.getElementById('tabBtn-achieve').addEventListener('click', () => switchTab('achieve'));
+
+    // 操作アクション
     document.getElementById('btnStamp').addEventListener('click', stamp);
     document.getElementById('stampTarget').addEventListener('click', stamp);
     document.getElementById('btnSnack').addEventListener('click', eatSnack);
 
-    document.getElementById('tabBtnShop').addEventListener('click', () => switchTab('shop'));
-    document.getElementById('tabBtnRanking').addEventListener('click', () => switchTab('ranking'));
-    document.getElementById('tabBtnAchieve').addEventListener('click', () => switchTab('achieve'));
-
     // 起動
-    loadAchievements();
-    initFirestoreRanking();
+    loadStorage();
     renderShop();
+    renderRanking();
     renderAchievements();
     requestAnimationFrame(loop);
   </script>
