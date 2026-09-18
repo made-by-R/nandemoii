@@ -75,6 +75,9 @@ async function requestPAAPI(payload) {
       res.on('end', () => {
         try {
           const parsed = JSON.parse(body);
+          if (res.statusCode < 200 || res.statusCode >= 300) {
+            return reject(new Error(`Amazon API HTTP ${res.statusCode}`));
+          }
           resolve(parsed);
         } catch (e) {
           reject(e);
@@ -82,6 +85,7 @@ async function requestPAAPI(payload) {
       });
     });
 
+    req.setTimeout(15000, () => req.destroy(new Error('Amazon API timeout')));
     req.on('error', (e) => reject(e));
     req.write(requestPayload);
     req.end();
@@ -108,6 +112,9 @@ async function main() {
 
   try {
     const data = await requestPAAPI(payload);
+    if (data.Errors?.length || !Array.isArray(data.ItemsResult?.Items) || !data.ItemsResult.Items.length) {
+      throw new Error('Amazon API returned errors or no products; existing cache retained');
+    }
     const cacheData = {};
 
     if (data.ItemsResult && data.ItemsResult.Items) {
@@ -121,10 +128,13 @@ async function main() {
       }
     }
 
-    fs.writeFileSync(CACHE_FILE, JSON.stringify(cacheData, null, 2), 'utf8');
+    const temporaryFile = CACHE_FILE + '.tmp';
+    fs.writeFileSync(temporaryFile, JSON.stringify(cacheData, null, 2), 'utf8');
+    fs.renameSync(temporaryFile, CACHE_FILE);
     console.log('Amazon商品キャッシュを正常に更新しました。');
   } catch (error) {
     console.error('PA-API取得エラー（キャッシュは更新されません）:', error.message);
+    process.exitCode = 1;
   }
 }
 
