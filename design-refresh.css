@@ -1,0 +1,39 @@
+/* Scoped additions: existing article layouts remain unchanged. */
+.tool-entry h2 {
+  font-family: 'Shippori Mincho', 'Yu Mincho', serif;
+  font-size: clamp(1.3rem, 3vw, 1.65rem);
+  line-height: 1.6;
+  margin: 0 0 16px;
+}
+.tool-entry p { font-size: .92rem; }
+.tool-entry .tool-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  min-height: 48px;
+  padding: 10px 22px;
+  box-sizing: border-box;
+  border-radius: 6px;
+  background: #705b40;
+  color: #fff;
+  font-weight: 700;
+  text-align: center;
+}
+.tool-entry .tool-cta:hover { background: #57462f; color: #fff; }
+.tool-entry .tool-cta:focus-visible,
+.topic-card a:focus-visible { outline: 3px solid #705b40; outline-offset: 4px; }
+.topic-guide .section-title { margin-top: 0; }
+.topic-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.topic-card { border: 1px solid var(--border-color); border-radius: 8px; padding: 18px; background: var(--bg-color); }
+.topic-card h3 { font-family: 'Shippori Mincho', 'Yu Mincho', serif; font-size: 1.05rem; margin: 0 0 10px; }
+.topic-card ul { list-style: none; margin: 0; padding: 0; }
+.topic-card li + li { border-top: 1px solid var(--border-color); }
+.topic-card a { display: flex; justify-content: space-between; gap: 12px; align-items: center; min-height: 44px; padding: 8px 0; font-size: .85rem; line-height: 1.7; }
+.topic-card a::after { content: '›'; color: #705b40; font-size: 1.25rem; flex-shrink: 0; }
+@media (max-width: 768px) {
+  .topic-grid { grid-template-columns: 1fr; gap: 12px; }
+  .tool-entry .tool-cta { width: 100%; }
+  .home-page .global-nav ul { flex-wrap: wrap; gap: 0 18px; }
+  .home-page .sidebar .ad-widget-tall { display: none; }
+}
