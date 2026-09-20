@@ -1,0 +1,40 @@
+const fs = require('node:fs');
+const vm = require('node:vm');
+const assert = require('node:assert/strict');
+const html = fs.readFileSync(process.argv[2] || 'aori.html', 'utf8');
+for (const match of html.matchAll(/<script(?:\s[^>]*)?>([\s\S]*?)<\/script>/g)) new vm.Script(match[1]);
+assert.ok(!/localStorage\.(getItem|setItem)/.test(html));
+assert.ok(!html.includes('id="custom-api-key"'));
+assert.ok(!html.includes('generativelanguage.googleapis.com'));
+assert.ok(!html.includes('onclick="clickAdReward'));
+assert.ok(html.indexOf("localStorage.removeItem('toxic_gemini_key')") < html.indexOf('cdn.tailwindcss.com'));
+const cleanup = html.match(/<script>([\s\S]*?)<\/script>/)[1];
+vm.runInNewContext(cleanup, {localStorage:{removeItem(){throw Error('storage disabled')}}});
+let popup, reward;
+const button = {addEventListener(type, fn){if(type === 'click') reward = fn}};
+const container = {clientWidth:390, clientHeight:600, appendChild(el){popup=el}};
+const context = vm.createContext({
+  document:{getElementById(){return container},createElement(){return {style:{},classList:{replace(){}},querySelector(selector){return selector === '[data-reward]' ? button : {addEventListener(){}}}}}},
+  activePopupCount:0,chaosLevel:1,updateAdDensity(){},playPopSound(){},makeDraggable(){},clickAdReward(title){context.clicked=title}
+});
+const start=html.indexOf('        function escapeAdText');
+const end=html.indexOf('        function makeDraggable',start);
+vm.runInContext(html.slice(start,end),context);
+const payload = '<img src=x onerror="alert(1)">\' & <script>alert(2)</script>';
+context.data = {title:payload,badge:payload,text:payload,btnText:payload,price:payload,imgText:payload,bg:'bg-white',border:'border-black',imageUrl:'javascript:alert(1)'};
+vm.runInContext('spawnAdWindow(data)',context);
+assert.ok(!popup.innerHTML.includes('<script>'));
+assert.ok(!popup.innerHTML.includes('<img src=x'));
+assert.ok(!popup.innerHTML.includes('javascript:'));
+assert.ok(popup.innerHTML.includes('&lt;img'));
+assert.ok(popup.innerHTML.includes('&quot;'));
+reward();assert.equal(context.clicked,payload);
+context.data.imageUrl='https://example.com/image.png" onerror="alert(1)';
+vm.runInContext('spawnAdWindow(data)',context);
+assert.ok(popup.innerHTML.includes('image.png&quot; onerror=&quot;'));
+assert.ok(!popup.innerHTML.includes('image.png" onerror="'));
+const toastStart=html.indexOf('        function showToast');
+const toastEnd=html.indexOf('        function updateAdDensity',toastStart);
+assert.ok(html.slice(toastStart,toastEnd).includes('toast.textContent = msg'));
+assert.ok(!html.slice(toastStart,toastEnd).includes('innerHTML'));
+console.log('PASS: inline syntax, legacy-key cleanup, blocked storage, no API key input/network call, escaped text/attributes, reward callback, text-only toast');
