@@ -5,6 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TOXIC POP ADS 💖 限界ゲロポップ広告機構 (※ジョークサイト)</title>
     
+    <!-- Remove the legacy stored key before loading third-party scripts. -->
+    <script>
+        try { localStorage.removeItem('toxic_gemini_key'); } catch (_) {}
+    </script>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome Icons -->
@@ -153,7 +157,7 @@
         <!-- Quick Actions Controls -->
         <div class="flex items-center space-x-2">
             <button onclick="openModal('forge-modal')" class="bg-toxic-yellow hover:bg-white text-black font-gothic px-3 py-1.5 rounded-xl border-2 border-black text-xs flex items-center gap-1 transition shadow-[2px_2px_0_#000] active:translate-y-1 active:shadow-none">
-                <i class="fa-solid fa-wand-magic-sparkles"></i> AIでクソ広告錬成
+                <i class="fa-solid fa-wand-magic-sparkles"></i> 言葉で広告錬成
             </button>
             <button id="btn-sound" onclick="toggleAudio()" class="bg-black hover:bg-gray-800 text-white px-3 py-1.5 rounded-xl border-2 border-toxic-cyan text-xs flex items-center gap-1 shadow-[2px_2px_0_#00ffff]">
                 <i id="sound-icon" class="fa-solid fa-volume-high text-toxic-green"></i> 音
@@ -290,10 +294,10 @@
 
             <div class="bg-toxic-pink border-4 border-black rounded-2xl p-4 text-center shadow-[6px_6px_0_#000] hover:-translate-y-1 transition">
                 <div class="text-4xl mb-2">🤖</div>
-                <h3 class="text-sm font-gothic text-white text-stroke">AI クソ広告メーカー</h3>
-                <p class="text-xs text-white font-bold my-2">Gemini AI が適当な単語を最悪な広告に自動変換してくれるよ！</p>
+                <h3 class="text-sm font-gothic text-white text-stroke">ローカル広告メーカー</h3>
+                <p class="text-xs text-white font-bold my-2">入力した単語を、通信なしで架空の広告に変換します。</p>
                 <button onclick="openModal('forge-modal')" class="mt-2 text-xs bg-white hover:bg-gray-100 border-2 border-black text-toxic-pink font-bold py-2 px-4 rounded-xl w-full shadow-[2px_2px_0_#000] active:translate-y-1 active:shadow-none">
-                    AIをこき使う
+                    広告を作る
                 </button>
             </div>
         </div>
@@ -312,7 +316,7 @@
                 </p>
                 <p class="leading-relaxed">
                     このサイトは利用者をポップに小馬鹿にするフィクションのジョークシミュレーターです。実際の個人情報収集、ウイルス感染、金銭の請求は一切ありません（架空の遊びです）。笑って許せる人だけ遊んでね！
-                    <br><span class="text-toxic-pink">※実際のトラッキングCookie等は一切使用していません。このバナー自体もジョークです。</span>
+                    <br><span class="text-toxic-pink">※ジョーク部分とは別に、本物の広告エリアでは外部事業者の通信・Cookie等が利用される場合があります。</span>
                 </p>
             </div>
             <div class="flex flex-wrap gap-2 shrink-0">
@@ -337,38 +341,24 @@
                 <div class="inline-block p-3 bg-toxic-cyan rounded-full border-4 border-black text-black mb-2 shadow-[4px_4px_0_#000] animate-spinfast" style="animation-duration: 4s;">
                     <i class="fa-solid fa-wand-magic-sparkles text-2xl"></i>
                 </div>
-                <h2 class="text-xl font-gothic text-black">AI クソ広告ジェネレーター</h2>
-                <p class="text-xs text-gray-600 mt-2 font-bold">適当な言葉を入れるとGemini AIが煽り度MAXの架空広告を作るよ！</p>
+                <h2 class="text-xl font-gothic text-black">ローカル広告ジェネレーター</h2>
+                <p class="text-xs text-gray-600 mt-2 font-bold">言葉を入れるとブラウザー内で架空のジョーク広告を作ります。AIや外部APIは使いません。</p>
             </div>
 
             <div class="space-y-4">
                 <div>
                     <label class="block text-xs font-bold text-black mb-1">煽りたいテーマ（例：ダイエット、宿題、スマホ）</label>
-                    <input type="text" id="forge-input" placeholder="例: テスト勉強、仮想通貨、モテる方法" class="w-full bg-pink-50 border-4 border-black rounded-xl p-3 text-sm text-black font-bold focus:outline-none focus:bg-toxic-cyan focus:border-toxic-pink transition">
+                    <input type="text" id="forge-input" maxlength="200" placeholder="例: テスト勉強、仮想通貨、モテる方法" class="w-full bg-pink-50 border-4 border-black rounded-xl p-3 text-sm text-black font-bold focus:outline-none focus:bg-toxic-cyan focus:border-toxic-pink transition">
                 </div>
 
-                <div>
-                    <label class="block text-xs font-bold text-black mb-1">煽りスタイル</label>
-                    <select id="forge-style" class="w-full bg-yellow-50 border-4 border-black rounded-xl p-3 text-sm text-black font-bold focus:outline-none focus:bg-toxic-cyan focus:border-toxic-pink transition">
-                        <option value="scam_pop">【情弱ビジネス風】（え？まだ〇〇やってないの？ｗ）</option>
-                        <option value="complex_mock">【コンプレックス煽り風】（〇〇なヤツ、正直キツイっすｗ）</option>
-                        <option value="fake_warning">【偽警告風】（ヤバい！あなたのPC、〇〇だらけです！）</option>
-                        <option value="brain_dead">【IQ3向けサプリ風】（飲むだけで〇〇！天才確定！）</option>
-                    </select>
-                </div>
 
                 <div class="pt-4">
-                    <button id="forge-submit-btn" onclick="generateCursedAdWithGemini()" class="w-full bg-toxic-pink hover:bg-pink-400 border-4 border-black text-white font-gothic py-3 rounded-xl shadow-[6px_6px_0_#000] active:translate-y-1 active:shadow-none flex items-center justify-center gap-2 text-base transition">
+                    <button id="forge-submit-btn" onclick="generateLocalAd()" class="w-full bg-toxic-pink hover:bg-pink-400 border-4 border-black text-white font-gothic py-3 rounded-xl shadow-[6px_6px_0_#000] active:translate-y-1 active:shadow-none flex items-center justify-center gap-2 text-base transition">
                         <i class="fa-solid fa-bolt"></i> 錬成する（※架空です）
                     </button>
                 </div>
             </div>
 
-            <div id="forge-loading" class="hidden absolute inset-0 bg-white/95 rounded-3xl flex flex-col items-center justify-center text-center p-6 z-10 border-4 border-black">
-                <div class="text-6xl animate-wiggle mb-4">🤪</div>
-                <p class="text-lg font-gothic text-toxic-pink animate-pulse">Gemini AI が一生懸命ふざけています...</p>
-                <p class="text-sm font-bold text-gray-500 mt-2">APIに丸投げ中... ちょっと待ってね</p>
-            </div>
         </div>
     </div>
 
@@ -385,19 +375,15 @@
 
             <div class="space-y-4 text-xs">
                 <div class="bg-gray-100 p-4 rounded-xl border-2 border-black">
-                    <label class="block font-bold text-black mb-2">カスタム Gemini API Key (任意)</label>
-                    <input type="password" id="custom-api-key" placeholder="AIキーをお持ちの場合は入力 (未入力でも動くよ)" 
-                           class="w-full bg-white border-2 border-gray-400 rounded-lg p-2 text-black focus:border-toxic-pink focus:outline-none">
-                    <p class="text-[10px] text-gray-500 mt-1 font-bold">※キーはブラウザの localStorage にのみ保存され、外部に送信されません。</p>
-                    <button onclick="saveApiKey()" class="mt-3 bg-black hover:bg-gray-800 text-white font-bold py-2 px-4 rounded-lg shadow-[2px_2px_0_#000] active:translate-y-1 active:shadow-none">
-                        APIキーを保存
-                    </button>
+                    <p class="font-bold">APIキーの入力・保存は停止しています。</p>
+                    <p class="mt-2">外部広告スクリプトを読み込むページのため、秘密情報を入力しないでください。広告メーカーは通信不要のローカル生成で利用できます。</p>
+                    <p class="mt-2">旧版で保存したキーは、このページを開いた際に削除します。以前入力したキーが気になる場合は、発行元で失効・再発行してください。</p>
                 </div>
 
                 <div class="bg-pink-50 p-4 rounded-xl border-2 border-toxic-pink text-black space-y-2 font-bold">
                     <p class="text-toxic-pink text-sm font-gothic">⚠️ 法的配慮とDisclaimer</p>
                     <p>・本サイトはポップアップ広告のウザさを誇張・パロディ化した<strong>エンターテインメント目的のフィクション・ジョークアプリ</strong>です。</p>
-                    <p>・表示される煽り文、怪しい商品、警告はすべてAIまたはプリセットによる架空のものです。実在の個人・団体・企業（商品）とは一切関係ありません。</p>
+                    <p>・表示される煽り文、怪しい商品、警告はすべてローカル生成またはプリセットによる架空のものです。実在の個人・団体・企業（商品）とは一切関係ありません。</p>
                     <p>・実際の金銭や個人情報が要求されることは絶対にありません。安心していじられてください。</p>
                 </div>
             </div>
@@ -567,7 +553,7 @@
             const container = document.getElementById('toast-container');
             const toast = document.createElement('div');
             toast.className = "bg-white border-4 border-black text-black font-bold px-4 py-3 rounded-2xl shadow-[6px_6px_0_#000] text-sm flex items-center gap-2 pointer-events-auto transition-all duration-300 transform translate-y-2 opacity-0 font-pop";
-            toast.innerHTML = msg;
+            toast.textContent = msg;
             container.appendChild(toast);
 
             setTimeout(() => toast.classList.remove('translate-y-2', 'opacity-0'), 10);
@@ -617,12 +603,6 @@
             playSynthBeep(800, 'sine', 0.3);
         }
 
-        function saveApiKey() {
-            const val = document.getElementById('custom-api-key').value.trim();
-            localStorage.setItem('toxic_gemini_key', val);
-            showToast("🔑 APIキー保存した！これで本気出せるわｗ");
-            closeModal('settings-modal');
-        }
 
         function spawnRandomAd() {
             const preset = popAdPresets[Math.floor(Math.random() * popAdPresets.length)];
@@ -646,7 +626,18 @@
             spawnAdWindow(punishmentAds[0], x, y);
         }
 
+        function escapeAdText(value) {
+            return String(value ?? '').replace(/[&<>"']/g, char => ({
+                '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+            }[char]));
+        }
+
         function spawnAdWindow(adData, customX = null, customY = null) {
+            const rewardTitle = String(adData.title ?? '');
+            adData = Object.fromEntries(Object.entries(adData).map(([key, value]) => [key, escapeAdText(value)]));
+            // Only HTTPS images may be embedded; quotes are escaped above.
+            if (adData.imageUrl && !/^https:\/\//i.test(adData.imageUrl)) adData.imageUrl = '';
+
             if (activePopupCount >= 15) {
                 showToast("⚠️ これ以上出すとブラウザが死ぬからやめとくねｗ（Escで掃除して）");
                 return;
@@ -715,7 +706,7 @@
                         <span class="text-gray-800 opacity-70 bg-white/50 px-1 rounded">※ジョークです</span>
                     </div>
 
-                    <button onclick="clickAdReward('${adData.title.replace(/'/g, "\\'")}')" class="w-full mt-2 bg-white hover:bg-gray-100 border-4 border-black text-black font-gothic text-xs py-3 px-3 rounded-xl shadow-[4px_4px_0_#000] active:translate-y-1 active:shadow-none transition group relative overflow-hidden">
+                    <button data-reward="true" class="w-full mt-2 bg-white hover:bg-gray-100 border-4 border-black text-black font-gothic text-xs py-3 px-3 rounded-xl shadow-[4px_4px_0_#000] active:translate-y-1 active:shadow-none transition group relative overflow-hidden">
                         <span class="relative z-10 flex items-center justify-center gap-1 group-hover:scale-105 transition">
                             ${adData.btnText || '養分になる'} <i class="fa-solid fa-arrow-pointer"></i>
                         </span>
@@ -724,6 +715,7 @@
                 </div>
             `;
 
+            popup.querySelector('[data-reward]').addEventListener('click', () => clickAdReward(rewardTitle));
             container.appendChild(popup);
             playPopSound();
             makeDraggable(popup);
@@ -880,7 +872,7 @@
             // 40種の中からランダムで煽りコメントを選択し、{title}を置換
             const randomComment = clickMockComments[Math.floor(Math.random() * clickMockComments.length)].replace("{title}", shortTitle);
             
-            showToast(`${randomComment} <br><span class="text-[10px] text-toxic-pink bg-black px-1 rounded inline-block mt-1">+100pt GET</span>`);
+            showToast(`${randomComment} +100pt GET`);
             playSynthBeep(1200, 'square', 0.1);
             setTimeout(() => playSynthBeep(1600, 'square', 0.15), 100);
         }
@@ -926,110 +918,26 @@
             window.open(`https://twitter.com/intent/tweet?text=${text}`, '_blank');
         }
 
-        async function generateCursedAdWithGemini() {
+        function generateLocalAd() {
             initAudio();
-            const inputVal = document.getElementById('forge-input').value.trim();
+            const inputVal = document.getElementById('forge-input').value.trim().slice(0, 200);
             if (!inputVal) {
-                showToast("⚠️ は？言葉も入力できないの？やり直し！");
-                playErrorSound();
+                showToast("言葉を入力してください。");
                 return;
             }
-
-            const style = document.getElementById('forge-style').value;
-            const loading = document.getElementById('forge-loading');
-            loading.classList.remove('hidden');
-
-            const apiKey = document.getElementById('custom-api-key').value.trim() || localStorage.getItem('toxic_gemini_key') || "";
-
-            if (!apiKey) {
-                setTimeout(() => {
-                    loading.classList.add('hidden');
-                    closeModal('forge-modal');
-                    spawnAdWindow({
-                        title: `【マジレス】お前の${inputVal}、ヤバすぎｗ`,
-                        badge: "AI(風)生成",
-                        bg: "bg-toxic-cyan",
-                        border: "border-black",
-                        text: `AIで生成しようとしたけどキーが無かったから手抜きするわ。「${inputVal}」って検索してる時点でお里が知れるよねｗｗ（※ジョークです）`,
-                        btnText: "手抜き広告に屈する",
-                        price: "慰謝料: 300pt",
-                        icon: "fa-robot",
-                        imgText: inputVal
-                    }, 40, 90);
-                    showToast(`✨ ローカル処理で「${inputVal}」を適当に生成したよ！`);
-                }, 1000);
-                return;
-            }
-
-            try {
-                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
-                const promptText = `あなたは利用者を小馬鹿にするのが得意な、原宿系サイバーパンク風（ゲロポップ）の悪徳アフィリエイターAIです。
-ユーザーが指定した単語「${inputVal}」（指定スタイル: ${style}）をもとに、ネットスラング多めで人をイラッとさせる、でもどこか笑える架空のクソ広告ポップアップ用JSONデータを生成してください。
-※犯罪予告、実在の団体への誹謗中傷、リアルすぎる詐欺（本物に誤認させるもの）は絶対禁止。あくまで「アホらしい架空の広告」にしてください。
-
-返礼は必ず以下の純粋なJSONフォーマットのみ（マークダウン記法なし）で出力してください：
-{
-  "title": "ウザくてポップなタイトル（草やｗを多用）",
-  "badge": "架空の胡散臭いスポンサー名",
-  "text": "利用者を煽るような商品説明文（100文字程度、※架空です とどこかに入れる）",
-  "btnText": "煽り気味のボタン文字",
-  "price": "ふざけた価格や条件（例：尊厳500pt）"
-}`;
-
-                const response = await fetch(apiUrl, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        contents: [{ parts: [{ text: promptText }] }],
-                        generationConfig: { responseMimeType: "application/json" }
-                    })
-                });
-
-                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-                
-                const result = await response.json();
-                let adObj = null;
-
-                if (result.candidates && result.candidates[0]?.content?.parts[0]?.text) {
-                    // Try parsing JSON safely
-                    adObj = JSON.parse(result.candidates[0].content.parts[0].text);
-                } else {
-                    throw new Error("Invalid response structure from Gemini API");
-                }
-
-                loading.classList.add('hidden');
-                closeModal('forge-modal');
-                spawnAdWindow({
-                    title: adObj.title || `【草】${inputVal}ｗｗ`,
-                    badge: adObj.badge || "AIクソ錬成",
-                    bg: "bg-toxic-yellow",
-                    border: "border-toxic-pink",
-                    text: adObj.text || `最新のAIが君の「${inputVal}」を最高にウザくしてやったよ！感謝してね！`,
-                    btnText: adObj.btnText || "ポチる",
-                    price: adObj.price || "価格: 666pt",
-                    icon: "fa-wand-magic-sparkles",
-                    imgText: inputVal
-                }, 40, 90);
-                showToast(`✨ Gemini AIが「${inputVal}」のクソ広告を錬成したよ！ウケるｗ`);
-
-            } catch (error) {
-                console.warn("API Call Failed, using fallback generator:", error);
-                loading.classList.add('hidden');
-                closeModal('forge-modal');
-                playErrorSound();
-                spawnAdWindow({
-                    title: `エラー吐いてるんだけどｗｗ`,
-                    badge: "通信エラー",
-                    bg: "bg-red-500 text-white",
-                    border: "border-black",
-                    text: `AIが「${inputVal}」を処理中にエラー吐いたわ。お前のPCのせいじゃない？（※嘘です、APIエラーです）`,
-                    btnText: "エラーを認めて反省する",
-                    price: "罰金: 100pt",
-                    icon: "fa-triangle-exclamation",
-                    imgText: "API ERROR"
-                }, 40, 90);
-                showToast(`⚠️ API通信エラー！どんくさ！ローカルで適当に出しとくわ！`);
-            }
+            closeModal('forge-modal');
+            spawnAdWindow({
+                title: `【架空】${inputVal}、話題のジョーク広告！`,
+                badge: "ローカル生成",
+                bg: "bg-toxic-cyan",
+                border: "border-black",
+                text: `「${inputVal}」をテーマにした架空の広告です。AI通信は行っていません。`,
+                btnText: "ジョークで遊ぶ",
+                price: "価格: 架空の300pt",
+                icon: "fa-robot",
+                imgText: inputVal
+            }, 40, 90);
+            showToast(`「${inputVal}」のジョーク広告を作りました。`);
         }
 
         window.addEventListener('keydown', (e) => {
@@ -1037,11 +945,6 @@
         });
 
         window.onload = function() {
-            const savedKey = localStorage.getItem('toxic_gemini_key');
-            if (savedKey) {
-                const keyInput = document.getElementById('custom-api-key');
-                if (keyInput) keyInput.value = savedKey;
-            }
 
             setTimeout(() => spawnAdWindow(popAdPresets[0], 20, 60), 500);
             setTimeout(() => spawnAdWindow(popAdPresets[1], 300, 150), 1200);
