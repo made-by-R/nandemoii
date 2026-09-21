@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://11gor.com/index.html</loc>
+    <loc>https://11gor.com/</loc>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
@@ -49,6 +49,7 @@
   </url>
   <url>
     <loc>https://11gor.com/about.html</loc>
+    <lastmod>2026-09-21</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
@@ -59,6 +60,7 @@
   </url>
   <url>
     <loc>https://11gor.com/privacy.html</loc>
+    <lastmod>2026-09-21</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
@@ -66,4 +68,7 @@
     <loc>https://11gor.com/speed-calculator.html</loc>
     <lastmod>2026-09-19</lastmod>
   </url>
+  <url><loc>https://11gor.com/mbps-download-guide.html</loc><lastmod>2026-09-21</lastmod></url>
+  <url><loc>https://11gor.com/gb-gib-guide.html</loc><lastmod>2026-09-21</lastmod></url>
+  <url><loc>https://11gor.com/website-publish-check.html</loc><lastmod>2026-09-21</lastmod></url>
 </urlset>

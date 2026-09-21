@@ -2,6 +2,7 @@
   "name": "nandemoii",
   "compatibility_date": "2026-09-18",
   "assets": {
-    "directory": "./"
+    "directory": "./",
+    "not_found_handling": "404-page"
   }
 }
