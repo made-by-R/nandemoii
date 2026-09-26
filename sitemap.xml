@@ -6,69 +6,69 @@
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://11gor.com/article1.html</loc>
+    <loc>https://11gor.com/article1</loc>
     <lastmod>2026-07-27</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://11gor.com/article2.html</loc>
+    <loc>https://11gor.com/article2</loc>
     <lastmod>2026-07-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://11gor.com/article3.html</loc>
+    <loc>https://11gor.com/article3</loc>
     <lastmod>2026-08-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://11gor.com/article4.html</loc>
+    <loc>https://11gor.com/article4</loc>
     <lastmod>2026-08-10</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://11gor.com/article5.html</loc>
+    <loc>https://11gor.com/article5</loc>
     <lastmod>2026-08-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://11gor.com/article6.html</loc>
+    <loc>https://11gor.com/article6</loc>
     <lastmod>2026-08-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://11gor.com/article7.html</loc>
+    <loc>https://11gor.com/article7</loc>
     <lastmod>2026-08-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://11gor.com/about.html</loc>
+    <loc>https://11gor.com/about</loc>
     <lastmod>2026-09-21</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
   <url>
-    <loc>https://11gor.com/contact.html</loc>
+    <loc>https://11gor.com/contact</loc>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
   <url>
-    <loc>https://11gor.com/privacy.html</loc>
+    <loc>https://11gor.com/privacy</loc>
     <lastmod>2026-09-21</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
   <url>
-    <loc>https://11gor.com/speed-calculator.html</loc>
+    <loc>https://11gor.com/speed-calculator</loc>
     <lastmod>2026-09-19</lastmod>
   </url>
-  <url><loc>https://11gor.com/mbps-download-guide.html</loc><lastmod>2026-09-21</lastmod></url>
-  <url><loc>https://11gor.com/gb-gib-guide.html</loc><lastmod>2026-09-21</lastmod></url>
-  <url><loc>https://11gor.com/website-publish-check.html</loc><lastmod>2026-09-21</lastmod></url>
+  <url><loc>https://11gor.com/mbps-download-guide</loc><lastmod>2026-09-21</lastmod></url>
+  <url><loc>https://11gor.com/gb-gib-guide</loc><lastmod>2026-09-21</lastmod></url>
+  <url><loc>https://11gor.com/website-publish-check</loc><lastmod>2026-09-21</lastmod></url>
 </urlset>
