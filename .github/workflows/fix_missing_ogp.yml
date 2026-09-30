@@ -1,0 +1,257 @@
+name: Fix missing OGP
+
+on:
+  push:
+    paths:
+      - '.github/workflows/fix_missing_ogp.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  fix-ogp:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install image dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y fonts-noto-cjk
+          python -m pip install --quiet pillow
+      - name: Generate branded OGP images and inject missing metadata
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          from urllib.parse import urlparse
+          import html as htmlmod
+          import re
+          from PIL import Image, ImageDraw, ImageFont, ImageFilter
+
+          SITE = 'https://11gor.com'
+          OUT = Path('images/og')
+          OUT.mkdir(parents=True, exist_ok=True)
+
+          PALETTES = {
+              '作業環境・道具': ('#6f8068', '#e9eee4'),
+              'テクノロジー・開発': ('#607c86', '#e7eef0'),
+              'ボディメイク・健康': ('#9a6e72', '#f3e8e7'),
+              '考察・読書録': ('#9a774d', '#f1eadf'),
+              'お出かけ': ('#68849a', '#e8eef3'),
+              '萬洋紹介館': ('#9b7b4f', '#eee5d8'),
+          }
+          CHARS = {
+              '作業環境・道具': Path('03_yubisashi_pose.png'),
+              'テクノロジー・開発': Path('04_mushimegane_pose.png'),
+              'ボディメイク・健康': Path('07_ok_pose.png'),
+              '考察・読書録': Path('09_dokusho_pose.png'),
+              'お出かけ': Path('10_hashiru_pose.png'),
+              '萬洋紹介館': Path('01_gutsu_pose.png'),
+          }
+
+          font_candidates = [
+              '/usr/share/fonts/opentype/noto/NotoSansCJK-Bold.ttc',
+              '/usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc',
+              '/usr/share/fonts/truetype/noto/NotoSansCJK-Bold.ttc',
+          ]
+          font_path = next((p for p in font_candidates if Path(p).exists()), None)
+          if not font_path:
+              raise RuntimeError('Noto CJK font not found')
+
+          def font(size):
+              return ImageFont.truetype(font_path, size=size)
+
+          def clean(s):
+              s = re.sub(r'<[^>]+>', '', s, flags=re.S)
+              s = htmlmod.unescape(s)
+              return re.sub(r'\s+', ' ', s).strip()
+
+          def title_from(doc, fallback):
+              m = re.search(r'<title[^>]*>(.*?)</title>', doc, re.I | re.S)
+              t = clean(m.group(1)) if m else fallback
+              t = re.sub(r'\s*[-｜|]\s*(11gor\.com|萬洋紹介館).*$','', t, flags=re.I)
+              return t.strip() or fallback
+
+          def meta_description(doc):
+              pats = [
+                  r'<meta[^>]+name=["\']description["\'][^>]+content=["\'](.*?)["\'][^>]*>',
+                  r'<meta[^>]+content=["\'](.*?)["\'][^>]+name=["\']description["\'][^>]*>',
+              ]
+              for pat in pats:
+                  m = re.search(pat, doc, re.I | re.S)
+                  if m:
+                      return clean(m.group(1))
+              body = re.search(r'<body[^>]*>(.*)', doc, re.I | re.S)
+              scope = body.group(1) if body else doc
+              for p in re.finditer(r'<p[^>]*>(.*?)</p>', scope, re.I | re.S):
+                  txt = clean(p.group(1))
+                  if len(txt) >= 35:
+                      return txt[:125]
+              return '暮らし・IT・読書を、わかりやすく調べて比べる萬洋紹介館の記事です。'
+
+          def category_for(path, title, doc):
+              s = f'{path} {title} {doc[:5000]}'
+              if path == 'a' or re.search(r'キーボード|机|デスク|配線|買い物|道具', s):
+                  return '作業環境・道具'
+              if path == 'kuchi' or re.search(r'唇|健康|運動|ジム|睡眠|栄養|座りっぱなし', s):
+                  return 'ボディメイク・健康'
+              if re.search(r'読書|漫画|本|NARUTO|ネタバレ|書架', s, re.I):
+                  return '考察・読書録'
+              if re.search(r'旅行|日帰り|旅|予約|荷物|パッキング|お出かけ', s):
+                  return 'お出かけ'
+              if re.search(r'DNS|HTTP|Web|サイト|通信|Mbps|GB|GiB|画像|アカウント|バックアップ|公開|ドメイン', s, re.I):
+                  return 'テクノロジー・開発'
+              return '萬洋紹介館'
+
+          def wrap(draw, text, fnt, max_width, max_lines=3):
+              lines, cur = [], ''
+              for ch in text:
+                  trial = cur + ch
+                  if draw.textbbox((0,0), trial, font=fnt)[2] <= max_width:
+                      cur = trial
+                  else:
+                      if cur:
+                          lines.append(cur)
+                      cur = ch
+                      if len(lines) >= max_lines - 1:
+                          break
+              if cur and len(lines) < max_lines:
+                  lines.append(cur)
+              consumed = ''.join(lines)
+              if len(consumed) < len(text):
+                  last = lines[-1]
+                  while last and draw.textbbox((0,0), last + '…', font=fnt)[2] > max_width:
+                      last = last[:-1]
+                  lines[-1] = last + '…'
+              return lines
+
+          def render_og(path, title, desc, category, out_path):
+              W, H = 1200, 630
+              bg = '#f7f2e8'
+              ink = '#332a24'
+              mocha = '#a38458'
+              accent, tint = PALETTES[category]
+              base = Image.new('RGB', (W,H), bg)
+              shadow = Image.new('RGBA', (W,H), (0,0,0,0))
+              sd = ImageDraw.Draw(shadow)
+              sd.rounded_rectangle((55,62,1145,578), radius=38, fill=(70,50,30,45))
+              shadow = shadow.filter(ImageFilter.GaussianBlur(14))
+              base = Image.alpha_composite(base.convert('RGBA'), shadow)
+              d = ImageDraw.Draw(base)
+              d.rounded_rectangle((48,48,1138,565), radius=38, fill='#fffdf9', outline='#e3d7c5', width=2)
+              d.rounded_rectangle((48,48,1138,120), radius=38, fill=tint)
+              d.rectangle((48,86,1138,120), fill=tint)
+              d.text((88,67), '萬洋紹介館', font=font(28), fill=ink)
+              d.text((260,69), '11gor.com', font=font(22), fill=mocha)
+
+              pill_f = font(24)
+              pb = d.textbbox((0,0), category, font=pill_f)
+              pw = pb[2] - pb[0] + 34
+              d.rounded_rectangle((88,155,88+pw,199), radius=20, fill=accent)
+              d.text((105,161), category, font=pill_f, fill='white')
+
+              title_size = 56
+              title_f = font(title_size)
+              lines = wrap(d, title, title_f, 730, 3)
+              if len(lines) >= 3 and len(title) > 42:
+                  title_f = font(50)
+                  lines = wrap(d, title, title_f, 730, 3)
+              y = 230
+              for line in lines:
+                  d.text((88,y), line, font=title_f, fill=ink)
+                  y += int(title_f.size * 1.22)
+
+              short_desc = desc[:95] + ('…' if len(desc) > 95 else '')
+              desc_f = font(22)
+              desc_lines = wrap(d, short_desc, desc_f, 720, 2)
+              dy = 485
+              for line in desc_lines:
+                  d.text((90,dy), line, font=desc_f, fill='#6e6258')
+                  dy += 31
+
+              d.rounded_rectangle((850,145,1088,510), radius=30, fill=tint, outline='#e1d5c3', width=2)
+              cp = CHARS.get(category)
+              if cp and cp.exists():
+                  char = Image.open(cp).convert('RGBA')
+                  scale = min(205/char.width, 330/char.height)
+                  char = char.resize((max(1,int(char.width*scale)), max(1,int(char.height*scale))), Image.LANCZOS)
+                  x = 969 - char.width//2
+                  y2 = 485 - char.height
+                  base.alpha_composite(char, (x,y2))
+              d.text((884,522), '知りたいことから、次の一歩まで。', font=font(18), fill=accent)
+              base.convert('RGB').save(out_path, 'PNG', optimize=True)
+
+          sitemap = Path('sitemap.xml').read_text(encoding='utf-8')
+          urls = re.findall(r'<loc>\s*(.*?)\s*</loc>', sitemap, re.I)
+          changed = []
+
+          for loc in urls:
+              parsed = urlparse(loc)
+              p = parsed.path.strip('/')
+              if not p:
+                  html_path = Path('index.html')
+                  slug = 'home'
+              else:
+                  html_path = Path(p + '.html')
+                  slug = p.replace('/', '-')
+              if not html_path.exists():
+                  continue
+              doc = html_path.read_text(encoding='utf-8')
+              title = title_from(doc, '萬洋紹介館')
+              desc = meta_description(doc)
+              category = category_for(p, title, doc)
+
+              canonical = re.search(r'<link[^>]+rel=["\']canonical["\'][^>]+href=["\'](.*?)["\']', doc, re.I)
+              page_url = canonical.group(1) if canonical else loc
+              og_rel = f'images/og/{slug}.png'
+              og_file = Path(og_rel)
+              og_url = f'{SITE}/{og_rel}'
+
+              if 'property="og:image"' not in doc and "property='og:image'" not in doc:
+                  render_og(p, title, desc, category, og_file)
+
+              tags = []
+              checks = [
+                  ('og:site_name', f'<meta property="og:site_name" content="萬洋紹介館">'),
+                  ('og:title', f'<meta property="og:title" content="{htmlmod.escape(title, quote=True)}">'),
+                  ('og:description', f'<meta property="og:description" content="{htmlmod.escape(desc, quote=True)}">'),
+                  ('og:type', f'<meta property="og:type" content="{("website" if p in ("", "about", "contact", "privacy") or p.startswith("topics-") else "article")}">'),
+                  ('og:url', f'<meta property="og:url" content="{htmlmod.escape(page_url, quote=True)}">'),
+                  ('og:image', f'<meta property="og:image" content="{og_url}">'),
+                  ('twitter:card', '<meta name="twitter:card" content="summary_large_image">'),
+                  ('twitter:title', f'<meta name="twitter:title" content="{htmlmod.escape(title, quote=True)}">'),
+                  ('twitter:description', f'<meta name="twitter:description" content="{htmlmod.escape(desc, quote=True)}">'),
+                  ('twitter:image', f'<meta name="twitter:image" content="{og_url}">'),
+              ]
+              for key, tag in checks:
+                  if key.startswith('twitter:'):
+                      exists = re.search(rf'<meta[^>]+name=["\']{re.escape(key)}["\']', doc, re.I)
+                  else:
+                      exists = re.search(rf'<meta[^>]+property=["\']{re.escape(key)}["\']', doc, re.I)
+                  if not exists:
+                      tags.append(tag)
+              if tags:
+                  block = '\n  <!-- OGP / social cards -->\n  ' + '\n  '.join(tags) + '\n'
+                  doc = re.sub(r'</head>', block + '</head>', doc, count=1, flags=re.I)
+                  html_path.write_text(doc, encoding='utf-8')
+                  changed.append(str(html_path))
+
+          print(f'Updated {len(changed)} sitemap pages with missing OGP metadata')
+          for f in changed:
+              print(' -', f)
+          PY
+      - name: Commit OGP fixes
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add '*.html' images/og/
+          if git diff --cached --quiet; then
+            echo 'No OGP changes needed.'
+          else
+            git commit -m 'Add branded OGP cards to sitemap pages'
+            git push
+          fi
