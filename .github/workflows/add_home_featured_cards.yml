@@ -1,0 +1,62 @@
+name: Add featured a and kuchi cards to home
+
+on:
+  push:
+    paths:
+      - '.github/workflows/add_home_featured_cards.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  update-home:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Add featured cards and topic links
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          p = Path('index.html')
+          s = p.read_text(encoding='utf-8')
+
+          cards = '''<article class="post-card"><a href="/a" class="post-card-link"><div class="post-card-thumbnail"><img src="/images/og/a.png" width="900" height="360" loading="lazy" alt="静音パンタグラフキーボードおすすめ4選の表紙"></div><div class="post-card-body"><div class="post-card-meta"><span class="category-label">作業環境・道具</span><time datetime="2026-09-30">2026.09.30</time></div><h3 class="post-card-title">静音パンタグラフキーボードおすすめ4選｜オフィス・Web会議向け【2026】</h3><p class="post-card-excerpt">静音パンタグラフキーボード4機種を、配列・サイズ・接続方式・使い方で比較。オフィスやWeb会議、夜間作業で打鍵音を抑えたい人向けに選び方を整理します。</p></div></a></article><article class="post-card"><a href="/kuchi" class="post-card-link"><div class="post-card-thumbnail"><img src="/images/og/kuchi.png" width="900" height="360" loading="lazy" alt="唇の乾燥レベルを写真で比較する記事の表紙"></div><div class="post-card-body"><div class="post-card-meta"><span class="category-label">ボディメイク・健康</span><time datetime="2026-09-30">2026.09.30</time></div><h3 class="post-card-title">唇の乾燥レベルを写真で比較｜セルフチェックと保湿ケアの目安</h3><p class="post-card-excerpt">唇の乾燥状態を写真で比較し、見た目の特徴と保湿ケアの目安を整理。痛み・出血・長引く症状がある場合の相談目安も案内します。</p></div></a></article>'''
+
+          if 'href="/a" class="post-card-link"' not in s or 'href="/kuchi" class="post-card-link"' not in s:
+              marker = '<div class="post-grid">'
+              if marker not in s:
+                  raise SystemExit('post-grid marker not found')
+              existing = ''
+              if 'href="/a" class="post-card-link"' not in s:
+                  existing += cards.split('</article>')[0] + '</article>'
+              if 'href="/kuchi" class="post-card-link"' not in s:
+                  existing += cards.split('</article>')[1] + '</article>'
+              s = s.replace(marker, marker + existing, 1)
+
+          tools_anchor = '<h3 id="guide-tools">作業環境・道具</h3><ul>'
+          if '<a href="/a">静音パンタグラフキーボードを比較する</a>' not in s and tools_anchor in s:
+              s = s.replace(tools_anchor, tools_anchor + '<li><a href="/a">静音パンタグラフキーボードを比較する</a></li>', 1)
+
+          health_anchor = '<h3 id="guide-health">ボディメイク・健康</h3><ul>'
+          if '<a href="/kuchi">唇の乾燥レベルを写真で比較する</a>' not in s and health_anchor in s:
+              s = s.replace(health_anchor, health_anchor + '<li><a href="/kuchi">唇の乾燥レベルを写真で比較する</a></li>', 1)
+
+          p.write_text(s, encoding='utf-8')
+          PY
+      - name: Commit home updates
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html
+          if git diff --cached --quiet; then
+            echo 'No changes needed.'
+          else
+            git commit -m 'Add featured a and kuchi cards to homepage'
+            git push
+          fi
