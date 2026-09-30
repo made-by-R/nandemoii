@@ -11,9 +11,16 @@
   <meta name="twitter:title" content="GitHubを更新したのにサイトが変わらないときの確認手順">
   <meta name="twitter:description" content="保存、デプロイ、公開URLを分けて確認。GitHubとCloudflareで静的サイトを運用するときの、更新反映の切り分け手順です。">
   <meta name="twitter:image" content="https://11gor.com/images/og/website-publish-check.png">
+<meta property="og:image:alt" content="GitHubを更新したのにサイトが変わらないときの確認手順の記事表紙">
+<meta name="twitter:image:alt" content="GitHubを更新したのにサイトが変わらないときの確認手順の記事表紙">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<link rel="stylesheet" href="/article-covers.css">
 </head>
 <body><header class="site-header"><div class="header-inner"><div class="site-title"><a href="/">萬洋紹介館</a></div><p class="site-description">日常の疑問を、具体例と小さな道具で解く。</p></div><nav class="global-nav" aria-label="メイン"><ul><li><a href="/">ホーム・記事一覧</a></li><li><a href="/speed-calculator">通信速度計算機</a></li><li><a href="/about">当サイトについて</a></li><li><a href="/contact">お問い合わせ</a></li></ul></nav></header>
-<main class="guide-main"><article><h1>GitHubを更新したのにサイトが変わらないときの確認手順</h1><p class="meta">執筆・編集：萬洋紹介館　公開：<time datetime="2026-09-21">2026年9月21日</time></p>
+<main class="guide-main"><article><h1>GitHubを更新したのにサイトが変わらないときの確認手順</h1>
+<figure class="article-cover"><img src="/images/og/website-publish-check.png" width="1200" height="630" alt="GitHubを更新したのにサイトが変わらないときの確認手順の記事表紙" decoding="async" fetchpriority="high"></figure>
+<p class="meta">執筆・編集：萬洋紹介館　公開：<time datetime="2026-09-21">2026年9月21日</time></p>
 <p class="intro">GitHubに新しいファイルがあっても、公開ドメインにその内容が配信された証拠にはなりません。「保存した変更」「配信した版」「実際に開いたURL」を順に照合すると、どこで止まったかを整理できます。</p><p>当サイト11gor.comは、HTML・CSS・JavaScriptをGitHubで管理し、Cloudflare Workersで配信する構成です。この構成を例に、更新確認の手順をまとめます。以下は確認方法の解説であり、すべての障害を実機で再現した検証報告ではありません。</p>
 <nav class="toc" aria-label="目次"><strong>目次</strong><ol><li><a href="#save">GitHubの保存先を確かめる</a></li><li><a href="#deploy">デプロイした版を照合する</a></li><li><a href="#url">公開URLの本文を確認する</a></li><li><a href="#links">リンクとエラーページを確認する</a></li><li><a href="#record">確認記録を残す</a></li></ol></nav>
 <h2 id="save">1. 変更が入ったブランチとファイルを確認する</h2><p>まずGitHubで、変更したファイルの本文が期待どおりになっているかを開いて確認します。次に、その変更が公開用のブランチに入っているかを確かめます。作業用ブランチやプルリクエストにしか変更がなければ、公開ブランチからの自動配信には含まれない場合があります。</p><p>確認に使うのは、ファイル名だけでなく、変更が入ったコミットの識別子です。同じファイルが複数のブランチに存在していても、本文が同じとは限りません。「新しい記事のタイトル」「直した一文」など、見分けられる内容を1つ選んでおきます。</p>
