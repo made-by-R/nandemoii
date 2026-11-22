@@ -1,0 +1,42 @@
+/* 11gor library reading experience — shared across article pages, Nov 2026 */
+:root{--library-paper:#f1e8d8;--library-card:#fffaf0;--library-ink:#3d3025;--library-muted:#766450;--library-edge:#cdb89a;--library-wood:#765438;--library-gold:#a77b41}
+body:not(:has(.hero.journey-scene)){background:var(--library-paper)!important;color:var(--library-ink)!important;font-family:"Hiragino Kaku Gothic ProN","Noto Sans JP",system-ui,sans-serif;line-height:1.9;overflow-wrap:anywhere}
+body:not(:has(.hero.journey-scene))::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:30;opacity:.16;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Cfilter id='grain'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' opacity='.13' filter='url(%23grain)'/%3E%3C/svg%3E")}
+body:not(:has(.hero.journey-scene)) .site-header{background:#f7eedf!important;border-color:var(--library-edge)!important}
+body:not(:has(.hero.journey-scene)) .site-title a{color:#46301f!important;font-family:Georgia,"Yu Mincho","Hiragino Mincho ProN",serif!important}
+body:not(:has(.hero.journey-scene)) .site-description,body:not(:has(.hero.journey-scene)) .post-meta{color:var(--library-muted)!important}
+body:not(:has(.hero.journey-scene)) .global-nav a{color:#67472c!important}
+body:not(:has(.hero.journey-scene)) .global-nav a:hover{color:#9f683a!important}
+body:not(:has(.hero.journey-scene)) .affiliate-disclosure-top{background:#e6d5bc!important;color:#58422c!important}
+body:not(:has(.hero.journey-scene)) .guide-main,body:not(:has(.hero.journey-scene)) .library-main,body:not(:has(.hero.journey-scene)) main.article-main{max-width:930px!important;margin:32px auto 72px!important;padding:clamp(24px,5vw,68px)!important;background:var(--library-card)!important;border:1px solid var(--library-edge)!important;border-radius:10px!important;box-shadow:0 24px 65px #5b462a17!important;position:relative}
+body:not(:has(.hero.journey-scene)) .guide-main::before,body:not(:has(.hero.journey-scene)) .library-main::before{content:"11GOR  /  THE KNOWLEDGE ARCHIVE";display:block;margin-bottom:24px;padding-bottom:13px;border-bottom:1px solid #d9c6a7;color:#9a744b;font-size:.69rem;font-weight:800;letter-spacing:.18em}
+body:not(:has(.hero.journey-scene)) .guide-main h1,body:not(:has(.hero.journey-scene)) .library-main h1,body:not(:has(.hero.journey-scene)) main h1{color:#403020;font-family:Georgia,"Yu Mincho","Hiragino Mincho ProN",serif;line-height:1.5;letter-spacing:-.035em}
+body:not(:has(.hero.journey-scene)) .guide-main h2,body:not(:has(.hero.journey-scene)) .library-main h2{color:#65472c!important;border-bottom:1px solid #d2b995!important;padding:0 0 12px!important;font-family:Georgia,"Yu Mincho","Hiragino Mincho ProN",serif!important}
+body:not(:has(.hero.journey-scene)) .guide-main h3,body:not(:has(.hero.journey-scene)) .library-main h3{color:#695032}
+body:not(:has(.hero.journey-scene)) .guide-main p,body:not(:has(.hero.journey-scene)) .library-main p,body:not(:has(.hero.journey-scene)) .guide-main li,body:not(:has(.hero.journey-scene)) .library-main li{color:#4c4034;line-height:2}
+body:not(:has(.hero.journey-scene)) .guide-main .intro,body:not(:has(.hero.journey-scene)) .library-intro{background:#f5ead9!important;border-left:4px solid #99703e!important;color:#4b3b2b!important;padding:22px!important;border-radius:0 8px 8px 0}
+body:not(:has(.hero.journey-scene)) .guide-main .toc,body:not(:has(.hero.journey-scene)) .library-toc{background:#f8efdf!important;border:1px solid #d8bf9e!important;border-radius:8px;padding:24px}
+body:not(:has(.hero.journey-scene)) .guide-main table,body:not(:has(.hero.journey-scene)) .library-main table{border-collapse:collapse;max-width:100%}
+body:not(:has(.hero.journey-scene)) .guide-main th,body:not(:has(.hero.journey-scene)) .library-main th{background:#e8d7be!important;color:#4c351e!important}
+body:not(:has(.hero.journey-scene)) .guide-main td,body:not(:has(.hero.journey-scene)) .library-main td{background:#fffaf0!important;color:#473629!important}
+body:not(:has(.hero.journey-scene)) .guide-main pre,body:not(:has(.hero.journey-scene)) .library-main pre{background:#ece2d1!important;color:#3e3125!important;border:1px solid #cdb99c!important;border-radius:8px;overflow:auto}
+body:not(:has(.hero.journey-scene)) a:focus-visible{outline:3px solid #987044;outline-offset:3px}
+body:not(:has(.hero.journey-scene)) .guide-main a,body:not(:has(.hero.journey-scene)) .library-main a{color:#79502e;text-underline-offset:4px}
+body:not(:has(.hero.journey-scene)) .guide-main a:hover,body:not(:has(.hero.journey-scene)) .library-main a:hover{color:#a76c2d}
+body:not(:has(.hero.journey-scene)) .library-map>div,body:not(:has(.hero.journey-scene)) .library-card{background:#f6eddf!important;border-color:#d6c1a2!important}
+body:not(:has(.hero.journey-scene)) .site-footer{background:#453124!important;color:#f0deca!important}
+body:not(:has(.hero.journey-scene)) .site-footer a{color:#f5dfbd!important}
+/* Contact page is standalone; retain genuine external destinations */
+body.library-contact{background:var(--library-paper)!important;color:var(--library-ink)!important}
+body.library-contact .container{max-width:860px;margin:40px auto;padding:clamp(28px,6vw,70px);background:var(--library-card);border:1px solid var(--library-edge);border-radius:12px;box-shadow:0 20px 55px #5b462a20}
+body.library-contact h1{font-family:Georgia,"Yu Mincho","Hiragino Mincho ProN",serif;color:#513921!important;border-bottom-color:#b88e5b!important}
+body.library-contact h2{font-family:Georgia,"Yu Mincho",serif;color:#65472c!important;border-bottom-color:#d6bd98!important}
+body.library-contact p,body.library-contact .info-table td{color:#574938!important}
+body.library-contact .info-table th{color:#77502c!important}
+body.library-contact .info-table th,body.library-contact .info-table td{border-bottom-color:#d6c2a5!important}
+body.library-contact .info-table a{color:#77502c!important;border-bottom-color:#9f7b54!important}
+body.library-contact .btn-form{background:#785333!important;color:#fff7e9!important;border-radius:10px!important;box-shadow:0 8px 22px #573b2726}
+body.library-contact .btn-form:hover{background:#583c26!important;color:white!important}
+body.library-contact .back-home{background:#e8d6b9!important;color:#65432b!important;border-radius:9px!important}
+@media(max-width:680px){body:not(:has(.hero.journey-scene)) .guide-main,body:not(:has(.hero.journey-scene)) .library-main{margin:12px!important;padding:24px 18px!important}body.library-contact .container{margin:13px;padding:26px 20px}body.library-contact .info-table th{width:105px!important}body:not(:has(.hero.journey-scene)) .guide-main h1,body:not(:has(.hero.journey-scene)) .library-main h1{font-size:clamp(1.65rem,7vw,2.2rem)}}
+@media(prefers-reduced-motion:reduce){body:not(:has(.hero.journey-scene)) *,body.library-contact *{animation-duration:.01ms!important;transition-duration:.01ms!important}}
